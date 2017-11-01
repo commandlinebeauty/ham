@@ -8,6 +8,9 @@
 //! Include files (order matters)
 include "vars.php";
 include "xy.php";
+include "links.php";
+include "inputs.php";
+include "layout.php";
 include "parser.php";
 include "header.php";
 include "footer.php";
