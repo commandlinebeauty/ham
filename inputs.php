@@ -3,17 +3,17 @@
 //! Replace input elements
 //! Text-type input within curled brackets,
 //! button-type input within brackets.
-function ham_parser_inputs($in, $opts = null)
+function ham_inputs($in, $opts = null)
 {
 	$out = $in;
 
-	$out = ham_parser_inputs_text($out, $opts);
-	$out = ham_parser_inputs_button($out, $opts);
+	$out = ham_inputs_text($out, $opts);
+	$out = ham_inputs_button($out, $opts);
 
 	return $out;
 }
 
-function ham_parser_inputs_text($in, $opts = null)
+function ham_inputs_text($in, $opts = null)
 {
 	$inputLeft   = ham_option('inputTextLeft',  $opts, "{");
 	$inputLeftQ  = preg_quote($inputLeft, "/");
@@ -34,7 +34,7 @@ function ham_parser_inputs_text($in, $opts = null)
 	return $out;
 }
 
-function ham_parser_inputs_button($in, $opts = null)
+function ham_inputs_button($in, $opts = null)
 {
 	$inputLeft   = ham_option('inputButtonLeft',  $opts, "<");
 	$inputLeftQ  = preg_quote($inputLeft, "/");

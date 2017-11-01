@@ -9,16 +9,23 @@ function ham_layout($in, $opts = null)
 	$boxes = ham_xy_boxes($buffer, $opts);
 
 	switch ($layout) {
+
 	case 'table':
-		$boxes = ham_layout_table($boxes, $opts);
-		return $in;
+		$table = ham_layout_table($boxes, $opts);
+		$out = $in;
+		break;
+
 	case 'rows':
 //! TODO: Fix me!
 		$rows = ham_layout_rows($boxes, $opts);
-		return $in;
+		$out = $in;
+		break;
+
 	default:
-		return $in;
+		$out = $in;
 	}
+
+	return $out;
 }
 
 //! Calculate table rows from boxes
@@ -54,6 +61,7 @@ function ham_layout_rows($boxes, $opts = null)
 //! Calculate table columns from boxes
 function ham_layout_table($boxes, $opts = null)
 {
+	$table = array();
 	$rows = array(0);
 	$cols = array(0);
 
@@ -107,14 +115,19 @@ foreach ($cols as $col) {
 		$col_start = array_search($x0, $cols);
 		$col_stop = array_search($x1, $cols);
 
-		$box['rowspan'] = $row_stop - $row_start;
-		$box['colspan'] = $col_stop - $col_start;
+		$rowspan = $row_stop - $row_start;
+		$colspan = $col_stop - $col_start;
 
-		echo "rowspan: " . $box['rowspan'] . "<br>";
-		echo "colspan: " . $box['colspan'] . "<br>";
+		echo "rowspan: " . $rowspan . "<br>";
+		echo "colspan: " . $colspan . "<br>";
+
+		$box['rowspan'] = $rowspan;
+		$box['colspan'] = $colspan;
+
+//TODO		$table = 
 	}
 
-	return $boxes;
+	return $table;
 }
 
 ?>
