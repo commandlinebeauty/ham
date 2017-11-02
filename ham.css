@@ -3,6 +3,26 @@
 	font-family: Courier;
 }
 
+.ham table {
+	table-layout: fixed;
+	width: 100%;
+	border: none;
+}
+
+/*
+.ham tr {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.ham td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+*/
+
 .ham input {
 	font-family: Courier;
 	font-size: 100%;

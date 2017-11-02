@@ -21,17 +21,38 @@ function ham_xy_init($content, $opts = null)
 }
 
 //! Obtain a point from the xy-buffer
-function ham_xy_get($x, $y, $buffer)
+function ham_xy_get($y, $x, $buffer)
 {
 	if ($y >= count($buffer)) {
-		return null;
+		return " ";
 	}
 
 	if ($x >= count($buffer[$y])) {
-		return null;
+		return " ";
 	}
 
 	return $buffer[$y][$x];
+}
+
+//! Obtain the content of a box from the xy-buffer
+function ham_xy_get_box($box, $buffer, $opts = null)
+{
+	$out = "";
+
+//echo "Y0: " . $box['y'][0] . " Y1: " . $box['y'][1] . "|\n";
+
+	for ($y = $box['y'][0]; $y <= $box['y'][1]; $y++) {
+
+		for ($x = $box['x'][0]; $x <= $box['x'][1]; $x++) {
+
+			$out .= ham_xy_get($y, $x, $buffer);
+		}
+
+		$out .= PHP_EOL;//'\n';
+//		$out .= '<br>';
+	}
+
+	return $out;
 }
 
 ////! Set a point of the xy-buffer
@@ -46,8 +67,8 @@ function ham_xy_boxes_scan($type, $buffer, $y, $x, &$pos, $opts)
 	$bottomCorner   = ham_option('boxBottomCorner',       $opts, "'");
 	$xEdge          = ham_option('boxHorizontalEdge',     $opts, "-");
 	$yEdge          = ham_option('boxVerticalEdge',       $opts, "|");
-	$bracketsLeft   = ham_option('boxEdgeBracketsLeft',   $opts, "[(<");
-	$bracketsRight  = ham_option('boxEdgeBracketsRight',  $opts, "])>");
+	$bracketsLeft   = ham_option('boxEdgeBracketsLeft',   $opts, "[(|");
+	$bracketsRight  = ham_option('boxEdgeBracketsRight',  $opts, "])|");
 	$bracketsTop    = ham_option('boxEdgeBracketsTop',    $opts, "^");
 	$bracketsBottom = ham_option('boxEdgeBracketsBottom', $opts, "v");
 

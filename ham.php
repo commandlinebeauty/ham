@@ -7,10 +7,12 @@
 
 //! Include files (order matters)
 include "vars.php";
+include "entities.php";
 include "xy.php";
 include "links.php";
 include "inputs.php";
 include "layout.php";
+include "print.php";
 include "parser.php";
 include "header.php";
 include "footer.php";
@@ -27,9 +29,7 @@ function ham_string($in, $opts = null)
 		$opts['page'] = false;
 	}
 
-	$content = ham_parser($in, $opts);
-
-	$out .= "<pre class=ham>" . $content . "</pre>";
+	$out = ham_parser($in, $opts);
 
 	//! Add page footer if 'page' option is specified
 	if ($opts['page']) {
