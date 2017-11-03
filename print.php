@@ -1,6 +1,16 @@
 
 <?php
 
+function ham_print_strip($in, $opts = null)
+{
+	$comment = ham_option('comment', $opts, "#");
+	$nl = PHP_EOL;
+
+	$out = preg_replace("/$comment(.*)$nl/", "", $in);
+
+	return $out;
+}
+
 function ham_print_table($table, $buffer, $opts = null)
 {
 	$out = "";
@@ -32,7 +42,7 @@ function ham_print_table($table, $buffer, $opts = null)
 //				$out .= $content;
 				$out .= ham_entities($content, $opts);
 
-				$out .= "\t</pre>";
+				$out .= "</pre>";
 				$out .= "</td>\n";
 			}
 		}

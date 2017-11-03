@@ -20,19 +20,19 @@ include "footer.php";
 //! Parse the given string
 function ham_string($in, $opts = null)
 {
+	$page = ham_option('page', $opts, false);
+
 	$out = "";
 
 	//! Add page header if 'page' option is specified
-	if ($opts && array_key_exists('page', $opts) && $opts['page']) {
+	if ($page) {
 		$out .= ham_header($opts);
-	} else {
-		$opts['page'] = false;
 	}
 
 	$out = ham_parser($in, $opts);
 
 	//! Add page footer if 'page' option is specified
-	if ($opts['page']) {
+	if ($page) {
 		$out .= ham_footer($opts);
 	}
 
@@ -49,6 +49,7 @@ function ham($content, $opts = null)
 function ham_file($file, $opts = null)
 {
 	$opts['file'] = $file;
+echo "VOID".$opts['void']."VOID";
 
 	return ham_string(file_get_contents($file), $opts);
 }

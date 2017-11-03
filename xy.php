@@ -21,14 +21,28 @@ function ham_xy_init($content, $opts = null)
 }
 
 //! Obtain a point from the xy-buffer
-function ham_xy_get($y, $x, $buffer)
+function ham_xy_get($y, $x, $buffer, $opts = null)
 {
-	if ($y >= count($buffer)) {
-		return " ";
+	$voidString = ham_option('void', $opts, " ");
+
+	$N_y = count($buffer);
+
+	if ($y < 0) {
+		$y = $N_y + $y;
 	}
 
-	if ($x >= count($buffer[$y])) {
-		return " ";
+	if ($y >= $N_y) {
+		return $voidString;
+	}
+
+	$N_x = count($buffer[$y]);
+
+	if ($x < 0) {
+		$x = $N_x + $x;
+	}
+
+	if ($x >= $N_x) {
+		return $voidString;
 	}
 
 	return $buffer[$y][$x];
@@ -39,17 +53,19 @@ function ham_xy_get_box($box, $buffer, $opts = null)
 {
 	$out = "";
 
-//echo "Y0: " . $box['y'][0] . " Y1: " . $box['y'][1] . "|\n";
+echo "\nYgetbox: " . $box['y'][0] . "|" . $box['y'][1] . "\n";
+echo "\nXgetbox: " . $box['x'][0] . "|" . $box['x'][1] . "\n";
 
 	for ($y = $box['y'][0]; $y <= $box['y'][1]; $y++) {
 
 		for ($x = $box['x'][0]; $x <= $box['x'][1]; $x++) {
 
-			$out .= ham_xy_get($y, $x, $buffer);
+			$out .= ham_xy_get($y, $x, $buffer, $opts);
 		}
 
-		$out .= PHP_EOL;//'\n';
-//		$out .= '<br>';
+		if ($y != $box['y'][1]) {
+			$out .= PHP_EOL;
+		}
 	}
 
 	return $out;

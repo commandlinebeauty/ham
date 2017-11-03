@@ -6,18 +6,17 @@ function ham_layout($in, $opts = null)
 	$layout = ham_option('layout', $opts, "plain");
 
 	$buffer = ham_xy_init($in, $opts);
-	$boxes = ham_xy_boxes($buffer, $opts);
-
+	
 	switch ($layout) {
 
 	case 'table':
-		$table = ham_layout_table($boxes, $opts);
+		$table = ham_layout_table($buffer, $opts);
 		$out = ham_print_table($table, $buffer, $opts);
 		break;
 
 	case 'rows':
 //! TODO: Fix me!
-		$rows = ham_layout_rows($boxes, $opts);
+		$rows = ham_layout_rows($buffer, $opts);
 		$out = $in;
 		break;
 
@@ -29,8 +28,10 @@ function ham_layout($in, $opts = null)
 }
 
 //! Calculate table rows from boxes
-function ham_layout_rows($boxes, $opts = null)
+function ham_layout_rows($buffer, $opts = null)
 {
+	$boxes = ham_xy_boxes($buffer, $opts);
+
 	$rows_start = array();
 	$rows_end = array();
 
@@ -59,52 +60,77 @@ function ham_layout_rows($boxes, $opts = null)
 }
 
 //! Calculate table columns from boxes
-function ham_layout_table($boxes, $opts = null)
+function ham_layout_table($buffer, $opts = null)
 {
-	$rows = array();
-	$cols = array();
+	$boxes = ham_xy_boxes($buffer, $opts);
 
+	$lastrow = count($buffer) - 2;
+
+	//! Search for last column
+	$lastcol = 0;
+	foreach ($buffer as $line) {
+
+		$lastchar = count($line) - 1;
+
+		if ($lastchar > $lastcol) {
+
+			$lastcol = $lastchar;
+		}
+	}
+
+echo "Lastrow: $lastrow\n";
+echo "Lastcol: $lastcol\n";
+
+	$rows = array(0, $lastrow);
+	$cols = array(0, $lastcol);
+
+	//! Add rows and columns resulting from boxes
 	foreach ($boxes as $box) {
 		$y0 = $box['y'][0];
 		$y1 = $box['y'][2];
 		$x0 = $box['x'][0];
 		$x1 = $box['x'][2];
 
-		//! Search for all rows
-		foreach (array($y0, $y1) as $point) {
-			if (!in_array($point, $rows)) {
-				//! Add row
-				array_push($rows, $point);
+		//! Search for box rows
+//		foreach (array($y0, $y1) as $point) {
+			if (!in_array($y0, $rows)) {
+				array_push($rows, $y0);
 			}
-		}
+			if (!in_array($y1, $rows)) {
+				array_push($rows, $y1 + 1);
+			}
+//		}
 
-		//! Search for all columns
-		foreach (array($x0, $x1) as $point) {
-			if (!in_array($point, $cols)) {
+		//! Search for box columns
+//		foreach (array($x0, $x1) as $point) {
+			if (!in_array($x0, $cols)) {
 				//! Add column
-				array_push($cols, $point);
+				array_push($cols, $x0);
 			}
-		}
+			if (!in_array($x1, $cols)) {
+				//! Add column
+				array_push($cols, $x1 + 1);
+			}
+//		}
 	}
 
-	if (!sort($rows)) {
-		exception("Failed to sort rows!");
-	}
+	if (!sort($rows)) { exception("Failed to sort rows!"); }
+	if (!sort($cols)) { exception("Failed to sort cols!"); }
 
-	if (!sort($cols)) {
-		exception("Failed to sort cols!");
-	}
+echo "Have rows: ";
+foreach ($rows as $row) {
+	 echo $row . ", ";
+}
+echo "\n";
 
-//	foreach ($rows as $row) {
-//		echo "Have rows: " . $row . "\n";
-//	}
-//
-//	foreach ($cols as $col) {
-//		echo "Have cols: " . $col . "\n";
-//	}
+echo "Have cols: ";
+foreach ($cols as $col) {
+	 echo $col . ", ";
+}
+echo "\n";
 
 	//! Construct table layout
-	$layout = new tableLayout(count($rows), count($cols));
+	$layout = new tableLayout(count($rows)-1, count($cols)-1);
 
 	$layout->setY($rows);
 	$layout->setX($cols);
@@ -155,6 +181,16 @@ function ham_layout_table($boxes, $opts = null)
 	//! Go through all cells and fix missing values
 	for ($row = 0; $row < count($rows) - 1; $row++) {
 
+		if ($row == count($rows) - 2) {
+			//! Last row
+			$row_start = $rows[$row];
+			$row_stop = $rows[$row+1];
+		} else {
+			$row_start = $rows[$row];
+			$row_stop = $rows[$row+1]-1;
+		}
+
+
 		for ($col = 0; $col < count($cols) - 1; $col++) {
 
 			$cell = $layout->getCell($row, $col);
@@ -163,7 +199,23 @@ function ham_layout_table($boxes, $opts = null)
 			if ($cell->getType() < 0) {
 
 //				$cell->setBox(array($rows[$row], $rows[$row+1]), array($cols[$col], $cols[$col+1]));
-				$cell->setBox(array($rows[$row]-1, $rows[$row+1]-1), array($cols[$col]-1, $cols[$col+1]-1));
+
+echo "count(rows) = ".count($rows)."\n";
+echo "count(cols) = ".count($cols)."\n";
+
+				if ($col != count($cols) - 2) {
+					$col_start = $cols[$col];
+					$col_stop = $cols[$col+1]-1;
+				} else {
+					//! Last column
+					$col_start = $cols[$col];
+					$col_stop = $cols[$col+1];
+				}
+
+echo "$row_start, $row_stop";
+
+				$cell->setBox(array($row_start, $row_stop), array($col_start, $col_stop));
+
 				$cell->setSpan(1, 1);
 				$cell->setType(2);
 			}
