@@ -65,18 +65,6 @@ function ham_layout_table($buffer, $opts = null)
 	$y_grid = array_values($y_grid);
 	$x_grid = array_values($x_grid);
 
-echo "Have y_grid: ";
-foreach ($y_grid as $key => $value) {
-	 echo $value.", ";
-}
-echo "\n";
-
-echo "Have x_grid: ";
-foreach ($x_grid as $x) {
-	 echo $x . ", ";
-}
-echo "\n";
-
 	$N_y = count($y_grid);
 	$N_x = count($x_grid);
 
@@ -141,15 +129,6 @@ echo "\n";
 		//! Start/stop coordinates for this row
 		$y_start = $y_grid[$row];
 		$y_stop = $y_grid[$row+1] - 1;
-//		if ($row == $N_y - 2) {
-//			//! Last row
-//			$y_start = $y_grid[$row];
-//			$y_stop = $y_grid[$row+1];
-//		} else {
-//			$y_start = $y_grid[$row];
-//			$y_stop = $y_grid[$row+1]-1;
-//		}
-
 
 		for ($col = 0; $col < $N_x - 1; $col++) {
 
@@ -159,19 +138,6 @@ echo "\n";
 				//! This cell is uninitialized
 				$x_start = $x_grid[$col];
 				$x_stop = $x_grid[$col+1]-1;
-//				if ($col == $N_x - 2) {
-//					//! Last column
-//					$x_start = $x_grid[$col];
-//					$x_stop = $x_grid[$col+1];
-//				} else {
-//					$x_start = $x_grid[$col];
-//					$x_stop = $x_grid[$col+1]-1;
-//				}
-
-echo "y_start: ".$y_start."\n";
-echo "x_start: ".$x_start."\n";
-echo "y_stop: ".$y_stop."\n";
-echo "x_stop: ".$x_stop."\n";
 
 				$cell->setBox(array($y_start, $y_stop), array($x_start, $x_stop));
 				$cell->setSpan(1, 1);
@@ -206,14 +172,6 @@ function ham_layout_rows($buffer, $opts = null)
 			$rows_end[-1] = $y1;
 		}
 	}
-
-//	foreach ($rows_start as $row) {
-//		echo "Have row_start: " . $row . "\n";
-//	}
-//
-//	foreach ($rows_end as $row) {
-//		echo "Have row_end: " . $row . "\n";
-//	}
 }
 
 ?>

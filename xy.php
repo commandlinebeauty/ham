@@ -258,8 +258,6 @@ function ham_xy_boxes($buffer, $opts = null)
 		}
 	}
 
-//echo "Have ". count($boxes) . " boxes.\n";
-
 	if ($debug) {
 		ham_debug_boxes($boxes, $buffer, $opts);
 	}

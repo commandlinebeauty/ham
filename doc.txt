@@ -1,0 +1,54 @@
+# .-----------------------------------------------------------.
+# | H.A.M. - Documentation                                    |
+# |                                                           |
+# | An WYSIWYG ASCII Markup Language for HTML User Interfaces |
+# |                                                           |
+# | Author: Fritz-Walter Schwarm <root@commandlinebeauty.com> |
+# '-----------------------------------------------------------'
+#
+# Un-/Commenting
+# --------------
+#
+# This header is a comment which is completely ignored.
+#
+# <- The first table cell starts at the first non-comment-line (see below).
+#
+--<- This is the first line  (y = 0, row = 0) ------------------------------->|
+^ <- This is the second line (y = 1, row = 0) ------------------------------->|
+  <- The recommended maximum width of one line is 79 characters.------------->|
+1
+s   
+t
+
+r
+o
+w
+ 
+v 
+--<- Last line of first row (y = 12, row = 0) ------------------------------->|
+- .---------[Box]-------------------------------.     .----------------------.
+2 |                                             |     | Boxes can be next to |
+n | A box can contain data and input fields.    |     | each other...        |
+d |                                             |  V  |                      |
+- | A variable:     $foo                        |  O  '----------------------'
+- | An input field: {foo}                       |  I  .----------------------.
+3 |                                             |  D  | or below each other  |
+- | Table Layout                                |     '----------------------'
+  | ------------                                |     .----..----------------.
+  |                                             |     | or || a combination  |
+  | When the 'table' layout is used, each box   |     '----''----------------'
+  | is put into its own table cell.             |     .----..----------------.
+  |                                             |     | of || both.          |
+  | The 'Submit' button below posts the field   |     '----''----------------'
+  | values to the server. The Reset button must |     .-..-..-..-..-..-..-..-.
+  | be named such that its lowercase            |     |S||m||a||l||l||e||s||t|
+  | representation reads 'reset' (e.g. 'Reset', |     '-''-''-''-''-''-''-''-'
+  | 'reSet', ...).                              | .----------------. 
+  |                                             | |Misaligned boxes|  This is
+  '---|Submit|--|Reset|-------------------------' |are possible but|  not a box
+                                                  |discouraged.    |  but will
+                                                  '----------------'  still be
+                                                                      shown
+
+                                                 
+|<- This is the last line ($y = $N_y-2) ------------------------------------->|
