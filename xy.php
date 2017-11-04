@@ -53,9 +53,6 @@ function ham_xy_get_box($box, $buffer, $opts = null)
 {
 	$out = "";
 
-echo "\nYgetbox: " . $box['y'][0] . "|" . $box['y'][1] . "\n";
-echo "\nXgetbox: " . $box['x'][0] . "|" . $box['x'][1] . "\n";
-
 	for ($y = $box['y'][0]; $y <= $box['y'][1]; $y++) {
 
 		for ($x = $box['x'][0]; $x <= $box['x'][1]; $x++) {
@@ -265,7 +262,23 @@ function ham_xy_boxes($buffer, $opts = null)
 		}
 	}
 
+//echo "Have ". count($boxes) . " boxes.\n";
+
 	return $boxes;
+}
+
+function ham_xy_size($buffer, $opts = null)
+{
+	$lastrow = count($buffer) - 1;
+
+	//! Search for last column
+	$lastcol = 0;
+	foreach ($buffer as $line) {
+		$lastchar = count($line);
+		if ($lastchar > $lastcol) { $lastcol = $lastchar; }
+	}
+
+	return array($lastrow, $lastcol);
 }
 
 ?>

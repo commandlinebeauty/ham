@@ -17,6 +17,20 @@ include "parser.php";
 include "header.php";
 include "footer.php";
 
+//! Parser
+function ham($content, $opts = null)
+{
+	return ham_string($content, $opts);
+}
+
+//! Parses a file
+function ham_file($file, $opts = null)
+{
+	$opts['file'] = $file;
+
+	return ham_string(file_get_contents($file), $opts);
+}
+
 //! Parse the given string
 function ham_string($in, $opts = null)
 {
@@ -29,7 +43,7 @@ function ham_string($in, $opts = null)
 		$out .= ham_header($opts);
 	}
 
-	$out = ham_parser($in, $opts);
+	$out .= ham_parser($in, $opts);
 
 	//! Add page footer if 'page' option is specified
 	if ($page) {
@@ -37,21 +51,6 @@ function ham_string($in, $opts = null)
 	}
 
 	return $out;
-}
-
-//! Parser
-function ham($content, $opts = null)
-{
-	return ham_string($content, $opts);
-}
-
-//! Parses a file
-function ham_file($file, $opts = null)
-{
-	$opts['file'] = $file;
-echo "VOID".$opts['void']."VOID";
-
-	return ham_string(file_get_contents($file), $opts);
 }
 
 ?>

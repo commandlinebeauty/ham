@@ -1,27 +1,63 @@
-
-.ham {
-	font-family: Courier;
+table.hamTableLayout {
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
-.ham table {
-	table-layout: fixed;
-	width: 100%;
+.hamTableLayout * {
+	font-family: Courier;
+	padding: 0;
+	margin: 0;
 	border: none;
 }
 
+.hamTableLayout tr {
 /*
-.ham tr {
-	margin: 0;
-	padding: 0;
-	border: 0;
+	line-height: 1;
+*/
 }
 
-.ham td {
+.hamTableLayout td {
+/	display: flex;
+	padding: 0;
+	margin: 0;
+}
+
+.hamTableLayout pre {
+}
+
+/*
+
+table.hamTableLayout {
+	table-layout: fixed;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
 	margin: 0;
 	padding: 0;
-	border: 0;
+	white-space: pre-line;
 }
-*/
+
+.hamTableLayout tr {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+.hamTableLayout td {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
+	color: blue;
+	margin: 0;
+	padding: 0;
+}
+
+.hamTableLayout pre {
+	font-family: Courier;
+}
+
 
 .ham input {
 	font-family: Courier;
@@ -30,3 +66,4 @@
 	margin: 0;
 	padding: 0;
 }
+*/

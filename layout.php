@@ -27,6 +27,163 @@ function ham_layout($in, $opts = null)
 	return $out;
 }
 
+//! Calculate table columns from boxes
+function ham_layout_table($buffer, $opts = null)
+{
+	//! Boxes seperated by edges
+	$boxes = ham_xy_boxes($buffer, $opts);
+
+	//! Size of xy buffer (number of chars in y and x direction)
+	$xysize = ham_xy_size($buffer, $opts);
+	$y_size = $xysize[0];
+	$x_size = $xysize[1];
+
+	$y_grid = array(0, $y_size);
+	$x_grid = array(0, $x_size);
+
+	//! Add gridpoints resulting from boxes
+	foreach ($boxes as $box) {
+		$y0 = $box['y'][0];
+		$y1 = $box['y'][2];
+		$x0 = $box['x'][0];
+		$x1 = $box['x'][2];
+
+		//! Add a point at the start and one char after the end of each box
+		array_push($y_grid, $y0);
+		array_push($y_grid, $y1+1);
+		array_push($x_grid, $x0);
+		array_push($x_grid, $x1+1);
+	}
+
+	//! Sort grids and remove double points
+	if (!sort($y_grid)) { exception("Failed to sort y-grid!"); }
+	if (!sort($x_grid)) { exception("Failed to sort x-grid!"); }
+	if (!$y_grid = array_unique($y_grid)) { exception("Failed to unique y-grid!"); }
+	if (!$x_grid = array_unique($x_grid)) { exception("Failed to unique x-grid!"); }
+
+	//! This is important because otherwise the indizes (keys) are numbered incorrectly
+	$y_grid = array_values($y_grid);
+	$x_grid = array_values($x_grid);
+
+echo "Have y_grid: ";
+foreach ($y_grid as $key => $value) {
+	 echo $value.", ";
+}
+echo "\n";
+
+echo "Have x_grid: ";
+foreach ($x_grid as $x) {
+	 echo $x . ", ";
+}
+echo "\n";
+
+	$N_y = count($y_grid);
+	$N_x = count($x_grid);
+
+	//! Construct table layout
+	$layout = new tableLayout($N_y-1, $N_x-1);
+	$layout->setY($y_grid);
+	$layout->setX($x_grid);
+
+	//! Set box properties (rowspan, covered area, ...)
+	foreach ($boxes as $box) {
+		$y0 = $box['y'][0];
+		$y1 = $box['y'][2];
+		$x0 = $box['x'][0];
+		$x1 = $box['x'][2];
+
+		//! Search start/end rows/columns of box
+		$row_start = array_search($y0, $y_grid, true);
+		$row_stop = array_search($y1+1, $y_grid, true);
+		$col_start = array_search($x0, $x_grid, true);
+		$col_stop = array_search($x1+1, $x_grid, true);
+
+		if ($row_stop === false || $row_stop <= $row_start) {
+			exception("Could not find a row that should have been added before!");
+		} else {
+			$row_stop--;
+		}
+
+		if ($col_stop === false || $col_stop <= $col_start) {
+			exception("Could not find a column that should have been added before!");
+		} else {
+			$col_stop--;
+		}
+
+		//! Calculate row/column span
+		$row_span = $row_stop - $row_start + 1;
+		$col_span = $col_stop - $col_start + 1;
+
+		//! Fill cell parameters for box cell
+		$cell_cur = $layout->getCell($row_start, $col_start);
+		$cell_cur->setBox(array($y0, $y1), array($x0, $x1));
+		$cell_cur->setSpan($row_span, $col_span);
+		$cell_cur->setType(1);
+
+		//! Set spans for cells covered by this box to void type
+		for ($row = $row_start; $row <= $row_stop; $row++) {
+
+			for ($col = $col_start; $col <= $col_stop; $col++) {
+
+				if ($row != $row_start || $col != $col_start) {
+
+					$cell = $layout->getCell($row, $col);
+					$cell->setSpan(0, 0);
+					$cell->setType(0);
+				}
+			}
+		}
+	}
+
+	//! Go through all cells and fix missing values
+	for ($row = 0; $row < $N_y - 1; $row++) {
+
+		//! Start/stop coordinates for this row
+		$y_start = $y_grid[$row];
+		$y_stop = $y_grid[$row+1] - 1;
+//		if ($row == $N_y - 2) {
+//			//! Last row
+//			$y_start = $y_grid[$row];
+//			$y_stop = $y_grid[$row+1];
+//		} else {
+//			$y_start = $y_grid[$row];
+//			$y_stop = $y_grid[$row+1]-1;
+//		}
+
+
+		for ($col = 0; $col < $N_x - 1; $col++) {
+
+			$cell = $layout->getCell($row, $col);
+
+			if ($cell->getType() < 0) {
+				//! This cell is uninitialized
+				$x_start = $x_grid[$col];
+				$x_stop = $x_grid[$col+1]-1;
+//				if ($col == $N_x - 2) {
+//					//! Last column
+//					$x_start = $x_grid[$col];
+//					$x_stop = $x_grid[$col+1];
+//				} else {
+//					$x_start = $x_grid[$col];
+//					$x_stop = $x_grid[$col+1]-1;
+//				}
+
+echo "y_start: ".$y_start."\n";
+echo "x_start: ".$x_start."\n";
+echo "y_stop: ".$y_stop."\n";
+echo "x_stop: ".$x_stop."\n";
+
+				$cell->setBox(array($y_start, $y_stop), array($x_start, $x_stop));
+				$cell->setSpan(1, 1);
+				$cell->setType(2);
+			} else {
+			}
+		}
+	}
+
+	return $layout;
+}
+
 //! Calculate table rows from boxes
 function ham_layout_rows($buffer, $opts = null)
 {
@@ -57,172 +214,6 @@ function ham_layout_rows($buffer, $opts = null)
 //	foreach ($rows_end as $row) {
 //		echo "Have row_end: " . $row . "\n";
 //	}
-}
-
-//! Calculate table columns from boxes
-function ham_layout_table($buffer, $opts = null)
-{
-	$boxes = ham_xy_boxes($buffer, $opts);
-
-	$lastrow = count($buffer) - 2;
-
-	//! Search for last column
-	$lastcol = 0;
-	foreach ($buffer as $line) {
-
-		$lastchar = count($line) - 1;
-
-		if ($lastchar > $lastcol) {
-
-			$lastcol = $lastchar;
-		}
-	}
-
-echo "Lastrow: $lastrow\n";
-echo "Lastcol: $lastcol\n";
-
-	$rows = array(0, $lastrow);
-	$cols = array(0, $lastcol);
-
-	//! Add rows and columns resulting from boxes
-	foreach ($boxes as $box) {
-		$y0 = $box['y'][0];
-		$y1 = $box['y'][2];
-		$x0 = $box['x'][0];
-		$x1 = $box['x'][2];
-
-		//! Search for box rows
-//		foreach (array($y0, $y1) as $point) {
-			if (!in_array($y0, $rows)) {
-				array_push($rows, $y0);
-			}
-			if (!in_array($y1, $rows)) {
-				array_push($rows, $y1 + 1);
-			}
-//		}
-
-		//! Search for box columns
-//		foreach (array($x0, $x1) as $point) {
-			if (!in_array($x0, $cols)) {
-				//! Add column
-				array_push($cols, $x0);
-			}
-			if (!in_array($x1, $cols)) {
-				//! Add column
-				array_push($cols, $x1 + 1);
-			}
-//		}
-	}
-
-	if (!sort($rows)) { exception("Failed to sort rows!"); }
-	if (!sort($cols)) { exception("Failed to sort cols!"); }
-
-echo "Have rows: ";
-foreach ($rows as $row) {
-	 echo $row . ", ";
-}
-echo "\n";
-
-echo "Have cols: ";
-foreach ($cols as $col) {
-	 echo $col . ", ";
-}
-echo "\n";
-
-	//! Construct table layout
-	$layout = new tableLayout(count($rows)-1, count($cols)-1);
-
-	$layout->setY($rows);
-	$layout->setX($cols);
-
-	//! Set rowspan and colspan
-	foreach ($boxes as $box) {
-		$y0 = $box['y'][0];
-		$y1 = $box['y'][2];
-		$x0 = $box['x'][0];
-		$x1 = $box['x'][2];
-
-		$row_start = array_search($y0, $rows);
-		$row_stop = array_search($y1, $rows);
-		$col_start = array_search($x0, $cols);
-		$col_stop = array_search($x1, $cols);
-
-		$rowspan = $row_stop - $row_start;
-		$colspan = $col_stop - $col_start;
-
-//		echo "rowspan: " . $rowspan . "<br>";
-//		echo "colspan: " . $colspan . "<br>";
-
-		$box['rowspan'] = $rowspan;
-		$box['colspan'] = $colspan;
-
-		//! Set covered coordinates
-		$cell_cur = $layout->getCell($row_start, $col_start);
-		$cell_cur->setBox(array($y0, $y1), array($x0, $x1));
-		$cell_cur->setSpan($rowspan, $colspan);
-		$cell_cur->setType(1);
-
-		//! Set spans for cells covered by this box to zero and type void
-//		for ($row = $row_start + 1; $row <= $row_stop; $row++) {
-		for ($row = $row_start; $row < $row_stop; $row++) {
-
-			for ($col = $col_start; $col < $col_stop; $col++) {
-
-				if ($row != $row_start || $col != $col_start) {
-
-					$cell = $layout->getCell($row, $col);
-					$cell->setSpan(0, 0);
-					$cell->setType(0);
-				}
-			}
-		}
-	}
-
-	//! Go through all cells and fix missing values
-	for ($row = 0; $row < count($rows) - 1; $row++) {
-
-		if ($row == count($rows) - 2) {
-			//! Last row
-			$row_start = $rows[$row];
-			$row_stop = $rows[$row+1];
-		} else {
-			$row_start = $rows[$row];
-			$row_stop = $rows[$row+1]-1;
-		}
-
-
-		for ($col = 0; $col < count($cols) - 1; $col++) {
-
-			$cell = $layout->getCell($row, $col);
-
-	//		if ($cell->getType() < 0 && $cell->getColspan() > 0 && $cell->getRowspan() > 0) {
-			if ($cell->getType() < 0) {
-
-//				$cell->setBox(array($rows[$row], $rows[$row+1]), array($cols[$col], $cols[$col+1]));
-
-echo "count(rows) = ".count($rows)."\n";
-echo "count(cols) = ".count($cols)."\n";
-
-				if ($col != count($cols) - 2) {
-					$col_start = $cols[$col];
-					$col_stop = $cols[$col+1]-1;
-				} else {
-					//! Last column
-					$col_start = $cols[$col];
-					$col_stop = $cols[$col+1];
-				}
-
-echo "$row_start, $row_stop";
-
-				$cell->setBox(array($row_start, $row_stop), array($col_start, $col_stop));
-
-				$cell->setSpan(1, 1);
-				$cell->setType(2);
-			}
-		}
-	}
-
-	return $layout;
 }
 
 ?>

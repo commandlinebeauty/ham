@@ -1,21 +1,12 @@
 
 <?php
 
-function ham_print_strip($in, $opts = null)
-{
-	$comment = ham_option('comment', $opts, "#");
-	$nl = PHP_EOL;
-
-	$out = preg_replace("/$comment(.*)$nl/", "", $in);
-
-	return $out;
-}
-
 function ham_print_table($table, $buffer, $opts = null)
 {
 	$out = "";
 
-	$out .= "<table cellspacing=0 cellpadding=0>\n";
+//	$out .= "<table cellspacing=0 cellpadding=0 class=\"hamTableLayout\">\n";
+	$out .= "<table cellspacing=0 cellpadding=0 class=\"hamTableLayout\">\n";
 
 	for ($row = 0; $row < $table->getRows(); $row++) {
 
@@ -28,7 +19,6 @@ function ham_print_table($table, $buffer, $opts = null)
 			$colspan = $cell->getColspan();
 			$type = $cell->getType();
 
-//			if ($colspan > 0 && $rowspan > 0) {
 			if ($type > 0) {
 
 				$out .= "\t<td rowspan=$rowspan colspan=$colspan>";
@@ -43,7 +33,7 @@ function ham_print_table($table, $buffer, $opts = null)
 				$out .= ham_entities($content, $opts);
 
 				$out .= "</pre>";
-				$out .= "</td>\n";
+				$out .= "</td>";
 			}
 		}
 
