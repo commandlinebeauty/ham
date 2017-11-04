@@ -5,60 +5,6 @@
 //		linkRight => "]"
 //	);
 
-class tableCell
-{
-	private $y = array();
-	private $x = array();
-	private $rowspan = 1;
-	private $colspan = 1;
-	private $type = -1;
-
-	public function __construct($rowspan, $colspan) {
-		$this->rowspan = $rowspan;
-		$this->colspan = $colspan;
-	}
-
-	public function setSpan($rowspan, $colspan) {
-		$this->setRowspan($rowspan);
-		$this->setColspan($colspan);
-	}
-
-	public function getType() {
-		return $this->type;
-	}
-
-	public function setType($type) {
-		$this->type = $type;
-	}
-
-	public function getBox() {
-		return array(
-			'y' => $this->y,
-			'x' => $this->x
-		);
-	}
-
-	public function setBox($y, $x) {
-		$this->y = $y;
-		$this->x = $x;
-	}
-
-	public function setRowspan($rowspan) {
-		$this->rowspan = $rowspan;
-	}
-
-	public function getRowspan() {
-		return $this->rowspan;
-	}
-
-	public function setColspan($colspan) {
-		$this->colspan = $colspan;
-	}
-
-	public function getColspan() {
-		return $this->colspan;
-	}
-}
 
 class tableLayout
 {
@@ -117,6 +63,61 @@ class tableLayout
 	}
 }
 
+class tableCell
+{
+	private $y = array();
+	private $x = array();
+	private $rowspan = 1;
+	private $colspan = 1;
+	private $type = -1;
+
+	public function __construct($rowspan, $colspan) {
+		$this->rowspan = $rowspan;
+		$this->colspan = $colspan;
+	}
+
+	public function setSpan($rowspan, $colspan) {
+		$this->setRowspan($rowspan);
+		$this->setColspan($colspan);
+	}
+
+	public function getType() {
+		return $this->type;
+	}
+
+	public function setType($type) {
+		$this->type = $type;
+	}
+
+	public function getBox() {
+		return array(
+			'y' => $this->y,
+			'x' => $this->x
+		);
+	}
+
+	public function setBox($y, $x) {
+		$this->y = $y;
+		$this->x = $x;
+	}
+
+	public function setRowspan($rowspan) {
+		$this->rowspan = $rowspan;
+	}
+
+	public function getRowspan() {
+		return $this->rowspan;
+	}
+
+	public function setColspan($colspan) {
+		$this->colspan = $colspan;
+	}
+
+	public function getColspan() {
+		return $this->colspan;
+	}
+}
+
 function ham_option($name, $opts, $default = null)
 {
 	if ($opts && array_key_exists($name, $opts)) {
@@ -131,3 +132,4 @@ function ham_option($name, $opts, $default = null)
 }
 
 ?>
+

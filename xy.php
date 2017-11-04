@@ -201,8 +201,10 @@ function ham_xy_boxes_scan($type, $buffer, $y, $x, &$pos, $opts)
 //! Retrieve positions and types of boxes
 function ham_xy_boxes($buffer, $opts = null)
 {
-	$minHeight    = 3;
-	$minWidth     = 3;
+	$debug = ham_option('debug', $opts, false);
+
+	$minHeight    = 1;
+	$minWidth     = 1;
 	$bufHeight    = count($buffer);
 	$firstWidth   = count($buffer[0]);
 	$lastWidth    = count($buffer[$bufHeight-1]);
@@ -221,16 +223,10 @@ function ham_xy_boxes($buffer, $opts = null)
 			$pos = array(
 				'y' => array(0,0,0,0),
 				'x' => array(0,0,0,0)
-//				//!   y         , x
-//				array(0         , 0),
-//				array(0         , $firstWidth),
-//				array($bufHeight, $lastWidth),
-//				array($bufHeight, $lastWidth)
 			);
 
 			$y_start = $y;
 			$x_start = $x;
-
 
 			//! Search for edges
 			for ($type = 0; $type < 4; $type++) {
@@ -263,6 +259,10 @@ function ham_xy_boxes($buffer, $opts = null)
 	}
 
 //echo "Have ". count($boxes) . " boxes.\n";
+
+	if ($debug) {
+		ham_debug_boxes($boxes, $buffer, $opts);
+	}
 
 	return $boxes;
 }

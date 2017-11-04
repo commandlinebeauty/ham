@@ -16,6 +16,7 @@ include "print.php";
 include "parser.php";
 include "header.php";
 include "footer.php";
+include "debug.php";
 
 //! Parser
 function ham($content, $opts = null)
