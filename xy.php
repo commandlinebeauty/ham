@@ -80,8 +80,8 @@ function ham_xy_boxes_scan($type, $buffer, $y, $x, &$pos, $opts)
 	$bottomCorner   = ham_option('boxBottomCorner',       $opts, "'");
 	$xEdge          = ham_option('boxHorizontalEdge',     $opts, "-");
 	$yEdge          = ham_option('boxVerticalEdge',       $opts, "|");
-	$bracketsLeft   = ham_option('boxEdgeBracketsLeft',   $opts, "[(|");
-	$bracketsRight  = ham_option('boxEdgeBracketsRight',  $opts, "])|");
+	$bracketsLeft   = ham_option('boxEdgeBracketsLeft',   $opts, "[(|*");
+	$bracketsRight  = ham_option('boxEdgeBracketsRight',  $opts, "])|*");
 	$bracketsTop    = ham_option('boxEdgeBracketsTop',    $opts, "^");
 	$bracketsBottom = ham_option('boxEdgeBracketsBottom', $opts, "v");
 

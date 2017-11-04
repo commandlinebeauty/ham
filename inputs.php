@@ -36,9 +36,9 @@ function ham_inputs_text($in, $opts = null)
 
 function ham_inputs_button($in, $opts = null)
 {
-	$inputLeft   = ham_option('inputButtonLeft',  $opts, "<");
+	$inputLeft   = ham_option('inputButtonLeft',  $opts, "*");
 	$inputLeftQ  = preg_quote($inputLeft, "/");
-	$inputRight  = ham_option('inputButtonRight', $opts, ">");
+	$inputRight  = ham_option('inputButtonRight', $opts, "*");
 	$inputRightQ = preg_quote($inputRight, "/");
 
 	$out = preg_replace_callback(

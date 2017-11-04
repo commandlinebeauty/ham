@@ -19,6 +19,10 @@ table.hamTableLayout {
 	text-decoration: none;
 }
 
+.hamTableLayout td a pre {
+	background-color: lightgrey;
+}
+
 .ham input {
 	font-family: Courier;
 	font-size: 100%;

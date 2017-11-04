@@ -11,7 +11,7 @@ function ham_parser($in, $opts = null)
 	//! Handle overall layout
 	$out = ham_layout($out, $opts);
 
-	//! Parse individual elements
+//	//! Parse individual elements
 //	$out = ham_links($out, $opts);
 
 	//! Replace input elements

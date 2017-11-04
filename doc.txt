@@ -47,7 +47,7 @@ d |                                             |     |                      |
   | representation reads 'reset' (e.g. 'Reset', |     '-''-''-''-''-''-''-''-'
   | 'reSet', ...).                              | .----------------. 
   |                                             | |Misaligned boxes|  This is
-  '---|Submit|--|Reset|-------------------------' |are possible but|  not a box
+  '---*Submit*--*Reset*-------------------------' |are possible but|  not a box
                                                   |discouraged.    |  but will
                                                   '----------------'  still be
                                                                       shown
