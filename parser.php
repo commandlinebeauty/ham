@@ -15,7 +15,7 @@ function ham_parser($in, $opts = null)
 //	$out = ham_links($out, $opts);
 
 	//! Replace input elements
-//	$out = ham_inputs($out, $opts);
+	$out = ham_inputs($out, $opts);
 	
 	//! Replace variables
 

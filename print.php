@@ -5,7 +5,7 @@ function ham_print_table($table, $buffer, $opts = null)
 {
 	$out = "";
 
-	$out .= "<table cellspacing=0 cellpadding=0 class=\"hamTableLayout\">\n";
+	$out .= "<table role=\"presentation\" border=0 cellspacing=0 cellpadding=0 class=\"hamTableLayout\">\n";
 
 	for ($row = 0; $row < $table->getRows(); $row++) {
 

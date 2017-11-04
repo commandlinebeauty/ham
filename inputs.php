@@ -28,7 +28,7 @@ function ham_inputs_text($in, $opts = null)
 			$length = strlen($inputLeft) + strlen($text) +
 				strlen($inputRight) + strlen($m[3]) - 1;
 
-                        return "$m[1]<input type=\"text\" size=$length value=$text> ";
+                        return "$m[1]<input class=\"hamInputText\" type=\"text\" size=$length value=$text> ";
 	}, $in);
 
 	return $out;
@@ -55,7 +55,7 @@ function ham_inputs_button($in, $opts = null)
 				$type = "submit";
 			}
 
-                        return "$m[1]$inputLeft<input type=\"$type\" size=$length value=\"$text\">$inputRight";
+                        return "$m[1]$inputLeft<input class=\"hamInputButton\" type=\"$type\" size=$length value=\"$text\">$inputRight";
 	}, $in);
 
 	return $out;

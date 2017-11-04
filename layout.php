@@ -21,7 +21,7 @@ function ham_layout($in, $opts = null)
 		break;
 
 	default:
-		$out = "<pre class=ham>" . $in . "</pre>";
+		$out = "<pre class=hamPlainLayout>" . $in . "</pre>";
 	}
 
 	return $out;
