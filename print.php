@@ -5,7 +5,6 @@ function ham_print_table($table, $buffer, $opts = null)
 {
 	$out = "";
 
-//	$out .= "<table cellspacing=0 cellpadding=0 class=\"hamTableLayout\">\n";
 	$out .= "<table cellspacing=0 cellpadding=0 class=\"hamTableLayout\">\n";
 
 	for ($row = 0; $row < $table->getRows(); $row++) {
@@ -23,18 +22,28 @@ function ham_print_table($table, $buffer, $opts = null)
 
 				$out .= "\t<td rowspan=$rowspan colspan=$colspan>";
 
+				if ($type == 1) {
+					$out .= "<a href=\"#asdf\">";
+				}
+
 				$box = $cell->getBox();
 				$content = ham_xy_get_box($box, $buffer, $opts);
 
 				$out .= "<pre>";
 
 				//! Replace HTML entities
-//				$out .= $content;
 				$out .= ham_entities($content, $opts);
 
 				$out .= "</pre>";
+
+				if ($type == 1) {
+					$out .= "</a>";
+				}
+
 				$out .= "</td>";
+
 			}
+
 		}
 
 		$out .= "</tr>\n";

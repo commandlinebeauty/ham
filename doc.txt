@@ -13,31 +13,33 @@
 #
 # <- The first table cell starts at the first non-comment-line (see below).
 #
---<- This is the first line  (y = 0, row = 0) ------------------------------->|
-^ <- This is the second line (y = 1, row = 0) ------------------------------->|
-  <- The recommended maximum width of one line is 79 characters.------------->|
-1
-s   
+--<- This is the first line of the first row (y = 0, row = 0) --------------->|
+^ <- This is the second line of the first row (y = 1, row = 0) -------------->|
+|<--- The first character of the third line (y = 2, x = 0)
+                    The last character of the fourth line (y = 3, x = -1) --->X
+1<--- The recommended maximum width of one line is 79 characters.------------>|
+s
 t
 
 r
 o
 w
- 
-v 
+
+|
+v
 --<- Last line of first row (y = 12, row = 0) ------------------------------->|
 - .---------[Box]-------------------------------.     .----------------------.
 2 |                                             |     | Boxes can be next to |
 n | A box can contain data and input fields.    |     | each other...        |
-d |                                             |  V  |                      |
-- | A variable:     $foo                        |  O  '----------------------'
-- | An input field: {foo}                       |  I  .----------------------.
-3 |                                             |  D  | or below each other  |
-- | Table Layout                                |     '----------------------'
+d |                                             |     |                      |
+- | A variable:     $foo                        |     '----------------------'
+- | An input field: {foo}                       |  V  .----------------------.
+3 |                                             |     | or below each other  |
+- | Table Layout                                |  O  '----------------------'
   | ------------                                |     .----..----------------.
-  |                                             |     | or || a combination  |
+  |                                             |  I  | or || a combination  |
   | When the 'table' layout is used, each box   |     '----''----------------'
-  | is put into its own table cell.             |     .----..----------------.
+  | is put into its own table cell.             |  D  .----..----------------.
   |                                             |     | of || both.          |
   | The 'Submit' button below posts the field   |     '----''----------------'
   | values to the server. The Reset button must |     .-..-..-..-..-..-..-..-.

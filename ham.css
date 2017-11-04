@@ -10,54 +10,14 @@ table.hamTableLayout {
 	border: none;
 }
 
-.hamTableLayout tr {
-/*
-	line-height: 1;
-*/
-}
-
 .hamTableLayout td {
-/	display: flex;
 	padding: 0;
 	margin: 0;
 }
 
-.hamTableLayout pre {
+.hamTableLayout td a {
+	text-decoration: none;
 }
-
-/*
-
-table.hamTableLayout {
-	table-layout: fixed;
-	border-collapse: collapse;
-	border-spacing: 0;
-	border: none;
-	margin: 0;
-	padding: 0;
-	white-space: pre-line;
-}
-
-.hamTableLayout tr {
-	border-collapse: collapse;
-	border-spacing: 0;
-	border: none;
-	margin: 0;
-	padding: 0;
-}
-
-.hamTableLayout td {
-	border-collapse: collapse;
-	border-spacing: 0;
-	border: none;
-	color: blue;
-	margin: 0;
-	padding: 0;
-}
-
-.hamTableLayout pre {
-	font-family: Courier;
-}
-
 
 .ham input {
 	font-family: Courier;
@@ -66,4 +26,3 @@ table.hamTableLayout {
 	margin: 0;
 	padding: 0;
 }
-*/
