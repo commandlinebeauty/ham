@@ -1,8 +1,8 @@
 <?php
 
-function ham_header($opts = null)
+function ham_header($cfg = null)
 {
-	$title = ham_options_get('title', $opts);
+	$title = ham_config_get('title', $cfg);
 
 	return "
 <!DOCTYPE html>

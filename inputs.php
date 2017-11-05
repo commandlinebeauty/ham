@@ -3,26 +3,26 @@
 //! Replace input elements
 //! Text-type input within curled brackets,
 //! button-type input within brackets.
-function ham_inputs($in, $opts = null)
+function ham_inputs($in, $cfg = null)
 {
 	$out = $in;
 
-	$out = ham_inputs_text($out, $opts);
-	$out = ham_inputs_button($out, $opts);
+	$out = ham_inputs_text($out, $cfg);
+	$out = ham_inputs_button($out, $cfg);
 
 	return $out;
 }
 
-function ham_inputs_text($in, $opts = null)
+function ham_inputs_text($in, $cfg = null)
 {
-	$inputLeft   = ham_options_get('inputTextLeft',  $opts, "{");
+	$inputLeft   = ham_config_get('inputTextLeft',  $cfg, "{");
 	$inputLeftQ  = preg_quote($inputLeft, "/");
-	$inputRight  = ham_options_get('inputTextRight', $opts, "}");
+	$inputRight  = ham_config_get('inputTextRight', $cfg, "}");
 	$inputRightQ = preg_quote($inputRight, "/");
 
 	$out = preg_replace_callback(
 		"/(\s*)$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ(\s*)/m",
-		function ($m) use($opts,$inputLeft,$inputRight) {
+		function ($m) use($cfg,$inputLeft,$inputRight) {
 
 			$text = $m[2];
 			$length = strlen($inputLeft) + strlen($text) +
@@ -37,16 +37,19 @@ function ham_inputs_text($in, $opts = null)
 	return $out;
 }
 
-function ham_inputs_button($in, $opts = null)
+function ham_inputs_button($in, $cfg = null)
 {
-	$inputLeft   = ham_options_get('inputButtonLeft',  $opts, "*");
+	//! Get configuration
+	$inputLeft   = ham_config_get('inputButtonLeft',  $cfg);
+	$inputRight  = ham_config_get('inputButtonRight', $cfg);
+
+	//! Quote for regex delimiter
 	$inputLeftQ  = preg_quote($inputLeft, "/");
-	$inputRight  = ham_options_get('inputButtonRight', $opts, "*");
 	$inputRightQ = preg_quote($inputRight, "/");
 
 	$out = preg_replace_callback(
 		"/(\s*)$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ(\s*)/m",
-		function ($m) use($opts,$inputLeft,$inputRight) {
+		function ($m) use($cfg,$inputLeft,$inputRight) {
 
 			$text = $m[2];
 			$length = strlen($inputLeft) + strlen($text) +

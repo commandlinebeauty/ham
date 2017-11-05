@@ -1,17 +1,18 @@
 <?php
 
 //! Replace links (a/A-z/Z letters and digits within brackets)
-function ham_links($in, $opts = null)
+function ham_links($in, $cfg = null)
 {
-	$linkLeft   = ham_options_get('linkLeft',  $opts, "[");
+	$linkLeft   = ham_config_get('linkLeft',  $cfg);
+	$linkRight  = ham_config_get('linkRight', $cfg);
+
 	$linkLeftQ  = preg_quote($linkLeft, "/");
-	$linkRight  = ham_options_get('linkRight', $opts, "]");
 	$linkRightQ = preg_quote($linkRight, "/");
 
 	$out = preg_replace_callback(
 //		"/(\s*)$linkLeftQ([^$linkRightQ]*)$linkRightQ(\s*)/m",
 		"/(\s*)$linkLeftQ([a-zA-Z0-9]*)$linkRightQ(\s*)/m",
-		function ($m) use($opts,$linkLeft,$linkRight) {
+		function ($m) use($cfg,$linkLeft,$linkRight) {
 
 //			$length = array_sum(array_map('strlen', $m)) +
 //				strlen($linkLeft) + strlen($linkRight);

@@ -1,22 +1,22 @@
 <?php
 
 //! Create HTML layout from ASCII boxes
-function ham_layout($in, $opts = null)
+function ham_layout($in, $cfg = null)
 {
-	$layout = ham_options_get('layout', $opts, "plain");
+	$layout = ham_config_get('layout', $cfg);
 
-	$buffer = ham_xy_init($in, $opts);
+	$buffer = ham_xy_init($in, $cfg);
 	
 	switch ($layout) {
 
 	case 'table':
-		$table = ham_layout_table($buffer, $opts);
-		$out = ham_print_table($table, $buffer, $opts);
+		$table = ham_layout_table($buffer, $cfg);
+		$out = ham_print_table($table, $buffer, $cfg);
 		break;
 
 	case 'rows':
 //! TODO: Fix me!
-		$rows = ham_layout_rows($buffer, $opts);
+		$rows = ham_layout_rows($buffer, $cfg);
 		$out = $in;
 		break;
 
@@ -28,13 +28,13 @@ function ham_layout($in, $opts = null)
 }
 
 //! Calculate table columns from boxes
-function ham_layout_table($buffer, $opts = null)
+function ham_layout_table($buffer, $cfg = null)
 {
 	//! Boxes seperated by edges
-	$boxes = ham_xy_boxes($buffer, $opts);
+	$boxes = ham_xy_boxes($buffer, $cfg);
 
 	//! Size of xy buffer (number of chars in y and x direction)
-	$xysize = ham_xy_size($buffer, $opts);
+	$xysize = ham_xy_size($buffer, $cfg);
 	$y_size = $xysize[0];
 	$x_size = $xysize[1];
 
@@ -151,9 +151,9 @@ function ham_layout_table($buffer, $opts = null)
 }
 
 //! Calculate table rows from boxes
-function ham_layout_rows($buffer, $opts = null)
+function ham_layout_rows($buffer, $cfg = null)
 {
-	$boxes = ham_xy_boxes($buffer, $opts);
+	$boxes = ham_xy_boxes($buffer, $cfg);
 
 	$rows_start = array();
 	$rows_end = array();

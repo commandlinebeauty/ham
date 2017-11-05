@@ -9,7 +9,7 @@ abstract class xyCornerType
 }
 
 //! Initialize the xy-buffer
-function ham_xy_init($content, $opts = null)
+function ham_xy_init($content, $cfg = null)
 {
 	$lines = explode(PHP_EOL, $content);
 
@@ -21,9 +21,9 @@ function ham_xy_init($content, $opts = null)
 }
 
 //! Obtain a point from the xy-buffer
-function ham_xy_get($y, $x, $buffer, $opts = null)
+function ham_xy_get($y, $x, $buffer, $cfg = null)
 {
-	$voidString = ham_options_get('void', $opts, " ");
+	$voidString = ham_config_get('void', $cfg);
 
 	$N_y = count($buffer);
 
@@ -49,7 +49,7 @@ function ham_xy_get($y, $x, $buffer, $opts = null)
 }
 
 //! Obtain the content of a box from the xy-buffer
-function ham_xy_get_box($box, $buffer, $opts = null)
+function ham_xy_get_box($box, $buffer, $cfg = null)
 {
 	$out = "";
 
@@ -57,7 +57,7 @@ function ham_xy_get_box($box, $buffer, $opts = null)
 
 		for ($x = $box['x'][0]; $x <= $box['x'][1]; $x++) {
 
-			$out .= ham_xy_get($y, $x, $buffer, $opts);
+			$out .= ham_xy_get($y, $x, $buffer, $cfg);
 		}
 
 		if ($y != $box['y'][1]) {
@@ -74,16 +74,16 @@ function ham_xy_get_box($box, $buffer, $opts = null)
 //}
 
 //! Scan for box boundary clockwise
-function ham_xy_boxes_scan($type, $buffer, $y, $x, &$pos, $opts)
+function ham_xy_boxes_scan($type, $buffer, $y, $x, &$pos, $cfg)
 {
-	$topCorner      = ham_options_get('boxTopCorner',          $opts, ".");
-	$bottomCorner   = ham_options_get('boxBottomCorner',       $opts, "'");
-	$xEdge          = ham_options_get('boxHorizontalEdge',     $opts, "-");
-	$yEdge          = ham_options_get('boxVerticalEdge',       $opts, "|");
-	$bracketsLeft   = ham_options_get('boxEdgeBracketsLeft',   $opts, "[(|*");
-	$bracketsRight  = ham_options_get('boxEdgeBracketsRight',  $opts, "])|*");
-	$bracketsTop    = ham_options_get('boxEdgeBracketsTop',    $opts, "^");
-	$bracketsBottom = ham_options_get('boxEdgeBracketsBottom', $opts, "v");
+	$topCorner      = ham_config_get('boxTopCorner',          $cfg, "."     );
+	$bottomCorner   = ham_config_get('boxBottomCorner',       $cfg, "'"     );
+	$xEdge          = ham_config_get('boxHorizontalEdge',     $opts, "-"    );
+	$yEdge          = ham_config_get('boxVerticalEdge',       $opts, "|"    );
+	$bracketsLeft   = ham_config_get('boxEdgeBracketsLeft',   $opts, "[(|*" );
+	$bracketsRight  = ham_config_get('boxEdgeBracketsRight',  $opts, "])|*" );
+	$bracketsTop    = ham_config_get('boxEdgeBracketsTop',    $opts, "^"    );
+	$bracketsBottom = ham_config_get('boxEdgeBracketsBottom', $opts, "v"    );
 
 	$corner = array("", "");
 	$bufHeight = count($buffer);
@@ -265,7 +265,7 @@ function ham_xy_boxes($buffer, $opts = null)
 	return $boxes;
 }
 
-function ham_xy_size($buffer, $opts = null)
+function ham_xy_size($buffer, $cfg = null)
 {
 	$lastrow = count($buffer) - 1;
 

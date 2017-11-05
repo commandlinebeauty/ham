@@ -5,21 +5,47 @@ class hamConfig
 	private $options = array(),
 
 	private $defaults = array(
+		//! Layout
+		'layout'                   => 'plain'  ,
+		//! Lines starting with this string with be ignored
+		'comment'                  => '#'      ,
+		//! Empty space
+		'void'                     => ' '      ,
 		//! Form box
-		'boxFormCornerTop'      => '.'  ,
-		'boxFormCornerBottom'   => '\'' ,
-		'boxFormEdgeHorizontal' => '-'  ,
-		'boxFormEdgeVertical'   => '|'  ,
+		'boxFormCornerTop'         => '.'      ,
+		'boxFormCornerBottom'      => '\''     ,
+		'boxFormEdgeHorizontal'    => '-'      ,
+		'boxFormEdgeVertical'      => '|'      ,
+                'boxFormEdgeBracketLeft'   => '[(|*'   ,
+                'boxFormEdgeBracketRight'  => '])|*'   ,
+                'boxFormEdgeBracketTop'    => '^'      ,
+                'boxFormEdgeBracketBottom' => 'v'
 		//! Command box
-		'boxCmdCornerTop'       => '.'  ,
-		'boxCmdCornerBottom'    => '\'' ,
-		'boxCmdEdgeHorizontal'  => '-'  ,
-		'boxCmdEdgeVertical'    => '|'  ,
+		'boxCmdCornerTop'          => '.'      ,
+		'boxCmdCornerBottom'       => '\''     ,
+		'boxCmdEdgeHorizontal'     => '-'      ,
+		'boxCmdEdgeVertical'       => '|'      ,
+                'boxCmdEdgeBracketLeft'    => '[(|*'   ,
+                'boxCmdEdgeBracketRight'   => '])|*'   ,
+                'boxCmdEdgeBracketTop'     => '^'      ,
+                'boxCmdEdgeBracketBottom'  => 'v'
 		//! File box
-		'boxFileCornerTop'      => ';'  ,
-		'boxFileCornerBottom'   => '\'' ,
-		'boxFileEdgeHorizontal' => '~'  ,
-		'boxFileEdgeVertical'   => '{}' ,
+		'boxFileCornerTop'         => ';'      ,
+		'boxFileCornerBottom'      => '\''     ,
+		'boxFileEdgeHorizontal'    => '~'      ,
+		'boxFileEdgeVertical'      => '{}'     ,
+                'boxFileEdgeBracketLeft'   => '[(|*'   ,
+                'boxFileEdgeBracketRight'  => '])|*'   ,
+                'boxFileEdgeBracketTop'    => '^'      ,
+                'boxFileEdgeBracketBottom' => 'v'
+		//! Links
+		'linkLeft'                 => '['      ,
+		'linkRight'                => ']'      ,
+		//! Input button
+		'inputButtonLeft'          => '*'      ,
+		'inputButtonRight'         => '*'      ,
+		'inputTextLeft'            => '{'      ,
+		'inputTextRight'           => '}'      ,
 	),
 
 	public function __construct($opts = null) {

@@ -6,7 +6,7 @@
 <?php
 
 //! Include files (order matters)
-include "options.php";
+include "config.php";
 include "table.php";
 include "entities.php";
 include "xy.php";
