@@ -2,7 +2,7 @@
 
 function ham_header($opts = null)
 {
-	$title = ham_option('title', $opts);
+	$title = ham_options_get('title', $opts);
 
 	return "
 <!DOCTYPE html>

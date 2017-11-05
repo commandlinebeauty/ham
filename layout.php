@@ -3,7 +3,7 @@
 //! Create HTML layout from ASCII boxes
 function ham_layout($in, $opts = null)
 {
-	$layout = ham_option('layout', $opts, "plain");
+	$layout = ham_options_get('layout', $opts, "plain");
 
 	$buffer = ham_xy_init($in, $opts);
 	
@@ -69,7 +69,7 @@ function ham_layout_table($buffer, $opts = null)
 	$N_x = count($x_grid);
 
 	//! Construct table layout
-	$layout = new tableLayout($N_y-1, $N_x-1);
+	$layout = new hamTableLayout($N_y-1, $N_x-1);
 	$layout->setY($y_grid);
 	$layout->setX($x_grid);
 

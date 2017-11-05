@@ -25,7 +25,7 @@ function ham_parser($in, $opts = null)
 //! Preprocess the given string
 function ham_parser_strip($in, $opts = null)
 {
-	$comment = ham_option('comment', $opts, "#");
+	$comment = ham_options_get('comment', $opts, "#");
 	$nl = PHP_EOL;
 
 	$out = preg_replace("/$comment(.*)$nl/", "", $in);

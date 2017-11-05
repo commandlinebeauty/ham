@@ -29,28 +29,62 @@ w
 v
 --<- Last line of first row (y = 12, row = 0) ------------------------------->|
 - .---------[Box]-------------------------------.     .----------------------.
-2 |                                             |     | Boxes can be next to |
-n | A box can contain data and input fields.    |     | each other...        |
-d |                                             |     |                      |
-- | A variable:     $foo                        |     '----------------------'
-- | An input field: {foo}                       |  V  .----------------------.
-3 |                                             |     | or below each other  |
-- | Table Layout                                |  O  '----------------------'
-  | ------------                                |     .----..----------------.
+2 |\                                           /|     | Boxes can be next to |
+n | \_____          top corners          _____/ |     | each other...        |
+d |          (option: boxFormCornerTop)         |     |                      |
+- |                                             |     '----------------------'
+- |<------         vertical edges        ------>|  V  .----------------------.
+3 |         (option: boxFormEdgeVertical)       |     | or below each other  |
+- |                                             |  O  '----------------------'
+  |                  Box types                  |     .----..----------------.
   |                                             |  I  | or || a combination  |
-  | When the 'table' layout is used, each box   |     '----''----------------'
-  | is put into its own table cell.             |  D  .----..----------------.
-  |                                             |     | of || both.          |
-  | The 'Submit' button below posts the field   |     '----''----------------'
-  | values to the server. The Reset button must |     .-..-..-..-..-..-..-..-.
-  | be named such that its lowercase            |     |S||m||a||l||l||e||s||t|
-  | representation reads 'reset' (e.g. 'Reset', |     '-''-''-''-''-''-''-''-'
-  | 'reSet', ...).                              | .----------------. 
-  |                                             | |Misaligned boxes|  This is
+  |   Form: A submitable form containing input  |     '----''----------------'
+  |         and/or data/description fields.     |  D  .----..----------------.
+  |   File: Shows the content of a text file.   |     | of || both.          |
+  |   Cmd:  Box is filled with the result of    |     '----''----------------'
+  |         a command.                          |     .-..-..-..-..-..-..-..-.
+  |                                             |     |S||m||a||l||l||e||s||t|
+  |  ___           bottom corners          ---  |     '-''-''-''-''-''-''-''-'
+  | /      (option: boxFormBottomCorner)      \ | .----------------. 
+  |/                                           \| |Misaligned boxes|  This is
   '---*Submit*--*Reset*-------------------------' |are possible but|  not a box
                                                   |discouraged.    |  but will
                                                   '----------------'  still be
-                                                                      shown
+  .---------[Form]------------------------------.                     shown.
+  |                                             | 
+  | A form can contain data and input fields.   | .**************************.
+  |                                             | *                          *
+  | A variable:     $foo                        | *                          *
+  | An input field: {foo}                       | *                          *
+  |                                             | *                          *
+  | The 'Submit' button below posts the field   | '**************************'
+  | values to the server. The Reset button must |  ..........................
+  | be named such that its lowercase            | .                          .
+  | representation reads 'reset' (e.g. 'Reset', | .                          .
+  | 'reSet', ...).                              | .                          .
+  |                                             | .                          .
+  '---.Submit.--.Reset.-------------------------'  ..........................
+ 
+  .---------------------------------------------. ############################
+  | Table Layout                                | #                          #
+  | ------------                                | #                          #
+  |                                             | #                          #
+  | When the 'table' layout is used, each box   | #                          #
+  | is put into its own table cell#	        | #                          #
+  '---------------------------------------------' ############################   
+
+                                                  ;~~~~~~~~~~~~~~~~~~~~~~~~~~;
+                                                  {         File Box         }
+                                                  { This text can be found   }
+                                                  { in the file              }
+                                                  { 'doc_fb1.txt'.           }
+                                                  '~~~~~~~~~~~~~~~~~~~~~~~~~~'
+
+
+
+
+
+
 
                                                  
 |<- This is the last line ($y = $N_y-2) ------------------------------------->|

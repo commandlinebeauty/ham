@@ -6,7 +6,8 @@
 <?php
 
 //! Include files (order matters)
-include "vars.php";
+include "options.php";
+include "table.php";
 include "entities.php";
 include "xy.php";
 include "links.php";
@@ -35,20 +36,22 @@ function ham_file($file, $opts = null)
 //! Parse the given string
 function ham_string($in, $opts = null)
 {
-	$page = ham_option('page', $opts, false);
+	$cfg = new hamConfig($opts);
+
+	$page = ham_config_get('page', $cfg, false);
 
 	$out = "";
 
 	//! Add page header if 'page' option is specified
 	if ($page) {
-		$out .= ham_header($opts);
+		$out .= ham_header($cfg);
 	}
 
-	$out .= ham_parser($in, $opts);
+	$out .= ham_parser($in, $cfg);
 
 	//! Add page footer if 'page' option is specified
 	if ($page) {
-		$out .= ham_footer($opts);
+		$out .= ham_footer($cfg);
 	}
 
 	return $out;

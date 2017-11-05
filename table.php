@@ -1,12 +1,6 @@
 <?php
-//	$hamOpts = array(
-//		title     => "H.A.M.",
-//		linkLeft  => "[",
-//		linkRight => "]"
-//	);
 
-
-class tableLayout
+class hamTableLayout
 {
 	private $y = array();
 	private $x = array();
@@ -25,7 +19,7 @@ class tableLayout
 			$this->cells[$row] = array();
 
 			for ($col = 0; $col < $cols; $col++) {
-				$this->cells[$row][$col] = new tableCell(0, 0);
+				$this->cells[$row][$col] = new hamTableCell(0, 0);
 			}
 		}
 	}
@@ -63,7 +57,7 @@ class tableLayout
 	}
 }
 
-class tableCell
+class hamTableCell
 {
 	private $y = array();
 	private $x = array();
@@ -118,18 +112,4 @@ class tableCell
 	}
 }
 
-function ham_option($name, $opts, $default = null)
-{
-	if ($opts && array_key_exists($name, $opts)) {
-		return $opts[$name];
-	} else {
-		if ($default) {
-			return $default;
-		} else {
-			return "";
-		}
-	}
-}
-
 ?>
-

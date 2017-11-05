@@ -3,9 +3,9 @@
 //! Replace links (a/A-z/Z letters and digits within brackets)
 function ham_links($in, $opts = null)
 {
-	$linkLeft   = ham_option('linkLeft',  $opts, "[");
+	$linkLeft   = ham_options_get('linkLeft',  $opts, "[");
 	$linkLeftQ  = preg_quote($linkLeft, "/");
-	$linkRight  = ham_option('linkRight', $opts, "]");
+	$linkRight  = ham_options_get('linkRight', $opts, "]");
 	$linkRightQ = preg_quote($linkRight, "/");
 
 	$out = preg_replace_callback(

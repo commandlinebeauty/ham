@@ -5,7 +5,7 @@
 //		'debug' => true,
 		'title' => 'H.A.M.',
 		'page' => true,
-		'layout' => 'table',
+		'layout' => 'plain',
 		'void' => ' '
 	));
 ?>
