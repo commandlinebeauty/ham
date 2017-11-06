@@ -48,6 +48,25 @@ function ham_xy_get($y, $x, $buffer, $cfg = null)
 	return $buffer[$y][$x];
 }
 
+//! Obtain the content of a rectangle within a file
+function ham_xy_file($rect, $file, $cfg = null)
+{
+	$out = "";
+
+	$handle = fopen($file, "r");
+
+	if ($handle) {
+		while (($line = fgets($handle)) !== false) {
+			//TODO read rect from file, return as $out
+		}
+	
+		fclose($handle);
+	} else {
+		// error opening the file.
+		exception("Error reading file $file");
+	} 
+}
+
 //! Obtain the content of a rectangle from the xy-buffer
 function ham_xy_get_rect($rect, $buffer, $cfg = null)
 {
