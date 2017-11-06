@@ -2,7 +2,7 @@
 
 class hamConfig
 {
-	private $options = array(),
+	private $options = array();
 
 	private $defaults = array(
 		//! Layout
@@ -19,16 +19,16 @@ class hamConfig
                 'boxFormEdgeBracketLeft'   => '[(|*'   ,
                 'boxFormEdgeBracketRight'  => '])|*'   ,
                 'boxFormEdgeBracketTop'    => '^'      ,
-                'boxFormEdgeBracketBottom' => 'v'
+                'boxFormEdgeBracketBottom' => 'v'      ,
 		//! Command box
 		'boxCmdCornerTop'          => '.'      ,
 		'boxCmdCornerBottom'       => '\''     ,
-		'boxCmdEdgeHorizontal'     => '-'      ,
-		'boxCmdEdgeVertical'       => '|'      ,
-                'boxCmdEdgeBracketLeft'    => '[(|*'   ,
-                'boxCmdEdgeBracketRight'   => '])|*'   ,
+		'boxCmdEdgeHorizontal'     => '*'      ,
+		'boxCmdEdgeVertical'       => '*'      ,
+                'boxCmdEdgeBracketLeft'    => '[(|'    ,
+                'boxCmdEdgeBracketRight'   => '])|'    ,
                 'boxCmdEdgeBracketTop'     => '^'      ,
-                'boxCmdEdgeBracketBottom'  => 'v'
+                'boxCmdEdgeBracketBottom'  => 'v'      ,
 		//! File box
 		'boxFileCornerTop'         => ';'      ,
 		'boxFileCornerBottom'      => '\''     ,
@@ -37,7 +37,7 @@ class hamConfig
                 'boxFileEdgeBracketLeft'   => '[(|*'   ,
                 'boxFileEdgeBracketRight'  => '])|*'   ,
                 'boxFileEdgeBracketTop'    => '^'      ,
-                'boxFileEdgeBracketBottom' => 'v'
+                'boxFileEdgeBracketBottom' => 'v'      ,
 		//! Links
 		'linkLeft'                 => '['      ,
 		'linkRight'                => ']'      ,
@@ -46,26 +46,26 @@ class hamConfig
 		'inputButtonRight'         => '*'      ,
 		'inputTextLeft'            => '{'      ,
 		'inputTextRight'           => '}'      ,
-	),
+	);
 
 	public function __construct($opts = null) {
 		foreach ($opts as $key => $value) {
 			$this->options[$key] = $value;
 		}
-	},
+	}
 
 	public function getDefault($name) {
 
 		return $this->defaults[$name];
-	},
+	}
 
 	//! Return requested value
 	public function get($name, $default = null) {
 
-		$value = $this->options[$name];
+		if (array_key_exists($name, $this->options)) {
 
-		if ($value === null) {
-
+			$value = $this->options[$name];
+		} else {
 			if ($default === null) {
 
 				$value = $this->defaults[$name];
@@ -75,7 +75,7 @@ class hamConfig
 		}
 
 		return $value;
-	},
+	}
 
 	public function set($name, $value = null) {
 

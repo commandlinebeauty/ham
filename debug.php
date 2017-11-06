@@ -2,7 +2,7 @@
 
 function ham_debug_boxes($boxes, $buffer, $opts = null)
 {
-	$names = array('y0', 'y1', 'x0', 'x1', 'Content');
+	$names = array('type', 'y0', 'y1', 'x0', 'x1', 'Content');
 
 	echo "
 <table>
@@ -28,14 +28,18 @@ function ham_debug_boxes($boxes, $buffer, $opts = null)
 	foreach ($boxes as $box) {
 
 		$values = array(
-			$box['y'][0], $box['y'][2],
-			$box['x'][0], $box['x'][2],
-			"<pre>".ham_xy_get_box(
+			$box->getType(),
+			$box->getY()[0], $box->getY()[2],
+			$box->getX()[0], $box->getX()[2],
+			"<pre>".ham_xy_get_rect(
 				array(
-					'y' => array($box['y'][0], $box['y'][2]),
-					'x' => array($box['x'][0], $box['x'][2])
-				),
-				$buffer, $opts
+					'y' => array(
+						$box->getY()[0],
+						$box->getY()[2]),
+					'x' => array(
+						$box->getX()[0],
+						$box->getX()[2])
+				), $buffer, $opts
 			)."</pre>"
 		);
 

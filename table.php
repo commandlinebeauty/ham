@@ -83,14 +83,14 @@ class hamTableCell
 		$this->type = $type;
 	}
 
-	public function getBox() {
+	public function getRect() {
 		return array(
 			'y' => $this->y,
 			'x' => $this->x
 		);
 	}
 
-	public function setBox($y, $x) {
+	public function setRect($y, $x) {
 		$this->y = $y;
 		$this->x = $x;
 	}

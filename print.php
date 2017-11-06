@@ -26,8 +26,8 @@ function ham_print_table($table, $buffer, $opts = null)
 					$out .= "<a href=\"#asdf\">";
 				}
 
-				$box = $cell->getBox();
-				$content = ham_xy_get_box($box, $buffer, $opts);
+				$rect = $cell->getRect();
+				$content = ham_xy_get_rect($rect, $buffer, $opts);
 
 				$out .= "<pre>";
 

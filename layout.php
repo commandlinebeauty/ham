@@ -31,7 +31,8 @@ function ham_layout($in, $cfg = null)
 function ham_layout_table($buffer, $cfg = null)
 {
 	//! Boxes seperated by edges
-	$boxes = ham_xy_boxes($buffer, $cfg);
+	$boxes = ham_boxes($buffer, $cfg);
+	$boxes = array();
 
 	//! Size of xy buffer (number of chars in y and x direction)
 	$xysize = ham_xy_size($buffer, $cfg);
@@ -43,10 +44,10 @@ function ham_layout_table($buffer, $cfg = null)
 
 	//! Add gridpoints resulting from boxes
 	foreach ($boxes as $box) {
-		$y0 = $box['y'][0];
-		$y1 = $box['y'][2];
-		$x0 = $box['x'][0];
-		$x1 = $box['x'][2];
+		$y0 = $box->get('y')[0];
+		$y1 = $box->get('y')[2];
+		$x0 = $box->get('x')[0];
+		$x1 = $box->get('x')[2];
 
 		//! Add a point at the start and one char after the end of each box
 		array_push($y_grid, $y0);
@@ -75,10 +76,10 @@ function ham_layout_table($buffer, $cfg = null)
 
 	//! Set box properties (rowspan, covered area, ...)
 	foreach ($boxes as $box) {
-		$y0 = $box['y'][0];
-		$y1 = $box['y'][2];
-		$x0 = $box['x'][0];
-		$x1 = $box['x'][2];
+		$y0 = $box->get('y')[0];
+		$y1 = $box->get('y')[2];
+		$x0 = $box->get('x')[0];
+		$x1 = $box->get('x')[2];
 
 		//! Search start/end rows/columns of box
 		$row_start = array_search($y0, $y_grid, true);
@@ -104,7 +105,7 @@ function ham_layout_table($buffer, $cfg = null)
 
 		//! Fill cell parameters for box cell
 		$cell_cur = $layout->getCell($row_start, $col_start);
-		$cell_cur->setBox(array($y0, $y1), array($x0, $x1));
+		$cell_cur->setRect(array($y0, $y1), array($x0, $x1));
 		$cell_cur->setSpan($row_span, $col_span);
 		$cell_cur->setType(1);
 
@@ -139,7 +140,7 @@ function ham_layout_table($buffer, $cfg = null)
 				$x_start = $x_grid[$col];
 				$x_stop = $x_grid[$col+1]-1;
 
-				$cell->setBox(array($y_start, $y_stop), array($x_start, $x_stop));
+				$cell->setRect(array($y_start, $y_stop), array($x_start, $x_stop));
 				$cell->setSpan(1, 1);
 				$cell->setType(2);
 			} else {

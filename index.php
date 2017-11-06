@@ -2,10 +2,11 @@
 	include 'ham.php';
 
 	echo ham_file('doc.txt', array(
-//		'debug' => true,
+		'debug' => true,
 		'title' => 'H.A.M.',
 		'page' => true,
-		'layout' => 'plain',
+//		'layout' => 'plain',
+		'layout' => 'table',
 		'void' => ' '
 	));
 ?>
