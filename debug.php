@@ -2,13 +2,11 @@
 
 function ham_debug_boxes($boxes, $buffer, $opts = null)
 {
-	$names = array('type', 'y0', 'y1', 'x0', 'x1', 'Content');
+	$names = array('label', 'type', 'y0', 'y1', 'x0', 'x1', 'Content');
 
 	echo "
 <table>
 	<tr>
-		<th>
-		</th>
 	";
 
 	foreach ($names as $name) {
@@ -31,7 +29,7 @@ function ham_debug_boxes($boxes, $buffer, $opts = null)
 			$box->getType(),
 			$box->getY()[0], $box->getY()[2],
 			$box->getX()[0], $box->getX()[2],
-			"<pre>".ham_xy_get_rect(
+			"<pre>".ham_xy_rect(
 				array(
 					'y' => array(
 						$box->getY()[0],
@@ -47,7 +45,7 @@ function ham_debug_boxes($boxes, $buffer, $opts = null)
 		echo "
 	<tr>
 		<th>
-			Box $count
+			".$box->getLabel()."
 		</th>
 	";
 

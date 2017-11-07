@@ -148,7 +148,7 @@ echo "HURZ: " . $this->rows;
 
 	}
 
-	public function print($buffer, $opts = null)
+	public function print($buffer, $cfg = null)
 	{
 		$out = "";
 	
@@ -165,6 +165,7 @@ echo "HURZ: " . $this->rows;
 				$colspan = $cell->getColspan();
 				$type = $cell->getType();
 				$boxtype = $cell->getBoxType();
+				$boxlabel = $cell->getBoxLabel();
 	
 				if ($type > 0) {
 	
@@ -179,27 +180,40 @@ echo "HURZ: " . $this->rows;
 					switch ($boxtype) {
 
 					case hamBoxType::BOX_TYPE_NONE:
-						$content = ham_xy_get_rect($rect, $buffer, $opts);
-						break;
-
 					case hamBoxType::BOX_TYPE_ANY:
-						$content = ham_xy_get_rect($rect, $buffer, $opts);
-						break;
-
 					case hamBoxType::BOX_TYPE_FORM:
-						$content = ham_xy_get_rect($rect, $buffer, $opts);
+						$content = ham_xy_rect($rect, $buffer, $cfg);
 						break;
 
 					case hamBoxType::BOX_TYPE_FILE:
-						$content = ham_xy_file(
-							$rect['y'][1] - $rect['y'][0],
-							$rect['x'][1] - $rect['x'][0],
-							$opts
+						$file = $boxlabel;
+						$content = ham_xy_file(array(
+							'y' => array(
+								0,
+								$rect['y'][1] - $rect['y'][0] - 1
+							),
+							'x' => array(
+								0,
+								$rect['x'][1] - $rect['x'][0] - 1,
+							)),
+							$file,
+							$cfg
 						);
 						break;
 					
 					case hamBoxType::BOX_TYPE_CMD:
-						$content = ham_xy_get_rect($rect, $buffer, $opts);
+//						$content = ham_xy_cmd(array(
+//							'y' => array(
+//								0,
+//								$rect['y'][1] - $rect['y'][0] - 1
+//							),
+//							'x' => array(
+//								0,
+//								$rect['x'][1] - $rect['x'][0] - 1,
+//							),
+//							$file,
+//							$cfg
+//						);
 						break;
 					
 					default:
@@ -209,7 +223,7 @@ echo "HURZ: " . $this->rows;
 					$out .= "<pre>";
 	
 					//! Replace HTML entities
-					$out .= ham_entities($content, $opts);
+					$out .= ham_entities($content, $cfg);
 	
 					$out .= "</pre>";
 	
@@ -272,6 +286,7 @@ class hamTableCell
 	private $colspan = 1;
 	private $type = -1;
 	private $boxtype = hamBoxType::BOX_TYPE_NONE;
+	private $boxlabel;
 
 	public function __construct($rowspan, $colspan) {
 		$this->rowspan = $rowspan;
@@ -297,6 +312,14 @@ class hamTableCell
 
 	public function setBoxType($type) {
 		$this->boxtype = $type;
+	}
+
+	public function getBoxLabel() {
+		return $this->boxlabel;
+	}
+
+	public function setBoxLabel($label) {
+		$this->boxlabel= $label;
 	}
 
 	public function getRect() {

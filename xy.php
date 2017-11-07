@@ -51,24 +51,67 @@ function ham_xy_get($y, $x, $buffer, $cfg = null)
 //! Obtain the content of a rectangle within a file
 function ham_xy_file($rect, $file, $cfg = null)
 {
+	$voidString = ham_config_get('void', $cfg);
+
 	$out = "";
+
+	$y0 = $rect['y'][0];
+	$y1 = $rect['y'][1];
+
+	$x0 = $rect['x'][0];
+	$x1 = $rect['x'][1];
+
+	$N_y = $y1 - $y0 + 1;
+	$N_x = $x1 - $x0 + 1;
+
+	$y = 0;
+	$x = 0;
+
+	if (!file_exists($file)) {
+		return $out;
+	}
 
 	$handle = fopen($file, "r");
 
 	if ($handle) {
-		while (($line = fgets($handle)) !== false) {
-			//TODO read rect from file, return as $out
+
+		while ($y <= $y1) {
+
+			if (($line = fgets($handle)) !== false) {
+
+				if ($y >= $y0) {
+					//! Use line from file
+					$length = strlen($line);
+					for($x = $x0; $x <= $x1; $x++) {
+						if ($x < $length) {
+							$out .= $line[$x];
+						} else {
+							$out .= $voidString;
+						}
+					}
+
+					$out .= "\n";
+				}
+			} else {
+				if ($y >= $y0) {
+					//! Use empty line
+					$out .= str_repeat($voidString, $N_x) . "\n";
+				}
+			}
+
+			$y++;
 		}
 	
 		fclose($handle);
 	} else {
-		// error opening the file.
 		exception("Error reading file $file");
 	} 
+
+	return $out;
 }
 
 //! Obtain the content of a rectangle from the xy-buffer
-function ham_xy_get_rect($rect, $buffer, $cfg = null)
+function ham_xy_rect($rect, $buffer, $cfg = null)
 {
 	$out = "";
 

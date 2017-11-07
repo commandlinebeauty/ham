@@ -11,11 +11,13 @@ abstract class hamBoxType {
 class hamBox
 {
 	private $type;
+	private $label;
 	private $y;
 	private $x;
 
-	public function __construct($type, $y, $x, $cfg = null) {
+	public function __construct($type, $label, $y, $x, $cfg = null) {
 		$this->type = $type;
+		$this->label = $label;
 		$this->y = $y;
 		$this->x = $x;
 	}
@@ -32,6 +34,16 @@ class hamBox
 		} else {
 			$this->type = $type;
 		}
+	}
+
+	public function getLabel()
+	{
+		return $this->label;
+	}
+
+	public function setLabel($label)
+	{
+		$this->label = $label;
 	}
 
 	public function getY()
@@ -189,15 +201,20 @@ function ham_boxes($buffer, $cfg = null)
 
 				//! Search for edges
 				for ($dir = 0; $dir < 4; $dir++) {
+
+					$label = "";
 	
 					if (ham_boxes_scan(
-						$type, $dir, $buffer, $y, $x, $pos, $cfg
+						$type, $dir, $buffer,
+						$y, $x, $pos, $label, $cfg
 						)) {
 	
 						if ($dir == 3) {
 							//! It's a box
+					echo "LABEL=".$label."<br>\n";
 							array_push($boxes, new hamBox(
 								$type,
+								$label,
 								$pos['y'],
 								$pos['x'],
 								$cfg
@@ -236,7 +253,7 @@ function ham_boxes($buffer, $cfg = null)
 }
 
 //! Scan for box boundary clockwise
-function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, $cfg)
+function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, &$label, $cfg)
 {
 	//! null means search for any type (FWS: clutter or useful feature?)
 	if ($type === null) {
@@ -291,45 +308,54 @@ function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, $cfg)
 	}
 
 	//! Test for start corner at current position
+	$skip = 0;
+
 	if (
-		strpos($corner[0],          $buffer[$y][$x]) !== FALSE ||
-		strpos($delim->bracketLeft, $buffer[$y][$x]) !== FALSE ||
-		strpos($delim->bracketTop,  $buffer[$y][$x]) !== FALSE
+		(strpos($corner[0],          $buffer[$y][$x]) !== FALSE)  ||
+		(strpos($delim->bracketLeft, $buffer[$y][$x]) !== FALSE &&
+		     	$dx > 0 && $skip = 1)                            ||
+		(strpos($delim->bracketTop,  $buffer[$y][$x]) !== FALSE &&
+		     	$dy > 0 && $skip = 1)
 	) {
 		//! Start corner found -> save coordinates
 		$pos['y'][$dir] = $y;
 		$pos['x'][$dir] = $x;
 
-		$skip = false;
 		$y_next = $y + $dy;
 		$x_next = $x + $dx;
 
 		//! Search for next corner
+//! TODO Reorganize such that end brackets are tested even if $skip > 0
 		while (
-			$y_next >= 0         &&
-			$y_next < $bufHeight &&
-			$x_next >= 0         &&
+			$y_next >= 0                      &&
+			$y_next < $bufHeight              &&
+			$x_next >= 0                      &&
 			$x_next < count($buffer[$y_next]) &&
-			( $skip ||
+			( ($skip > 0 && $skip++) ||
 			   (strpos($edge, $buffer[$y_next][$x_next]) !== FALSE) ||
 			   (strpos($delim->bracketLeft, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx > 0 && $skip = true) ||
+					$dx > 0 && $skip = 1) ||
 			   (strpos($delim->bracketRight, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx < 0 && $skip = true) ||
+					$dx < 0 && $skip = 1) ||
 			   (strpos($delim->bracketTop, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy > 0 && $skip = true) ||
+					$dy > 0 && $skip = 1) ||
 			   (strpos($delim->bracketBottom, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy < 0 && $skip = true) ||
+					$dy < 0 && $skip = 1) ||
 			   (strpos($delim->bracketLeft, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx < 0 && $skip = false) ||
+					$dx < 0 && $skip = 0) ||
 			   (strpos($delim->bracketRight, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx > 0 && $skip = false) ||
+					$dx > 0 && $skip = 0) ||
 			   (strpos($delim->bracketTop, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy < 0 && $skip = false) ||
+					$dy < 0 && $skip = 0) ||
 			   (strpos($delim->bracketBottom, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy > 0 && $skip = false)
+					$dy > 0 && $skip = 0)
 			)
 		) {
+			if ($skip > 1) {
+				$label .= $buffer[$y_next][$x_next];
+					echo "(skip=$skip)LABEL=".$label."<br>\n";
+			}
+
 			$y += $dy;
 			$x += $dx;
 
@@ -355,6 +381,8 @@ function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, $cfg)
 				return true;
 			}
 		}
+
+		
 	}
 
 	return false;
