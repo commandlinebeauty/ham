@@ -1,12 +1,21 @@
 <?php
 	include 'ham.php';
 
-	echo ham_file('doc.txt', array(
-//		'debug' => true,
-		'title' => 'H.A.M.',
-		'page' => true,
-//		'layout' => 'plain',
-		'layout' => 'table',
-		'void' => ' '
-	));
+	$hamFile = new hamFile(
+		'doc.txt', array(
+			//! Enable debugging
+//			'debug' => true,
+			//! Set page title
+			'title' => 'H.A.M.',
+			//! Render whole page
+			'page' => true,
+			//! Set layout
+//			'layout' => 'plain',
+			'layout' => 'table',
+			//! Fill voids with this character
+			'void' => ' '
+		)
+	);
+
+	$hamFile->render();
 ?>

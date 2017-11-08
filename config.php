@@ -89,15 +89,5 @@ class hamConfig
 	}
 }
 
-function ham_config_get($name, $cfg, $default = null)
-{
-	return $cfg->get($name);
-}
-
-function ham_config_set($name, $value, &$cfg)
-{
-	$cfg->set($name, $value);
-}
-
 ?>
 

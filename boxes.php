@@ -118,38 +118,38 @@ class hamBoxDelimiters
 	
 		case hamBoxType::BOX_TYPE_FORM:
 
-$this->topCorner      = ham_config_get('boxFormCornerTop',         $cfg);
-$this->bottomCorner   = ham_config_get('boxFormCornerBottom',      $cfg);
-$this->yEdge          = ham_config_get('boxFormEdgeVertical',      $cfg);
-$this->xEdge          = ham_config_get('boxFormEdgeHorizontal',    $cfg);
-$this->bracketLeft    = ham_config_get('boxFormEdgeBracketLeft',   $cfg);
-$this->bracketRight   = ham_config_get('boxFormEdgeBracketRight',  $cfg);
-$this->bracketTop     = ham_config_get('boxFormEdgeBracketTop',    $cfg);
-$this->bracketBottom  = ham_config_get('boxFormEdgeBracketBottom', $cfg);
+$this->topCorner      = $cfg->get('boxFormCornerTop');
+$this->bottomCorner   = $cfg->get('boxFormCornerBottom');
+$this->yEdge          = $cfg->get('boxFormEdgeVertical');
+$this->xEdge          = $cfg->get('boxFormEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxFormEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxFormEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxFormEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxFormEdgeBracketBottom');
 			break;
 	
 		case hamBoxType::BOX_TYPE_FILE:
 
-$this->topCorner      = ham_config_get('boxFileCornerTop',         $cfg);
-$this->bottomCorner   = ham_config_get('boxFileCornerBottom',      $cfg);
-$this->yEdge          = ham_config_get('boxFileEdgeVertical',      $cfg);
-$this->xEdge          = ham_config_get('boxFileEdgeHorizontal',    $cfg);
-$this->bracketLeft    = ham_config_get('boxFileEdgeBracketLeft',   $cfg);
-$this->bracketRight   = ham_config_get('boxFileEdgeBracketRight',  $cfg);
-$this->bracketTop     = ham_config_get('boxFileEdgeBracketTop',    $cfg);
-$this->bracketBottom  = ham_config_get('boxFileEdgeBracketBottom', $cfg);
+$this->topCorner      = $cfg->get('boxFileCornerTop');
+$this->bottomCorner   = $cfg->get('boxFileCornerBottom');
+$this->yEdge          = $cfg->get('boxFileEdgeVertical');
+$this->xEdge          = $cfg->get('boxFileEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxFileEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxFileEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxFileEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxFileEdgeBracketBottom');
 			break;
 	
 		case hamBoxType::BOX_TYPE_CMD:
 
-$this->topCorner      = ham_config_get('boxCmdCornerTop',          $cfg);
-$this->bottomCorner   = ham_config_get('boxCmdCornerBottom',       $cfg);
-$this->yEdge          = ham_config_get('boxCmdEdgeVertical',       $cfg);
-$this->xEdge          = ham_config_get('boxCmdEdgeHorizontal',     $cfg);
-$this->bracketLeft    = ham_config_get('boxCmdEdgeBracketLeft',    $cfg);
-$this->bracketRight   = ham_config_get('boxCmdEdgeBracketRight',   $cfg);
-$this->bracketTop     = ham_config_get('boxCmdEdgeBracketTop',     $cfg);
-$this->bracketBottom  = ham_config_get('boxCmdEdgeBracketBottom',  $cfg);
+$this->topCorner      = $cfg->get('boxCmdCornerTop');
+$this->bottomCorner   = $cfg->get('boxCmdCornerBottom');
+$this->yEdge          = $cfg->get('boxCmdEdgeVertical');
+$this->xEdge          = $cfg->get('boxCmdEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxCmdEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxCmdEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxCmdEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxCmdEdgeBracketBottom');
 			break;
 	
 		default:
@@ -159,9 +159,9 @@ $this->bracketBottom  = ham_config_get('boxCmdEdgeBracketBottom',  $cfg);
 }
 
 //! Retrieve positions and types of boxes
-function ham_boxes($buffer, $cfg = null)
+function ham_boxes($buffer, $cfg)
 {
-	$debug = ham_config_get('debug', $cfg);
+	$debug = $cfg->get('debug');
 
 	$minHeight    = 1;
 	$minWidth     = 1;
@@ -393,6 +393,5 @@ function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, &$label, $cfg)
 
 	return false;
 }
-
 
 ?>

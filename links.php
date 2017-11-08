@@ -3,8 +3,8 @@
 //! Replace links (a/A-z/Z letters and digits within brackets)
 function ham_links($in, $cfg = null)
 {
-	$linkLeft   = ham_config_get('linkLeft',  $cfg);
-	$linkRight  = ham_config_get('linkRight', $cfg);
+	$linkLeft   = $cfg->get('linkLeft');
+	$linkRight  = $cfg->get('linkRight');
 
 	$linkLeftQ  = preg_quote($linkLeft, "/");
 	$linkRightQ = preg_quote($linkRight, "/");

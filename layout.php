@@ -3,7 +3,7 @@
 //! Create HTML layout from ASCII boxes
 function ham_layout($in, $cfg = null)
 {
-	$layout = ham_config_get('layout', $cfg);
+	$layout = $cfg->get('layout');
 
 	$buffer = ham_xy_init($in, $cfg);
 	

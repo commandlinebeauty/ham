@@ -3,7 +3,7 @@
 //! Replace input elements
 //! Text-type input within curled brackets,
 //! button-type input within brackets.
-function ham_inputs($in, $cfg = null)
+function ham_inputs($in, $cfg)
 {
 	$out = $in;
 
@@ -13,11 +13,11 @@ function ham_inputs($in, $cfg = null)
 	return $out;
 }
 
-function ham_inputs_text($in, $cfg = null)
+function ham_inputs_text($in, $cfg)
 {
-	$inputLeft   = ham_config_get('inputTextLeft',  $cfg, "{");
+	$inputLeft   = $cfg->get('inputTextLeft');
 	$inputLeftQ  = preg_quote($inputLeft, "/");
-	$inputRight  = ham_config_get('inputTextRight', $cfg, "}");
+	$inputRight  = $cfg->get('inputTextRight');
 	$inputRightQ = preg_quote($inputRight, "/");
 
 	$out = preg_replace_callback(
@@ -40,8 +40,8 @@ function ham_inputs_text($in, $cfg = null)
 function ham_inputs_button($in, $cfg = null)
 {
 	//! Get configuration
-	$inputLeft   = ham_config_get('inputButtonLeft',  $cfg);
-	$inputRight  = ham_config_get('inputButtonRight', $cfg);
+	$inputLeft   = $cfg->get('inputButtonLeft');
+	$inputRight  = $cfg->get('inputButtonRight');
 
 	//! Quote for regex delimiter
 	$inputLeftQ  = preg_quote($inputLeft, "/");

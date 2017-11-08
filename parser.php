@@ -25,7 +25,7 @@ function ham_parser($in, $cfg = null)
 //! Preprocess the given string
 function ham_parser_strip($in, $cfg)
 {
-	$comment = ham_config_get('comment', $cfg);
+	$comment = $cfg->get('comment');
 	$nl = PHP_EOL;
 
 	$out = preg_replace("/$comment(.*)$nl/", "", $in);

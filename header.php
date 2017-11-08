@@ -1,8 +1,8 @@
 <?php
 
-function ham_header($cfg = null)
+function ham_header($cfg)
 {
-	$title = ham_config_get('title', $cfg);
+	$title = $cfg->get('title');
 
 	return "
 <!DOCTYPE html>

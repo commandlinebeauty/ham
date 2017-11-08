@@ -22,9 +22,9 @@ function ham_xy_init($content, $cfg = null)
 }
 
 //! Obtain a point from the xy-buffer
-function ham_xy_get($y, $x, $buffer, $cfg = null)
+function ham_xy_get($y, $x, $buffer, $cfg)
 {
-	$voidString = ham_config_get('void', $cfg);
+	$voidString = $cfg->get('void');
 
 	$N_y = count($buffer);
 
@@ -52,7 +52,7 @@ function ham_xy_get($y, $x, $buffer, $cfg = null)
 //! Obtain the content of a rectangle within a file
 function ham_xy_file($rect, $file, $cfg)
 {
-	$voidString = ham_config_get('void', $cfg);
+	$voidString = $cfg->get('void');
 
 	$out = "";
 

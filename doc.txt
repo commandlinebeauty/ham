@@ -45,12 +45,12 @@ d |          (option: boxFormCornerTop)         |     |                      |
   |         a command.                          |     .-..-..-..-..-..-..-..-.
   |                                             |     |S||m||a||l||l||e||s||t|
   |  ___           bottom corners          ---  |     '-''-''-''-''-''-''-''-'
-  | /      (option: boxFormBottomCorner)      \ | .----------------. 
-  |/                                           \| |Misaligned boxes|  This is
-  '---|Submit|--|Reset|-------------------------' |are possible but|  not a box
-                                                  |discouraged.    |  but will
-                                                  '----------------'  still be
-  .---------[Form]------------------------------.                     shown.
+  | /      (option: boxFormBottomCorner)      \ |                    
+  |/                                           \| .----------------.  This is
+  '---|Submit|--|Reset|-------------------------' |Misaligned boxes|  not a box
+                                                  |are possible as |  but will
+                                                  |well.           |  still be
+  .---------[Form]------------------------------. '----------------'  shown.
   |                                             | 
   | A form can contain data and input fields.   | ;~~~~[doc_filebox.txt]~~~~~;
   |                                             | {      - File Box -        }
