@@ -198,20 +198,19 @@ function ham_boxes($buffer, $cfg = null)
 				);
 
 				$break = false;
+				$label = "";
 
 				//! Search for edges
 				for ($dir = 0; $dir < 4; $dir++) {
-
-					$label = "";
 	
 					if (ham_boxes_scan(
 						$type, $dir, $buffer,
 						$y, $x, $pos, $label, $cfg
 						)) {
 	
+//echo "dir=$dir, LABEL=".$label."<br>\n";
 						if ($dir == 3) {
 							//! It's a box
-					echo "LABEL=".$label."<br>\n";
 							array_push($boxes, new hamBox(
 								$type,
 								$label,
@@ -311,11 +310,15 @@ function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, &$label, $cfg)
 	$skip = 0;
 
 	if (
-		(strpos($corner[0],          $buffer[$y][$x]) !== FALSE)  ||
-		(strpos($delim->bracketLeft, $buffer[$y][$x]) !== FALSE &&
-		     	$dx > 0 && $skip = 1)                            ||
-		(strpos($delim->bracketTop,  $buffer[$y][$x]) !== FALSE &&
-		     	$dy > 0 && $skip = 1)
+		(strpos($corner[0],            $buffer[$y][$x])   !== FALSE)   ||
+		(strpos($delim->bracketLeft,   $buffer[$y][$x])   !== FALSE  &&
+		     	$dx > 0 && $skip = 1)                                  ||
+		(strpos($delim->bracketRight,  $buffer[$y][$x])  !== FALSE   &&
+			$dx < 0 && $skip = 1)                                  ||
+		(strpos($delim->bracketTop,    $buffer[$y][$x])   !== FALSE  &&
+		     	$dy > 0 && $skip = 1)                                  ||
+		(strpos($delim->bracketBottom, $buffer[$y][$x]) !== FALSE    &&
+			$dy < 0 && $skip = 1)
 	) {
 		//! Start corner found -> save coordinates
 		$pos['y'][$dir] = $y;
@@ -325,35 +328,37 @@ function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, &$label, $cfg)
 		$x_next = $x + $dx;
 
 		//! Search for next corner
-//! TODO Reorganize such that end brackets are tested even if $skip > 0
 		while (
 			$y_next >= 0                      &&
 			$y_next < $bufHeight              &&
 			$x_next >= 0                      &&
 			$x_next < count($buffer[$y_next]) &&
-			( ($skip > 0 && $skip++) ||
-			   (strpos($edge, $buffer[$y_next][$x_next]) !== FALSE) ||
-			   (strpos($delim->bracketLeft, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx > 0 && $skip = 1) ||
-			   (strpos($delim->bracketRight, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx < 0 && $skip = 1) ||
-			   (strpos($delim->bracketTop, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy > 0 && $skip = 1) ||
-			   (strpos($delim->bracketBottom, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy < 0 && $skip = 1) ||
-			   (strpos($delim->bracketLeft, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx < 0 && $skip = 0) ||
-			   (strpos($delim->bracketRight, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dx > 0 && $skip = 0) ||
-			   (strpos($delim->bracketTop, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy < 0 && $skip = 0) ||
-			   (strpos($delim->bracketBottom, $buffer[$y_next][$x_next]) !== FALSE &&
-					$dy > 0 && $skip = 0)
+			(
+			(strpos($edge, $buffer[$y_next][$x_next]) !== FALSE) ||
+			(strpos($delim->bracketLeft, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dx > 0) && $skip = 1) ||
+			(strpos($delim->bracketRight, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dx < 0) && $skip = 1) ||
+			(strpos($delim->bracketTop, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dy > 0) && $skip = 1) ||
+			(strpos($delim->bracketBottom, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dy < 0) && $skip = 1) ||
+			(strpos($delim->bracketLeft, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dx < 0) && $skip = -1) ||
+			(strpos($delim->bracketRight, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dx > 0) && $skip = -1) ||
+			(strpos($delim->bracketTop, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dy < 0) && $skip = -1) ||
+			(strpos($delim->bracketBottom, $buffer[$y_next][$x_next]) !== FALSE &&
+			     	($dy > 0) && $skip = -1) ||
+			($skip > 0 && $skip++)
 			)
 		) {
-			if ($skip > 1) {
+			if ($skip > 1 && $dir == 0) {
 				$label .= $buffer[$y_next][$x_next];
-					echo "(skip=$skip)LABEL=".$label."<br>\n";
+			} else if ($skip < 0) {
+				//!FS Do I really fully understand this $skip stuff?
+				$skip = 0;
 			}
 
 			$y += $dy;
@@ -368,10 +373,11 @@ function ham_boxes_scan($type, $dir, $buffer, $y, $x, &$pos, &$label, $cfg)
 				$y_next < $bufHeight &&
 				$x_next >= 0         &&
 				$x_next < count($buffer[$y_next]) &&
-				$buffer[$y_next][$x_next] === $corner[1]
-// (strpos($corner[1], $buffer[$y_next][$x_next]) !== FALSE)
+				(strpos($corner[1], $buffer[$y_next][$x_next]) !== FALSE)
 			) {
-
+//if ($type == 3 && $dir == 0) {
+//	echo "found edge: " . $y_next;
+//}
 				//! It's an edge!
 				if ($dir < 3) {
 					$pos['y'][$dir+1] = $y_next;

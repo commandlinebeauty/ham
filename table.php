@@ -51,8 +51,6 @@ class hamTable
 		$this->rows = $N_y - 1;
 		$this->cols = $N_x - 1;
 
-echo "HURZ: " . $this->rows;
-
 		//! Add all base cells
 		for ($row = 0; $row < $this->rows; $row++) {
 
@@ -101,6 +99,7 @@ echo "HURZ: " . $this->rows;
 			$cell_cur->setSpan($row_span, $col_span);
 			$cell_cur->setType(1);
 			$cell_cur->setBoxType($box->getType());
+			$cell_cur->setBoxLabel($box->getLabel());
 	
 			//! Set spans for cells covered by this box to void type
 			for ($row = $row_start; $row <= $row_stop; $row++) {
@@ -187,33 +186,59 @@ echo "HURZ: " . $this->rows;
 
 					case hamBoxType::BOX_TYPE_FILE:
 						$file = $boxlabel;
-						$content = ham_xy_file(array(
-							'y' => array(
-								0,
-								$rect['y'][1] - $rect['y'][0] - 1
+
+						$overlay = ham_xy_init(file_get_contents($file), $cfg);
+						
+						$buffer = ham_xy_overlay(
+							//! Background
+							$buffer,
+							//! Coordinates in background frame
+							array(
+								'y' => array(
+									$rect['y'][0] + 1,
+									$rect['y'][1] - 1
+								),
+								'x' => array(
+									$rect['x'][0] + 1,
+									$rect['x'][1] - 1
+								)
 							),
-							'x' => array(
-								0,
-								$rect['x'][1] - $rect['x'][0] - 1,
-							)),
-							$file,
-							$cfg
+							//! Overlay buffer and configuration
+							$overlay, $cfg
 						);
+
+						$content = ham_xy_rect($rect, $buffer, $cfg);
 						break;
 					
 					case hamBoxType::BOX_TYPE_CMD:
-//						$content = ham_xy_cmd(array(
-//							'y' => array(
-//								0,
-//								$rect['y'][1] - $rect['y'][0] - 1
-//							),
-//							'x' => array(
-//								0,
-//								$rect['x'][1] - $rect['x'][0] - 1,
-//							),
-//							$file,
-//							$cfg
-//						);
+						$cmd = $boxlabel;
+						$output = "";
+
+						if ($cmd != "") {
+							exec(escapeshellcmd($cmd), $output);
+
+							$overlay = ham_xy_init(implode("\n",$output), $cfg);
+							
+							$buffer = ham_xy_overlay(
+								//! Background
+								$buffer,
+								//! Coordinates in background frame
+								array(
+									'y' => array(
+										$rect['y'][0] + 1,
+										$rect['y'][1] - 1
+									),
+									'x' => array(
+										$rect['x'][0] + 1,
+										$rect['x'][1] - 1
+									)
+								),
+								//! Overlay buffer and configuration
+								$overlay, $cfg
+							);
+						}
+
+						$content = ham_xy_rect($rect, $buffer, $cfg);
 						break;
 					
 					default:

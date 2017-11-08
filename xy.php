@@ -12,10 +12,11 @@ abstract class xyCornerType
 function ham_xy_init($content, $cfg = null)
 {
 	$lines = explode(PHP_EOL, $content);
-
+	
 	$buffer = array_map(function($line) {
 		return str_split($line);
 	}, $lines);
+	
 
 	return $buffer;
 }
@@ -49,7 +50,7 @@ function ham_xy_get($y, $x, $buffer, $cfg = null)
 }
 
 //! Obtain the content of a rectangle within a file
-function ham_xy_file($rect, $file, $cfg = null)
+function ham_xy_file($rect, $file, $cfg)
 {
 	$voidString = ham_config_get('void', $cfg);
 
@@ -68,6 +69,7 @@ function ham_xy_file($rect, $file, $cfg = null)
 	$x = 0;
 
 	if (!file_exists($file)) {
+		$out = "File \"$file\" does not exist!\n";
 		return $out;
 	}
 
@@ -75,11 +77,20 @@ function ham_xy_file($rect, $file, $cfg = null)
 
 	if ($handle) {
 
-		while ($y <= $y1) {
+		for($y = 0; $y <= $y1; $y++) {
 
-			if (($line = fgets($handle)) !== false) {
+//			if ($y == $y0) {
+//				$out .= ham_xy_rect(array(
+//					'y' => array($y0, $y0),
+//					'x' => array($x0, $x1)
+//				), $buffer, $cfg);
+//			}
 
-				if ($y >= $y0) {
+			$line = fgets($handle);
+
+			if ($y >= $y0) {
+
+				if ($line !== false) {
 					//! Use line from file
 					$length = strlen($line);
 					for($x = $x0; $x <= $x1; $x++) {
@@ -89,22 +100,17 @@ function ham_xy_file($rect, $file, $cfg = null)
 							$out .= $voidString;
 						}
 					}
-
-					$out .= "\n";
-				}
-			} else {
-				if ($y >= $y0) {
+				} else {
 					//! Use empty line
 					$out .= str_repeat($voidString, $N_x) . "\n";
 				}
 			}
-
-			$y++;
 		}
 	
 		fclose($handle);
 	} else {
-		exception("Error reading file $file");
+		$out = "Error reading from file \"$file\"!\n";
+		return $out;
 	} 
 
 	return $out;
@@ -147,6 +153,28 @@ function ham_xy_size($buffer, $cfg = null)
 	}
 
 	return array($lastrow, $lastcol);
+}
+
+function ham_xy_overlay($buffer, $rect, $overlay, $cfg = null)
+{
+	$out = "";
+
+	$y0 = $rect['y'][0];
+	$x0 = $rect['x'][0];
+
+	for ($y = $y0; $y <= $rect['y'][1]; $y++) {
+
+		for ($x = $x0; $x <= $rect['x'][1]; $x++) {
+
+			$buffer[$y][$x] = ham_xy_get($y-$y0, $x-$x0, $overlay, $cfg);
+		}
+
+		if ($y != $rect['y'][1]) {
+			$out .= PHP_EOL;
+		}
+	}
+
+	return $buffer;
 }
 
 ?>

@@ -5,6 +5,8 @@ class hamConfig
 	private $options = array();
 
 	private $defaults = array(
+		//! Debugging
+		'debug'                    => false    ,
 		//! Layout
 		'layout'                   => 'plain'  ,
 		//! Lines starting with this string with be ignored
@@ -16,28 +18,28 @@ class hamConfig
 		'boxFormCornerBottom'      => '\''     ,
 		'boxFormEdgeHorizontal'    => '-'      ,
 		'boxFormEdgeVertical'      => '|'      ,
-                'boxFormEdgeBracketLeft'   => '[(|*'   ,
-                'boxFormEdgeBracketRight'  => '])|*'   ,
+                'boxFormEdgeBracketLeft'   => '[(|'    ,
+                'boxFormEdgeBracketRight'  => '])|'    ,
                 'boxFormEdgeBracketTop'    => '^'      ,
                 'boxFormEdgeBracketBottom' => 'v'      ,
-		//! Command box
-		'boxCmdCornerTop'          => '.'      ,
-		'boxCmdCornerBottom'       => '\''     ,
-		'boxCmdEdgeHorizontal'     => '*'      ,
-		'boxCmdEdgeVertical'       => '*'      ,
-                'boxCmdEdgeBracketLeft'    => '[(|'    ,
-                'boxCmdEdgeBracketRight'   => '])|'    ,
-                'boxCmdEdgeBracketTop'     => '^'      ,
-                'boxCmdEdgeBracketBottom'  => 'v'      ,
 		//! File box
 		'boxFileCornerTop'         => ';'      ,
 		'boxFileCornerBottom'      => '\''     ,
 		'boxFileEdgeHorizontal'    => '~'      ,
 		'boxFileEdgeVertical'      => '{}'     ,
-                'boxFileEdgeBracketLeft'   => '[(|*'   ,
-                'boxFileEdgeBracketRight'  => '])|*'   ,
+                'boxFileEdgeBracketLeft'   => '[(|'    ,
+                'boxFileEdgeBracketRight'  => '])|'    ,
                 'boxFileEdgeBracketTop'    => '^'      ,
                 'boxFileEdgeBracketBottom' => 'v'      ,
+		//! Command box
+		'boxCmdCornerTop'          => ';'      ,
+		'boxCmdCornerBottom'       => '\''     ,
+		'boxCmdEdgeHorizontal'     => '*'      ,
+		'boxCmdEdgeVertical'       => '*'      ,
+		'boxCmdEdgeBracketLeft'    => '[(|'    ,
+		'boxCmdEdgeBracketRight'   => '])|'    ,
+		'boxCmdEdgeBracketTop'     => '^'      ,
+		'boxCmdEdgeBracketBottom'  => 'v'      ,
 		//! Links
 		'linkLeft'                 => '['      ,
 		'linkRight'                => ']'      ,
@@ -89,20 +91,6 @@ class hamConfig
 
 function ham_config_get($name, $cfg, $default = null)
 {
-//	if ($default === null) {
-//		$default = 
-//	}
-//
-//	if ($opts && array_key_exists($name, $opts)) {
-//		return $opts[$name];
-//	} else {
-//		if ($default) {
-//			return $default;
-//		} else {
-//			return "";
-//		}
-//	}
-
 	return $cfg->get($name);
 }
 

@@ -27,15 +27,6 @@ function ham_layout($in, $cfg = null)
 	return $out;
 }
 
-//! Calculate table columns from boxes
-function ham_layout_table($buffer, $cfg = null)
-{
-
-	//! Construct table layout
-
-	return $layout;
-}
-
 //! Calculate table rows from boxes
 function ham_layout_rows($buffer, $cfg = null)
 {

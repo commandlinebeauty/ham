@@ -28,7 +28,7 @@ w
 |
 v
 --<- Last line of first row (y = 12, row = 0) ------------------------------->|
-- .---------[Box]-------------------------------.     .----------------------.
+- .--------[Box]--------------------------------.     .----------------------.
 2 |\                                           /|     | Boxes can be next to |
 n | \_____          top corners          _____/ |     | each other...        |
 d |          (option: boxFormCornerTop)         |     |                      |
@@ -47,38 +47,56 @@ d |          (option: boxFormCornerTop)         |     |                      |
   |  ___           bottom corners          ---  |     '-''-''-''-''-''-''-''-'
   | /      (option: boxFormBottomCorner)      \ | .----------------. 
   |/                                           \| |Misaligned boxes|  This is
-  '---*Submit*--*Reset*-------------------------' |are possible but|  not a box
+  '---|Submit|--|Reset|-------------------------' |are possible but|  not a box
                                                   |discouraged.    |  but will
                                                   '----------------'  still be
   .---------[Form]------------------------------.                     shown.
   |                                             | 
-  | A form can contain data and input fields.   | .**************************.
+  | A form can contain data and input fields.   | ;~~~~[doc_filebox.txt]~~~~~;
+  |                                             | {      - File Box -        }
+  | A variable:     $foo                        | {   This text will be re-  }
+  | An input field: {foo}                       | {   placed by the content  }
+  |                                             | {   of 'doc_filebox.txt'.  }
+  | The 'Submit' button below posts the field   | '~~~~~~~~~~~~~~~~~~~~~~~~~~'
+  | values to the server. The Reset button must | ;*****[./doc_cmdbox.sh]****;
+  | be named such that its lowercase            | *     - Command Box -      *
+  | representation reads 'reset' (e.g. 'Reset', | *  This text will be re-   *
+  | 'reSet', ...).                              | *  placed by the output of *
+  |                                             | *  'doc_cmdbox.sh'         *
+  '---|Submit|--|Reset|-------------------------' '**************************'
+  .---------[Another Form]----------------------. ;*****[top -b -n 1]********;
   |                                             | *                          *
-  | A variable:     $foo                        | *                          *
-  | An input field: {foo}                       | *                          *
   |                                             | *                          *
-  | The 'Submit' button below posts the field   | '**************************'
-  | values to the server. The Reset button must |  ..........................
-  | be named such that its lowercase            | .                          .
-  | representation reads 'reset' (e.g. 'Reset', | .                          .
-  | 'reSet', ...).                              | .                          .
-  |                                             | .                          .
-  '---*Submit*--*Reset*-------------------------'  ..........................
- 
-  .---------------------------------------------. ############################
-  | Table Layout                                | #                          #
-  | ------------                                | #                          #
-  |                                             | #                          #
-  | When the 'table' layout is used, each box   | #                          #
-  | is put into its own table cell#	        | #                          #
-  '---------------------------------------------' ############################   
+  |                                             | *                          *
+  |                                             | * - Another Command Box -  *
+  |                                             | *  This text will be re-   *
+  |                                             | *  placed by the output of *
+  |                                             | *  'top -b -n 1'           *
+  |                                             | *                          *
+  |                                             | *                          *
+  |                                             | *                          *
+  |                                             | *                          *
+  |                                             | *                          *
+  '---|Submit|--|Reset|-------------------------' '**************************'
 
-                                                  ;~~~~~~~~~~~~~~~~~~~~~~~~~~;
-                                                  {         File Box         }
-                                                  { This text can be found   }
-                                                  { in the file              }
-                                                  { 'doc_fb1.txt'.           }
-                                                  '~~~~~~~~~~~~~~~~~~~~~~~~~~'
+
+
+
+# 
+#  .---------------------------------------------. ############################
+#  | Table Layout                                | #                          #
+#  | ------------                                | #                          #
+#  |                                             | #                          #
+#  | When the 'table' layout is used, each box   | #                          #
+#  | is put into its own table cell.	         | #                          #
+#  '---------------------------------------------' ############################   
+#
+#  ..........................                                                  
+# .                          .                                                 
+# .                          .                                                 
+# .                          .                                                 
+# .                          .                                                 
+#  ..........................                                                  
 
 
 
