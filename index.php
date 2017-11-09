@@ -1,8 +1,8 @@
 <?php
 	include 'ham.php';
 
-	$hamFile = new hamFile(
-		'doc.txt', array(
+	$ham = new ham(file_get_contents('doc.txt'),
+		array(
 			//! Enable debugging
 //			'debug' => true,
 			//! Set page title
@@ -17,5 +17,5 @@
 		)
 	);
 
-	$hamFile->render();
+	echo $ham->render();
 ?>

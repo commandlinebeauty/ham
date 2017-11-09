@@ -1,106 +1,102 @@
 <?php
 
-class hamTable
+abstract class hamCellType {
+	//! Uninitialized
+	const NONE = -1;
+	//! Void -> do not render
+	const VOID =  0;
+	//! Cell covers a box
+	const BOX  =  1;
+	//! Other content
+	const BKG  =  2;
+}
+
+class hamLayoutTable extends hamLayout
 {
+	private $rowspan = 0;
+	private $colspan = 0;
 	private $y = array();
 	private $x = array();
-	private $rows = 0;
-	private $cols = 0;
 	private $cells = array();
 
 	public function __construct($buffer, $cfg = null)
 	{
-		//! Boxes seperated by edges
-		$boxes = ham_boxes($buffer, $cfg);
-	
-		//! Size of xy buffer (maximum char indizes in y and x direction)
-		$xysize = ham_xy_size($buffer, $cfg);
-		$y_size = $xysize[0];
-		$x_size = $xysize[1];
-	
-		$y_grid = array(0, $y_size);
-		$x_grid = array(0, $x_size);
-	
-		//! Add gridpoints resulting from boxes
-		foreach ($boxes as $box) {
-			$y0 = $box->getY()[0];
-			$y1 = $box->getY()[2];
-			$x0 = $box->getX()[0];
-			$x1 = $box->getX()[2];
-	
-			//! Add a point at the start and one char after the end of each box
-			array_push($y_grid, $y0);
-			array_push($y_grid, $y1+1);
-			array_push($x_grid, $x0);
-			array_push($x_grid, $x1+1);
+		//! Call general layout constructor
+		parent::__construct($buffer, $cfg);
+		
+		//! Helper grid for table construction
+		$this->y = array(0, $buffer->getSizeY() - 1);
+		$this->x = array(0, $buffer->getSizeX() - 1);
+
+		//! Add a point at the start and one char after the end of each box
+		foreach (parent::getBoxes() as $box) {
+
+			array_push($this->y, $box->getY(0)    );
+			array_push($this->y, $box->getY(2) + 1);
+			array_push($this->x, $box->getX(0)    );
+			array_push($this->x, $box->getX(2) + 1);
 		}
 	
 		//! Sort grids and remove double points
-		if (!sort($y_grid)) { exception("Failed to sort y-grid!"); }
-		if (!sort($x_grid)) { exception("Failed to sort x-grid!"); }
-		if (!$y_grid = array_unique($y_grid)) { exception("Failed to unique y-grid!"); }
-		if (!$x_grid = array_unique($x_grid)) { exception("Failed to unique x-grid!"); }
+		if (!sort($this->y)) { throw new Exception("Failed to sort y-grid!"); }
+		if (!sort($this->x)) { throw new Exception("Failed to sort x-grid!"); }
+		if (!$this->y = array_unique($this->y)) { throw new Exception("Failed to uniquify y-grid!"); }
+		if (!$this->x = array_unique($this->x)) { throw new Exception("Failed to uniquify x-grid!"); }
 	
-		//! This is important because otherwise the indizes (keys) are numbered incorrectly
-		$y_grid = array_values($y_grid);
-		$x_grid = array_values($x_grid);
+		//! Important: Recalculate array indizes after sorting and removing double points
+		$this->y = array_values($this->y);
+		$this->x = array_values($this->x);
 	
-		$N_y = count($y_grid);
-		$N_x = count($x_grid);
-
-		$this->rows = $N_y - 1;
-		$this->cols = $N_x - 1;
+		//! One row/column between each gridpoint
+		$this->rowspan = count($this->y) - 1;
+		$this->colspan = count($this->x) - 1;
 
 		//! Add all base cells
-		for ($row = 0; $row < $this->rows; $row++) {
+		for ($row = 0; $row < $this->rowspan; $row++) {
 
 			$this->cells[$row] = array();
 
-			for ($col = 0; $col < $this->cols; $col++) {
+			for ($col = 0; $col < $this->colspan; $col++) {
 				$this->cells[$row][$col] = new hamTableCell(0, 0);
 			}
 		}
 
-		$this->setY($y_grid);
-		$this->setX($x_grid);
-	
-		//! Set box properties (rowspan, covered area, ...)
-		foreach ($boxes as $box) {
-			$y0 = $box->getY()[0];
-			$y1 = $box->getY()[2];
-			$x0 = $box->getX()[0];
-			$x1 = $box->getX()[2];
-	
+		//! Set cell properties for all boxes
+		foreach ($this->getBoxes() as $box) {
+
 			//! Search start/end rows/columns of box
-			$row_start = array_search($y0, $y_grid, true);
-			$row_stop = array_search($y1+1, $y_grid, true);
-			$col_start = array_search($x0, $x_grid, true);
-			$col_stop = array_search($x1+1, $x_grid, true);
+			$row_start = array_search($box->getY(0)    , $this->y, true);
+			$row_stop  = array_search($box->getY(2) + 1, $this->y, true);
+			$col_start = array_search($box->getX(0)    , $this->x, true);
+			$col_stop  = array_search($box->getX(2) + 1, $this->x, true);
 	
 			if ($row_stop === false || $row_stop <= $row_start) {
-				exception("Could not find a row that should have been added before!");
+				throw new Exception("Could not find a row that should have been added before!");
 			} else {
 				$row_stop--;
 			}
 	
 			if ($col_stop === false || $col_stop <= $col_start) {
-				exception("Could not find a column that should have been added before!");
+				throw new Exception("Could not find a column that should have been added before!");
 			} else {
 				$col_stop--;
 			}
 	
-			//! Calculate row/column span
-			$row_span = $row_stop - $row_start + 1;
-			$col_span = $col_stop - $col_start + 1;
-	
-			//! Fill cell parameters for box cell
 			$cell_cur = $this->getCell($row_start, $col_start);
-			$cell_cur->setRect(array($y0, $y1), array($x0, $x1));
-			$cell_cur->setSpan($row_span, $col_span);
-			$cell_cur->setType(1);
-			$cell_cur->setBoxType($box->getType());
-			$cell_cur->setBoxLabel($box->getLabel());
-	
+
+			//! Set type and associated box
+			$cell_cur->setType(hamCellType::BOX);
+			$cell_cur->setBox($box);
+
+			//! Set rectangle covered by cell
+			$cell_cur->setRect($box->getRect());
+
+			//! Set row/column span
+			$cell_cur->setSpan(
+				$row_stop - $row_start + 1,
+				$col_stop - $col_start + 1
+			);
+
 			//! Set spans for cells covered by this box to void type
 			for ($row = $row_start; $row <= $row_stop; $row++) {
 	
@@ -109,157 +105,56 @@ class hamTable
 					if ($row != $row_start || $col != $col_start) {
 	
 						$cell = $this->getCell($row, $col);
+						$cell->setType(hamCellType::VOID);
 						$cell->setSpan(0, 0);
-						$cell->setType(0);
-						$cell->setBoxType(hamBoxType::BOX_TYPE_NONE);
-					}
-				}
-			}
-
-			//! Go through all cells and fix missing values
-			for ($row = 0; $row < $N_y - 1; $row++) {
-		
-				//! Start/stop coordinates for this row
-				$y_start = $y_grid[$row];
-				$y_stop = $y_grid[$row+1] - 1;
-		
-				for ($col = 0; $col < $N_x - 1; $col++) {
-		
-					$cell = $this->getCell($row, $col);
-		
-					if ($cell->getType() < 0) {
-						//! This cell is uninitialized
-						$x_start = $x_grid[$col];
-						$x_stop = $x_grid[$col+1]-1;
-		
-						$cell->setRect(
-							array($y_start, $y_stop),
-							array($x_start, $x_stop)
-						);
-						$cell->setSpan(1, 1);
-						$cell->setType(2);
-						$cell->setBoxType(hamBoxType::BOX_TYPE_NONE);
-					} else {
 					}
 				}
 			}
 		}
 
+		//! Go through all cells and fix missing values
+		for ($row = 0; $row < $this->rowspan; $row++) {
+		
+			//! Start/stop coordinates for this row
+			$y_start = $this->y[$row];
+			$y_stop = $this->y[$row+1] - 1;
+		
+			for ($col = 0; $col < $this->colspan; $col++) {
+		
+				$cell = $this->getCell($row, $col);
+		
+				if ($cell->getType() === hamCellType::NONE) {
+
+					//! This cell is still uninitialized
+					$x_start = $this->x[$col];
+					$x_stop = $this->x[$col+1]-1;
+
+					$cell->setType(hamCellType::BKG);
+					$cell->setSpan(1, 1);
+					$cell->setRect(array(
+						'y' => array($y_start, $y_stop),
+						'x' => array($x_start, $x_stop)
+					));
+				}
+			}
+		}
 	}
 
-	public function print($buffer, $cfg = null)
+	//! Render HTML table and return as string
+	public function render($buffer, $cfg = null)
 	{
 		$out = "";
-	
-		$out .= "<table role=\"presentation\" border=0 cellspacing=0 cellpadding=0 class=\"hamTableLayout\">\n";
-	
-		for ($row = 0; $row < $this->getRows(); $row++) {
+
+		//! Table start tag
+		$out .= "<table role='presentation' border=0 cellspacing=0 cellpadding=0 class='hamTableLayout'>\n";
+
+		for ($row = 0; $row < $this->getRowspan(); $row++) {
 	
 			$out .= "<tr>\n";
 	
-			for ($col = 0; $col < $this->getCols(); $col++) {
-	
-				$cell = $this->getCell($row, $col);
-				$rowspan = $cell->getRowspan();
-				$colspan = $cell->getColspan();
-				$type = $cell->getType();
-				$boxtype = $cell->getBoxType();
-				$boxlabel = $cell->getBoxLabel();
-	
-				if ($type > 0) {
-	
-					$out .= "\t<td rowspan=$rowspan colspan=$colspan>";
-	
-					if ($type == 1) {
-						$out .= "<a href=\"#asdf\">";
-					}
+			for ($col = 0; $col < $this->getColspan(); $col++) {
 
-					$rect = $cell->getRect();
-
-					switch ($boxtype) {
-
-					case hamBoxType::BOX_TYPE_NONE:
-					case hamBoxType::BOX_TYPE_ANY:
-					case hamBoxType::BOX_TYPE_FORM:
-						$content = ham_xy_rect($rect, $buffer, $cfg);
-						break;
-
-					case hamBoxType::BOX_TYPE_FILE:
-						$file = $boxlabel;
-
-						$overlay = ham_xy_init(file_get_contents($file), $cfg);
-						
-						$buffer = ham_xy_overlay(
-							//! Background
-							$buffer,
-							//! Coordinates in background frame
-							array(
-								'y' => array(
-									$rect['y'][0] + 1,
-									$rect['y'][1] - 1
-								),
-								'x' => array(
-									$rect['x'][0] + 1,
-									$rect['x'][1] - 1
-								)
-							),
-							//! Overlay buffer and configuration
-							$overlay, $cfg
-						);
-
-						$content = ham_xy_rect($rect, $buffer, $cfg);
-						break;
-					
-					case hamBoxType::BOX_TYPE_CMD:
-						$cmd = $boxlabel;
-						$output = "";
-
-						if ($cmd != "") {
-							exec(escapeshellcmd($cmd), $output);
-
-							$overlay = ham_xy_init(implode("\n",$output), $cfg);
-							
-							$buffer = ham_xy_overlay(
-								//! Background
-								$buffer,
-								//! Coordinates in background frame
-								array(
-									'y' => array(
-										$rect['y'][0] + 1,
-										$rect['y'][1] - 1
-									),
-									'x' => array(
-										$rect['x'][0] + 1,
-										$rect['x'][1] - 1
-									)
-								),
-								//! Overlay buffer and configuration
-								$overlay, $cfg
-							);
-						}
-
-						$content = ham_xy_rect($rect, $buffer, $cfg);
-						break;
-					
-					default:
-						exception("Unknown box type $type!");
-					}
-	
-					$out .= "<pre>";
-	
-					//! Replace HTML entities
-					$out .= ham_entities($content, $cfg);
-	
-					$out .= "</pre>";
-	
-					if ($type == 1) {
-						$out .= "</a>";
-					}
-	
-					$out .= "</td>";
-	
-				}
-	
+				$out .= $this->getCell($row, $col)->render($buffer, $cfg);
 			}
 	
 			$out .= "</tr>\n";
@@ -270,28 +165,21 @@ class hamTable
 		return $out;
 	}
 
+	//! Getter/Setter methods
 	public function getY() {
 		return $this->y;
-	}
-
-	public function setY($y) {
-		$this->y = $y;
 	}
 
 	public function getX() {
 		return $this->x;
 	}
 
-	public function setX($x) {
-		$this->x = $x;
+	public function getRowspan() {
+		return $this->rowspan;
 	}
 
-	public function getRows() {
-		return $this->rows;
-	}
-
-	public function getCols() {
-		return $this->cols;
+	public function getColspan() {
+		return $this->colspan;
 	}
 
 	public function getCell($row, $col) {
@@ -305,58 +193,59 @@ class hamTable
 
 class hamTableCell
 {
-	private $y = array();
-	private $x = array();
+	private $type = hamCellType::NONE;
 	private $rowspan = 1;
 	private $colspan = 1;
-	private $type = -1;
-	private $boxtype = hamBoxType::BOX_TYPE_NONE;
-	private $boxlabel;
+	private $box = null;
+	private $rect;
 
-	public function __construct($rowspan, $colspan) {
+	public function __construct($rowspan, $colspan)
+	{
 		$this->rowspan = $rowspan;
 		$this->colspan = $colspan;
 	}
 
+	public function render($buffer, $cfg = null)
+	{
+		$out = "";
+		$type = $this->getType();
+		$rowspan = $this->getRowspan();
+		$colspan = $this->getColspan();
+
+		if ($type === hamCellType::BOX ||
+			$type === hamCellType::BKG) {
+
+			$out .= "\t<td rowspan=$rowspan colspan=$colspan>";
+
+			if ($type === hamCellType::BOX) {
+
+				$content = $this->getBox()->render($buffer, $cfg);
+
+				$out .= "<a href=\"#asdf\">";
+				$out .= "<pre>";
+				$out .= ham_entities($content, $cfg);
+				$out .= "</pre>";
+				$out .= "</a>";
+			} else {
+				$rect = $this->getRect();
+				$content = $buffer->rect($rect, $cfg);
+
+				$out .= "<pre>";
+				$out .= ham_entities($content, $cfg);
+				$out .= "</pre>";
+			}
+
+			$out .= "</td>";
+	
+		}
+
+		return $out;
+	}
+
+	//! Setter/Getter methods
 	public function setSpan($rowspan, $colspan) {
 		$this->setRowspan($rowspan);
 		$this->setColspan($colspan);
-	}
-
-	public function getType() {
-		return $this->type;
-	}
-
-	public function setType($type) {
-		$this->type = $type;
-	}
-
-	public function getBoxType() {
-		return $this->boxtype;
-	}
-
-	public function setBoxType($type) {
-		$this->boxtype = $type;
-	}
-
-	public function getBoxLabel() {
-		return $this->boxlabel;
-	}
-
-	public function setBoxLabel($label) {
-		$this->boxlabel= $label;
-	}
-
-	public function getRect() {
-		return array(
-			'y' => $this->y,
-			'x' => $this->x
-		);
-	}
-
-	public function setRect($y, $x) {
-		$this->y = $y;
-		$this->x = $x;
 	}
 
 	public function setRowspan($rowspan) {
@@ -373,6 +262,30 @@ class hamTableCell
 
 	public function getColspan() {
 		return $this->colspan;
+	}
+
+	public function getType() {
+		return $this->type;
+	}
+
+	public function setType($type) {
+		$this->type = $type;
+	}
+
+	public function getBox() {
+		return $this->box;
+	}
+
+	public function setBox($box) {
+		$this->box = $box;
+	}
+
+	public function getRect() {
+		return $this->rect;
+	}
+
+	public function setRect($rect) {
+		$this->rect = $rect;
 	}
 }
 

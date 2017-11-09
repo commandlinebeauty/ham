@@ -13,6 +13,10 @@ class hamConfig
 		'comment'                  => '#'      ,
 		//! Empty space
 		'void'                     => ' '      ,
+		//! Minimum height for being recognized as a box
+		'boxHeightMin'             =>  1       ,
+		//! Minimum width for being recognized as a box
+		'boxWidthMin'              =>  1       ,
 		//! Form box
 		'boxFormCornerTop'         => '.'      ,
 		'boxFormCornerBottom'      => '\''     ,
