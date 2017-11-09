@@ -16,7 +16,7 @@
 --<- This is the first line of the first row (y = 0, row = 0) --------------->|
 ^ <- This is the second line of the first row (y = 1, row = 0) -------------->|
 |<--- The first character of the third line (y = 2, x = 0)
-                    The last character of the fourth line (y = 3, x = -1) --->X
+                 The last character of the fourth line (y = 3, x = 79/-1) --->X
 1<--- The recommended maximum width of one line is 79 characters.------------>|
 s
 t

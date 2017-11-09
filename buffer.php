@@ -22,7 +22,9 @@ class hamBuffer
 		$lines = explode(PHP_EOL, $content);
 		
 		$this->buffer = array_map(function($line) {
-			return str_split($line);
+			if ($line) {
+				return str_split($line);
+			}
 		}, $lines);
 
 		$this->y_size = count($this->buffer);
@@ -37,17 +39,17 @@ class hamBuffer
 	}
 
 	//! Obtain the given point from the buffer
-	public function get($y, $x, $cfg)
+	public function get($y, $x, $cfg = null)
 	{
 		if ($y < 0) {
-			$y = $this->y_size + $y;
+			$y = $this->getSizeY() + $y;
 		}
 
-		if ($y >= $this->y_size) {
+		if ($y >= $this->getSizeY()) {
 			return $this->voidChar;
 		}
 
-		$length = count($this->buffer[$y]);
+		$length = $this->getWidth($y);
 
 		if ($x < 0) {
 			$x = $length + $x;
@@ -108,6 +110,5 @@ class hamBuffer
 		return count($this->buffer[$y]);
 	}
 }
-
 
 ?>
