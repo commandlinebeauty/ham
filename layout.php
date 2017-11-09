@@ -235,10 +235,10 @@ abstract class hamLayout
 		return false;
 	}
 
-	public function render($buffer, $cfg = null)
-	{
-		//! Common rendering tasks
-	}
+//	public function render($buffer, $cfg = null)
+//	{
+//		//! Common rendering tasks
+//	}
 
 	//! Getter/Setter methods
 	public function getType() {

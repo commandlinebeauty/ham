@@ -12,7 +12,6 @@ include "buffer.php";
 include "boxes.php";
 include "layout.php";
 include "table.php";
-include "xy.php";
 include "links.php";
 include "inputs.php";
 include "print.php";

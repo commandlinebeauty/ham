@@ -49,7 +49,7 @@ class hamBuffer
 
 		$length = count($this->buffer[$y]);
 
-		if ($x <= 0) {
+		if ($x < 0) {
 			$x = $length + $x;
 		}
 

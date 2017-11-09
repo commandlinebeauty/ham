@@ -25,8 +25,8 @@ class hamLayoutTable extends hamLayout
 		parent::__construct($buffer, $cfg);
 		
 		//! Helper grid for table construction
-		$this->y = array(0, $buffer->getSizeY() - 1);
-		$this->x = array(0, $buffer->getSizeX() - 1);
+		$this->y = array(0, $buffer->getSizeY());
+		$this->x = array(0, $buffer->getSizeX());
 
 		//! Add a point at the start and one char after the end of each box
 		foreach (parent::getBoxes() as $box) {
