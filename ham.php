@@ -18,7 +18,6 @@ include "table.php";
 
 include "links.php";
 include "inputs.php";
-include "print.php";
 include "parser.php";
 include "header.php";
 include "footer.php";

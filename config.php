@@ -52,6 +52,9 @@ class hamConfig
 		'inputButtonRight'         => '*'      ,
 		'inputTextLeft'            => '{'      ,
 		'inputTextRight'           => '}'      ,
+		//! Render background into as few cells as possible
+//		'tableUnify'            => true        ,
+		'tableUnify'            => false       ,
 	);
 
 	public function __construct($opts = null) {

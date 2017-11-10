@@ -72,16 +72,13 @@ class hamLayoutTable extends hamLayout
 	
 			if ($row_stop === false || $row_stop <= $row_start) {
 				throw new Exception("Could not find a row that should have been added before!");
-			} else {
-				$row_stop--;
 			}
+
 	
 			if ($col_stop === false || $col_stop <= $col_start) {
 				throw new Exception("Could not find a column that should have been added before!");
-			} else {
-				$col_stop--;
 			}
-	
+
 			$cell_cur = $this->getCell($row_start, $col_start);
 
 			//! Set type and associated box
@@ -93,20 +90,19 @@ class hamLayoutTable extends hamLayout
 
 			//! Set row/column span
 			$cell_cur->setSpan(
-				$row_stop - $row_start + 1,
-				$col_stop - $col_start + 1
+				$row_stop - $row_start,
+				$col_stop - $col_start
 			);
 
-			//! Set spans for cells covered by this box to void type
-			for ($row = $row_start; $row <= $row_stop; $row++) {
+			//! Set type of cells covered by this box to void
+			for ($row = $row_start; $row < $row_stop; $row++) {
 	
-				for ($col = $col_start; $col <= $col_stop; $col++) {
+				for ($col = $col_start; $col < $col_stop; $col++) {
 	
-					if ($row != $row_start || $col != $col_start) {
+					if ($row !== $row_start || $col !== $col_start) {
 	
 						$cell = $this->getCell($row, $col);
 						$cell->setType(hamCellType::VOID);
-						$cell->setSpan(0, 0);
 					}
 				}
 			}
@@ -127,10 +123,64 @@ class hamLayoutTable extends hamLayout
 
 					//! This cell is still uninitialized
 					$x_start = $this->x[$col];
-					$x_stop = $this->x[$col+1]-1;
+					$x_stop = $this->x[$col+1] - 1;
 
 					$cell->setType(hamCellType::BKG);
-					$cell->setSpan(1, 1);
+
+					if ($cfg->get('tableUnify')) {
+						//! Search for overlapping background (i.e. atm uninitialized) cells
+						$rowspan_bkg = 1;
+						$colspan_bkg = 1;
+	
+						//! Search for void columns right of the current cell
+						for ($col_bkg = $col + 1; $col_bkg < $this->colspan; $col_bkg++) {
+	
+							$cell_bkg = $this->getCell($row, $col_bkg);
+	
+							if ($cell_bkg->getType() === hamCellType::NONE) {
+								//! This cell is an adjacent background column
+								$cell_bkg->setType(hamCellType::VOID);
+								$colspan_bkg++;
+							} else {
+								break;
+							}
+						}
+	
+						$found = true;
+	
+						for ($row_bkg = $row + 1; $row_bkg < $this->rowspan; $row_bkg++) {
+	
+							for ($col_bkg = $col; $col_bkg < $col + $colspan_bkg; $col_bkg++) {
+	
+								$cell_bkg = $this->getCell($row_bkg, $col_bkg);
+	
+								if ($cell_bkg->getType() !== hamCellType::NONE) {
+									$found = false;
+									break;
+								}
+							}
+	
+							if ($found) {
+								//! Go through row again and set cell values
+								for ($col_bkg = $col; $col_bkg < $col + $colspan_bkg; $col_bkg++) {
+									$cell_bkg = $this->getCell($row_bkg, $col_bkg);
+									$cell_bkg->setType(hamCellType::VOID);
+								}
+	
+								$rowspan_bkg++;
+							} else {
+								break;
+							}
+						}
+	
+						$y_stop = $this->y[$row+$rowspan_bkg] - 1;
+						$x_stop = $this->x[$col+$colspan_bkg] - 1;
+	
+						$cell->setSpan($rowspan_bkg, $colspan_bkg);
+					} else {
+						$cell->setSpan(1, 1);
+					}
+
 					$cell->setRect(array(
 						'y' => array($y_start, $y_stop),
 						'x' => array($x_start, $x_stop)
@@ -150,7 +200,7 @@ class hamLayoutTable extends hamLayout
 
 		for ($row = 0; $row < $this->getRowspan(); $row++) {
 	
-			$out .= "<tr>\n";
+			$out .= "<tr>";
 	
 			for ($col = 0; $col < $this->getColspan(); $col++) {
 
@@ -215,7 +265,7 @@ class hamTableCell
 		if ($type === hamCellType::BOX ||
 			$type === hamCellType::BKG) {
 
-			$out .= "\t<td rowspan=$rowspan colspan=$colspan>";
+			$out .= "\n\t<td rowspan=$rowspan colspan=$colspan>";
 
 			if ($type === hamCellType::BOX) {
 
