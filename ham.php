@@ -18,7 +18,6 @@ include "table.php";
 
 include "links.php";
 include "inputs.php";
-include "parser.php";
 include "header.php";
 include "footer.php";
 include "debug.php";
@@ -133,7 +132,7 @@ class ham
 	//	$out = ham_links($out, $cfg);
 	
 		//! Replace input elements
-	//	$out = ham_inputs($out, $cfg);
+		$out = ham_inputs($out, $cfg);
 		
 		//! Replace variables
 	

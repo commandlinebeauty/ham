@@ -48,8 +48,8 @@ class hamConfig
 		'linkLeft'                 => '['      ,
 		'linkRight'                => ']'      ,
 		//! Input button
-		'inputButtonLeft'          => '*'      ,
-		'inputButtonRight'         => '*'      ,
+		'inputButtonLeft'          => '/'      ,
+		'inputButtonRight'         => '/'      ,
 		'inputTextLeft'            => '{'      ,
 		'inputTextRight'           => '}'      ,
 		//! Render background into as few cells as possible
