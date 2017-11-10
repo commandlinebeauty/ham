@@ -146,7 +146,7 @@ class hamLayoutTable extends hamLayout
 		$out = "";
 
 		//! Table start tag
-		$out .= "<table role='presentation' border=0 cellspacing=0 cellpadding=0 class='hamTableLayout'>\n";
+		$out .= "<table role='presentation' border=0 cellspacing=0 cellpadding=0 class='hamLayoutTable'>\n";
 
 		for ($row = 0; $row < $this->getRowspan(); $row++) {
 	

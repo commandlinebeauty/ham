@@ -11,7 +11,11 @@ include "config.php";
 include "buffer.php";
 include "boxes.php";
 include "layout.php";
+
+//! Layouts
+include "plain.php";
 include "table.php";
+
 include "links.php";
 include "inputs.php";
 include "print.php";
@@ -20,6 +24,7 @@ include "header.php";
 include "footer.php";
 include "debug.php";
 
+//! Main class
 class ham
 {
 	private $cfg;
@@ -35,7 +40,7 @@ class ham
 
 		$this->init($content, $this->cfg);
 
-		$this->doLayout($this->cfg);
+		$this->layout($this->cfg);
 	}
 
 	//! (Re-)create buffer
@@ -66,7 +71,8 @@ class ham
 		return $out;
 	}
 
-	public function doLayout($cfg = null)
+	//! Layout page according to buffer
+	public function layout($cfg = null)
 	{
 		if ($cfg === null) {
 			$cfg = $this->cfg;

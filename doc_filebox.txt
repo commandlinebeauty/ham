@@ -1,4 +1,4 @@
-   - File Box -       
-This text can be found   
 
-'doc_filebox.txt'.       
+      - FILE BOX -       
+ This text can be found   
+ in 'doc_filebox.txt'.       

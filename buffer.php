@@ -97,6 +97,23 @@ class hamBuffer
 		}
 	}
 
+	//! Maximum rectangle covered by this buffer
+	public function getRect()
+	{
+		return array(
+			'y' => array(0, $this->y_size),
+			'x' => array(0, $this->x_size)
+		);
+	}
+
+	//! Return buffer content as string
+	public function getContent()
+	{
+		$content = $this->rect($this->getRect());
+
+		return $content;
+	}
+
 	//! Getter/Setter methods
 	public function getSizeY() {
 		return $this->y_size;

@@ -1,35 +1,35 @@
-.hamPlainLayout {
+.hamLayoutPlain {
 	font-family: monospace;
 	padding: 0;
 	margin: 0;
 	font-size: 100%;
 }
 
-.hamTableLayout {
+.hamLayoutTable {
 	font-family: inherit;
 	border-collapse: collapse;
 	border-spacing: 0;
 }
 
-.hamTableLayout * {
+.hamLayoutTable * {
 /*	padding: 0;*/
 	margin: 0;
 }
 
-.hamTableLayout td {
+.hamLayoutTable td {
 	padding: 0;
 }
 
-.hamTableLayout td a {
+.hamLayoutTable td a {
 	outline: none;
 	text-decoration: none;
 }
 
-.hamTableLayout td a pre {
+.hamLayoutTable td a pre {
 	background-color: lightgrey;
 }
 
-.hamTableLayout td a pre:hover {
+.hamLayoutTable td a pre:hover {
 	background-color: lightgreen;
 }
 
