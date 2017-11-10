@@ -33,6 +33,18 @@
 	background-color: lightgreen;
 }
 
+.hamBoxForm {
+	background-color: cyan;
+}
+
+.hamBoxFile {
+	background-color: palegreen;
+}
+
+.hamBoxCmd {
+	background-color: lightgrey;
+}
+
 .hamInputText {
 	font-family: inherit;
 	font-size: 100%;

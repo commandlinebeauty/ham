@@ -6,6 +6,7 @@
 <?php
 
 //! Include files (order matters)
+include "cgi.php";
 include "entities.php";
 include "config.php";
 include "buffer.php";

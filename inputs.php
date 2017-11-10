@@ -25,11 +25,12 @@ function ham_inputs_text($in, $cfg)
 		function ($m) use($cfg,$inputLeft,$inputRight) {
 
 			$text = $m[2];
+			$name = $m[2];
 			$length = strlen($inputLeft) + strlen($text) +
 				strlen($inputRight) + strlen($m[3]) - 1;
 
 			//! The additional style rule is needed because size is implemented differently on different fonts (and even browsers). It fixes the issue that the input width appears larger on Google Chrome but not on w3m (or links2). lynx does not seem to have this issue.
-                        return "$m[1]<input class=\"hamInputText\" type=\"text\" size=$length value=$text style=\"width: ".$length."ch\"> ";
+			return "$m[1]<input class=\"hamInputText\" type=\"text\" size=$length name=\"$text\" value=\"$text\" style=\"width: ".$length."ch\"> ";
 //! Might be worth trying to play with attributes of the textfield, not working out of the box though.
 //			return "<textarea cols=\"".$length."\" rows=\"1\" style=\"overflow: visible\" placeholder=\"$text\"></textarea>";
 	}, $in);

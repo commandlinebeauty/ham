@@ -7,6 +7,25 @@ abstract class hamBoxType
 	const FORM =  1;
 	const FILE =  2;
 	const CMD  =  3;
+
+	//! The name generated here will be used for additional CSS styling classes
+	public function getName($type)
+	{
+		switch ($type) {
+		case -1:
+			return 'hamBoxNone';
+		case  0:
+			return 'hamBoxAny';
+		case  1:
+			return 'hamBoxForm';
+		case  2:
+			return 'hamBoxFile';
+		case  3:
+			return 'hamBoxCmd';
+		default:
+			throw new Exception("Unknown box type \"$type\"!");
+		}
+	}
 }
 
 class hamBox

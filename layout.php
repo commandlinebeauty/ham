@@ -180,29 +180,28 @@ abstract class hamLayout
 				(
 				(strpos($edge, $buffer->get($y_next, $x_next, $cfg)) !== FALSE) ||
 				(strpos($delim->bracketLeft,   $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx > 0) && $skip = 1)                                                  ||
+				     	($dx > 0) && ($skip = 1))                                                  ||
 				(strpos($delim->bracketRight,  $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx < 0) && $skip = 1)                                                  ||
+				     	($dx < 0) && ($skip = 1))                                                  ||
 				(strpos($delim->bracketTop,    $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy > 0) && $skip = 1)                                                  ||
+				     	($dy > 0) && ($skip = 1))                                                  ||
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy < 0) && $skip = 1)                                                  ||
+				     	($dy < 0) && ($skip = 1))                                                  ||
 				(strpos($delim->bracketLeft,   $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx < 0) && $skip = -1)                                                 ||
+				     	($dx < 0) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketRight,  $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx > 0) && $skip = -1)                                                 ||
+				     	($dx > 0) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketTop,    $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy < 0) && $skip = -1)                                                 ||
+				     	($dy < 0) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy > 0) && $skip = -1)                                                 ||
+				     	($dy > 0) && !($skip = 0))                                                 ||
 				($skip > 0 && $skip++)
 				)
 			) {
+
 				if ($skip > 1 && $dir == 0) {
+					//! Box header line
 					$label .= $buffer->get($y_next, $x_next, $cfg);
-				} else if ($skip < 0) {
-					//!FS Do I really fully understand this $skip stuff?
-					$skip = 0;
 				}
 	
 				$y += $dy;
@@ -210,9 +209,10 @@ abstract class hamLayout
 	
 				$y_next = $y + $dy;
 				$x_next = $x + $dx;
-	
+
 				//! Test for end corner
 				if (
+					$skip   <= 0         &&
 					$y_next >= 0         &&
 					$y_next < $bufHeight &&
 					$x_next >= 0         &&

@@ -1,3 +1,7 @@
+<!-- @file H.A.M. Documentation
+     @author Fritz-Walter Schwarm
+     @usage Access this file from your browser to see the documentation
+ -->
 <?php
 	include 'ham.php';
 

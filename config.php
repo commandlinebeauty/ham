@@ -22,8 +22,8 @@ class hamConfig
 		'boxFormCornerBottom'      => '\''     ,
 		'boxFormEdgeHorizontal'    => '-'      ,
 		'boxFormEdgeVertical'      => '|'      ,
-                'boxFormEdgeBracketLeft'   => '[(|'    ,
-                'boxFormEdgeBracketRight'  => '])|'    ,
+                'boxFormEdgeBracketLeft'   => '[('    ,
+                'boxFormEdgeBracketRight'  => '])'    ,
                 'boxFormEdgeBracketTop'    => '^'      ,
                 'boxFormEdgeBracketBottom' => 'v'      ,
 		//! File box
@@ -31,8 +31,8 @@ class hamConfig
 		'boxFileCornerBottom'      => '\''     ,
 		'boxFileEdgeHorizontal'    => '~'      ,
 		'boxFileEdgeVertical'      => '{}'     ,
-                'boxFileEdgeBracketLeft'   => '[(|'    ,
-                'boxFileEdgeBracketRight'  => '])|'    ,
+                'boxFileEdgeBracketLeft'   => '[('    ,
+                'boxFileEdgeBracketRight'  => '])'    ,
                 'boxFileEdgeBracketTop'    => '^'      ,
                 'boxFileEdgeBracketBottom' => 'v'      ,
 		//! Command box
@@ -40,21 +40,24 @@ class hamConfig
 		'boxCmdCornerBottom'       => '\''     ,
 		'boxCmdEdgeHorizontal'     => '*'      ,
 		'boxCmdEdgeVertical'       => '*'      ,
-		'boxCmdEdgeBracketLeft'    => '[(|'    ,
-		'boxCmdEdgeBracketRight'   => '])|'    ,
+		'boxCmdEdgeBracketLeft'    => '[('    ,
+		'boxCmdEdgeBracketRight'   => '])'    ,
 		'boxCmdEdgeBracketTop'     => '^'      ,
 		'boxCmdEdgeBracketBottom'  => 'v'      ,
 		//! Links
 		'linkLeft'                 => '['      ,
 		'linkRight'                => ']'      ,
 		//! Input button
-		'inputButtonLeft'          => '/'      ,
-		'inputButtonRight'         => '/'      ,
+		'inputButtonLeft'          => '('      ,
+		'inputButtonRight'         => ')'      ,
 		'inputTextLeft'            => '{'      ,
 		'inputTextRight'           => '}'      ,
 		//! Render background into as few cells as possible
 //		'tableUnify'            => true        ,
 		'tableUnify'            => false       ,
+		//! Make a link out of each box
+//		'tableCellBoxLink'         => true     ,
+		'tableCellBoxLink'         => false    ,
 	);
 
 	public function __construct($opts = null) {

@@ -265,17 +265,44 @@ class hamTableCell
 		if ($type === hamCellType::BOX ||
 			$type === hamCellType::BKG) {
 
-			$out .= "\n\t<td rowspan=$rowspan colspan=$colspan>";
+			if ($type === hamCellType::BOX) {
+				$label = $this->getBox()->getLabel();
+			} else {
+				$label = "";
+			}
+
+			$out .= "\n\t<td id=\"" . $label . "\" rowspan=$rowspan colspan=$colspan>";
 
 			if ($type === hamCellType::BOX) {
 
-				$content = $this->getBox()->render($buffer, $cfg);
+				$box = $this->getBox();
+				$boxtype = $box->getType();
+				$boxtypename = hamBoxType::getName($boxtype);
+				$content = $box->render($buffer, $cfg);
 
-				$out .= "<a href=\"#asdf\">";
-				$out .= "<pre>";
+				if ($cfg->get('tableCellBoxLink')) {
+					$out .= "<a href=\"#" . $label . "\">";
+				}
+
+				if ($boxtype == hamBoxType::FORM) {
+					$out .= "<form action=\"" .
+						htmlspecialchars($_SERVER["PHP_SELF"]) . "#$label" .
+						"\" method=\"post\">";
+
+					$out .= "<input type=\"hidden\" name=\"hamFormLabel\" value=\"$label\">";
+				}
+
+				$out .= "<pre class=\"$boxtypename\">";
 				$out .= ham_entities($content, $cfg);
 				$out .= "</pre>";
-				$out .= "</a>";
+
+				if ($boxtype == hamBoxType::FORM) {
+					$out .= "</form>";
+				}
+
+				if ($cfg->get('tableCellBoxLink')) {
+					$out .= "</a>";
+				}
 			} else {
 				$rect = $this->getRect();
 				$content = $buffer->rect($rect, $cfg);
