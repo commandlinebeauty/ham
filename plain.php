@@ -15,7 +15,7 @@ class hamLayoutPlain extends hamLayout
 
 		foreach (parent::getBoxes() as $box) {
 
-			$content = $box->render($buffer, $cfg);
+			$content = $box->rect($buffer, $cfg);
 
 			$overlay = new hamBuffer($content, $cfg);
 

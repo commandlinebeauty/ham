@@ -43,6 +43,15 @@ class hamBox
 		$this->x = $x;
 	}
 
+	//! Returns the buffer content of this box
+	//! without adding tags (for plain layout)
+	public function rect($buffer, $cfg = null)
+	{
+		$rect = $this->getRect();
+		
+		return $buffer->rect($rect, $cfg);
+	}
+
 	public function render($buffer, $cfg = null)
 	{
 		$type = $this->getType();
