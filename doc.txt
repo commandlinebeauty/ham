@@ -28,25 +28,25 @@ w
 |
 v
 --<- Last line of first row (y = 12, row = 0) ------------------------------->|
-- .--------[Box]--------------------------------.     .----------------------.
-2 |\                                           /|     | Boxes can be next to |
-n | \_____          top corners          _____/ |     | each other...        |
-d |          (option: boxFormCornerTop)         |     |                      |
-- |                                             |     '----------------------'
-- |<------         vertical edges        ------>|  V  .----------------------.
-3 |         (option: boxFormEdgeVertical)       |     | or below each other  |
-- |                                             |  O  '----------------------'
-  |                  Box types                  |     .----..----------------.
+- .--------[Box Layout]-------------------------.     .----------------------.
+2 |\        \__       box label          ^     /|     | Boxes can be next to |
+n | \          [boxFormEdgeBracketLeft]  |    / |     | each other...        |
+d |  \                                   |   /  |     |                      |
+- |   \______      top corners      ____ |__/   |     '----------------------'
+- |             [boxFormCornerTop]       |      |  V  .----------------------.
+3 |                                      |      |     | or below each other  |
+- |<---------     vertical edges    ---- |----->|  O  '----------------------'
+  |            [boxFormEdgeVertical]     |      |     .----..----------------.
   |                                             |  I  | or || a combination  |
-  |   Form: A submitable form containing input  |     '----''----------------'
-  |         and/or data/description fields.     |  D  .----..----------------.
-  |   File: Shows the content of a text file.   |     | of || both.          |
-  |   Cmd:  Box is filled with the result of    |     '----''----------------'
-  |         a command.                          |     .-..-..-..-..-..-..-..-.
-  |                                             |     |S||m||a||l||l||e||s||t|
-  |  ___           bottom corners          ---  |     '-''-''-''-''-''-''-''-'
-  | /      (option: boxFormBottomCorner)      \ |                    
-  |/                                           \| .----------------.  This is
+  |                         horizontal edges    |     '----''----------------'
+  |                     [boxFormEdgeHorizontal] |  D  .----..----------------.
+  |                                             |     | of || both.          |
+  |     _____      bottom corners   ____ |_     |     '----''----------------'
+  |    /       [boxFormBottomCorner]     | \    |     .-..-..-..-..-..-..-..-.
+  |   /                                  |  \   |     |S||m||a||l||l||e||s||t|
+  |  /   ,---------,--- action buttons   |   \  |     '-''-''-''-''-''-''-''-'
+  | /    |         |   [inputButtonLeft] |    \ |                    
+  |/     v         v                     v     \| .----------------.  This is
   '---(Submit)--(Reset)-------------------------' |Misaligned boxes|  not a box
                                                   |are possible as |  but will
                                                   |well.           |  still be
@@ -64,15 +64,15 @@ d |          (option: boxFormCornerTop)         |     |                      |
   | 'reSet', ...).                              | *  placed by the output of *
   |                                             | *  'doc_cmdbox.sh'         *
   '---(Submit)--(Reset)-------------------------' '**************************'
-  .---------[Another Form]----------------------. ;*****[top -b -n 1]********;
+  .---------[Types]-----------------------------. ;*****[top -b -n 1]********;
   |                                             | *                          *
+  |              - Box types -                  | *                          *
   |                                             | *                          *
-  |                                             | *                          *
-  |                                             | * - Another Command Box -  *
-  |                                             | *  This text will be re-   *
-  |                                             | *  placed by the output of *
-  |                                             | *  'top -b -n 1'           *
-  |                                             | *                          *
+  |  Form: A submitable form containing input   | * - Another Command Box -  *
+  |        and/or data/description fields.      | *  This text will be re-   *
+  |  File: Shows the content of a text file.    | *  placed by the output of *
+  |  Cmd:  Box is filled with the result of     | *  'top -b -n 1'           *
+  |        a command.                           | *                          *
   |                                             | *                          *
   |                                             | *                          *
   |                                             | *                          *
