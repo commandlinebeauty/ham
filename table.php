@@ -275,32 +275,17 @@ class hamTableCell
 
 			if ($type === hamCellType::BOX) {
 
-				$box = $this->getBox();
-				$boxtype = $box->getType();
-				$boxtypename = hamBoxType::getName($boxtype);
-				$content = $box->render($buffer, $cfg);
-
+				//! Make each cell a link if configured so
 				if ($cfg->get('tableCellBoxLink')) {
+
 					$out .= "<a href=\"#" . $label . "\">";
 				}
 
-				if ($boxtype == hamBoxType::FORM) {
-					$out .= "<form action=\"" .
-						htmlspecialchars($_SERVER["PHP_SELF"]) . "#$label" .
-						"\" method=\"post\">";
+				$out .= $this->getBox()->render($buffer, $cfg);
 
-					$out .= "<input type=\"hidden\" name=\"hamFormLabel\" value=\"$label\">";
-				}
-
-				$out .= "<pre class=\"$boxtypename\">";
-				$out .= ham_entities($content, $cfg);
-				$out .= "</pre>";
-
-				if ($boxtype == hamBoxType::FORM) {
-					$out .= "</form>";
-				}
-
+				//! Make each cell a link if configured so
 				if ($cfg->get('tableCellBoxLink')) {
+
 					$out .= "</a>";
 				}
 			} else {
@@ -313,7 +298,6 @@ class hamTableCell
 			}
 
 			$out .= "</td>";
-	
 		}
 
 		return $out;

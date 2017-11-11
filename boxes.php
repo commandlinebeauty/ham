@@ -45,7 +45,12 @@ class hamBox
 
 	public function render($buffer, $cfg = null)
 	{
+		$type = $this->getType();
+		$label = $this->getLabel();
 		$rect = $this->getRect();
+		$typename = hamBoxType::getName($type);
+
+		$out = "";
 
 		switch ($this->getType()) {
 
@@ -53,7 +58,19 @@ class hamBox
 		case hamBoxType::ANY:
 		case hamBoxType::FORM:
 
+			$out .= "<form action=\"" .
+				htmlspecialchars($_SERVER["PHP_SELF"]) . "#$label" .
+				"\" method=\"post\">";
+
+			$out .= "<input type=\"hidden\" name=\"hamFormLabel\" value=\"$label\">";
+
 			$content = $buffer->rect($rect, $cfg);
+
+			$out .= "<pre class=\"$typename\">";
+			$out .= ham_entities($content, $cfg);
+			$out .= "</pre>";
+
+			$out .= "</form>";
 			break;
 
 		case hamBoxType::FILE:
@@ -85,24 +102,28 @@ class hamBox
 			);
 
 			$content = $tmp->rect($rect, $cfg);
+
+			$out .= "<pre class=\"$typename\">";
+			$out .= ham_entities($content, $cfg);
+			$out .= "</pre>";
 			break;
 		
 		case hamBoxType::CMD:
 
 			$cmd = $this->getLabel();
-			$out = "";
+			$result = "";
 
 			if ($cmd === null || $cmd === "") {
 				throw new Exception("Can not execute empty command!");
 			}
 
-			exec(escapeshellcmd($cmd), $out);
+			exec(escapeshellcmd($cmd), $result);
 
-			if ($out === null || count($out) <= 0) {
+			if ($result === null || count($result) <= 0) {
 				throw new Exception("Empty output from command \"$cmd\"!");
 			}
 
-			$overlay = new hamBuffer(implode("\n",$out), $cfg);
+			$overlay = new hamBuffer(implode("\n",$result), $cfg);
 
 			$tmp = clone $buffer;
 
@@ -123,13 +144,17 @@ class hamBox
 			);
 
 			$content = $tmp->rect($rect, $cfg);
+
+			$out .= "<pre class=\"$typename\">";
+			$out .= ham_entities($content, $cfg);
+			$out .= "</pre>";
 			break;
 
 		default:
-			exception("Unknown box type $type!");
+			throw new Exception("Unknown box type $type!");
 		}
 
-		return $content;
+		return $out;
 	}
 
 	//! Getter/Setter methods
