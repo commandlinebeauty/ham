@@ -68,19 +68,13 @@ class hamBox
 		$typename = hamBoxType::getName($type);
 		$level = $this->getBoxCount();
 
-//		if ($this->buffer !== null) {
-//			$buffer = $this->buffer;
-//			$y0 = $rect['y'][0];
-//			$x0 = $rect['x'][0];
-//			$rect['y'][0] = 0;
-//			$rect['y'][1] -= $y0;
-//			$rect['x'][0] = 0;
-//			$rect['x'][1] -= $x0;
-//		}
-
 		$out = "";
 		$hideBorder = "";
 
+//FWS TODO The original buffer should not be modified by box render()
+// also each box instance should have a layout instead of storing boxes directly
+// i.e. do not scan for child boxes in scan() but instead the box layout should
+// be carried out (not rendered) in scan
 		if ($this->hidden) {
 
 			$y_size = $buffer->getSizeY();
@@ -88,7 +82,7 @@ class hamBox
 			$voidChar = $cfg->get('void');
 			$margin = 1;
 
-			//! Delete border from local copy of buffer
+			//! Delete border from buffer
 			for ($y = $rect['y'][0]; $y <= $rect['y'][1]; $y++) {
 				for ($x = $rect['x'][0]; $x <= $rect['x'][1]; $x++) {
 					if (
@@ -102,11 +96,17 @@ class hamBox
 				}
 			}
 			$hideBorder = " hamBoxHidden";
-//FWS this is prob not a good idea
-//			$rect['y'][0]++;
-//			$rect['y'][1]--;
-//			$rect['x'][0]++;
-//			$rect['x'][1]--;
+		}
+
+		foreach ($this->getBoxes() as $box) {
+			$buffer->overlay(
+				$box->getRect(),
+				new hamBuffer(
+					$box->render($buffer, $cfg),
+					$cfg
+				),
+				$cfg
+			);
 		}
 
 		$content = $buffer->rect($rect, $cfg);
