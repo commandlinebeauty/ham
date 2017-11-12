@@ -10,23 +10,36 @@ abstract class hamLayout
 	public function __construct($buffer, $cfg)
 	{
 		//! Scan for boxes
-		$this->boxes = $this->scan($buffer, $cfg);
+		$this->boxes = $this->scan($buffer, null, $cfg);
 	}
 
 	//! Scan buffer for boxes
-	public function scan($buffer, $cfg)
+	public function scan($inbuf, $rect, $cfg)
 	{
-		$boxes        = array();
+		$buffer = clone $inbuf;
+
+		if ($rect === null) {
+			$rect = array (
+				'y' => array(0, $buffer->getSizeY()),
+				'x' => array(0, $buffer->getSizeX())
+			);
+		}
+
+		$boxes = array();
 	
 		//! Scan buffer line by line
-		for ($y = 0; $y < $buffer->getSizeY() - $cfg->get('boxHeightMin'); $y++) {
+		for ($y = $rect['y'][0]; $y < $rect['y'][1] - $cfg->get('boxHeightMin'); $y++) {
 	
 			$y_tmp = $y;
 	
 			$lineWidth = $buffer->getWidth($y);
+
+			if ($lineWidth > $rect['x'][1]) {
+				$lineWidth = $rect['x'][1];
+			}
 	
 			//! Scan each line char by char
-			for ($x = 0; $x < $lineWidth - $cfg->get('boxWidthMin'); $x++) {
+			for ($x = $rect['x'][0]; $x < $lineWidth - $cfg->get('boxWidthMin'); $x++) {
 	
 				$y_start = $y;
 				$x_start = $x;
@@ -57,15 +70,42 @@ abstract class hamLayout
 
 							if ($dir == 3) {
 								//! It's a box
-								array_push($boxes, new hamBox(
+
+								$boxrect = array(
+									'y' => array($pos['y'][0]+1, $pos['y'][2]-1),
+									'x' => array($pos['x'][0]+1, $pos['x'][2]-1)
+								);
+
+//								//! Create content buffer
+//								$boxbuf = new hamBuffer(
+//									$buffer->rect($boxrect),
+//									$cfg
+//								);
+
+								//! Cut box content from buffer
+//FWS TODO Think about how box nesting makes most sense... remove boxbuf, only one buffer
+//should be used for everything -> an updated buffer change all content at once
+//should set absolute box coordinates...
+
+								//! Scan for nested boxes recursively
+								$box = new hamBox(
 									$type,
 									$label,
 									$pos['y'],
 									$pos['x'],
 									$hidden,
+									$this->scan(
+										$buffer,
+										$boxrect,
+										$cfg
+									),
 									$cfg
-								));
-		
+								);
+
+								$buffer->overlay($boxrect);
+
+								array_push($boxes, $box);
+
 								//! Set coordinates to upper right corner
 								$y = $y_start;
 								$x = $pos['x'][1];
@@ -90,11 +130,7 @@ abstract class hamLayout
 				}
 			}
 		}
-	
-		if ($cfg->get('debug')) {
-			ham_debug_boxes($boxes, $buffer, $cfg);
-		}
-	
+
 		return $boxes;
 	}
 

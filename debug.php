@@ -1,23 +1,24 @@
 <?php
 
-function ham_debug_boxes($boxes, $buffer, $opts = null)
+function ham_debug_boxes($boxes, $buffer, $cfg = null)
 {
-	$names = array('label', 'type', 'y0', 'y1', 'x0', 'x1', 'Content');
+	$out = "";
+	$names = array('label', 'type', 'y0', 'y1', 'x0', 'x1', 'Content', 'Children');
 
-	echo "
-<table>
+	$out .= "
+<table border=1>
 	<tr>
 	";
 
 	foreach ($names as $name) {
-		echo "
+		$out .= "
 		<th>
 			$name
 		</th>
 		";
 	}
 
-	echo "
+	$out .= "
 	</tr>
 	";
 
@@ -29,7 +30,7 @@ function ham_debug_boxes($boxes, $buffer, $opts = null)
 			$box->getType(),
 			$box->getY()[0], $box->getY()[2],
 			$box->getX()[0], $box->getX()[2],
-			"<pre>".ham_xy_rect(
+			"<pre>".$buffer->rect(
 				array(
 					'y' => array(
 						$box->getY()[0],
@@ -37,12 +38,15 @@ function ham_debug_boxes($boxes, $buffer, $opts = null)
 					'x' => array(
 						$box->getX()[0],
 						$box->getX()[2])
-				), $buffer, $opts
-			)."</pre>"
+				), $buffer, $cfg
+			)."</pre>",
+			$box->getBoxCount() > 0 ?
+				ham_debug_boxes($box->getBoxes(), $buffer, $cfg) :
+				""
 		);
 
 
-		echo "
+		$out .= "
 	<tr>
 		<th>
 			".$box->getLabel()."
@@ -50,19 +54,21 @@ function ham_debug_boxes($boxes, $buffer, $opts = null)
 	";
 
 		foreach ($values as $value) {
-			echo "
-		<td>
+			$out .= "
+		<td align=center>
 			$value
 		</td>
 			";
 		}
-	echo "
+	$out .= "
 	</tr>
 	";
 		$count++;
 	}
 
-	echo "</table>";
+	$out .= "</table>";
+
+	return $out;
 }
 
 ?>

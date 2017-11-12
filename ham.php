@@ -40,6 +40,10 @@ class ham
 		$this->init($content, $this->cfg);
 
 		$this->layout($this->cfg);
+
+		if ($this->cfg->get('debug')) {
+			echo ham_debug_boxes($this->layout->getBoxes(), $this->buffer, $this->cfg);
+		}
 	}
 
 	//! (Re-)create buffer

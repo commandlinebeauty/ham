@@ -53,6 +53,11 @@
 	background-color: #D0D0D0;
 }
 
+.hamBoxLevel1 {
+	background-color: #DFDFDF;
+	opacity: 30%;
+}
+
 .hamInputText {
 	font-family: inherit;
 	font-size: 100%;

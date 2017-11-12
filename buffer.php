@@ -99,7 +99,7 @@ class hamBuffer
 	}
 
 	//! Overlay given area of another buffer
-	public function overlay($rect, $overlay, $cfg = null)
+	public function overlay($rect, $overlay = null, $cfg = null)
 	{
 		$y0 = $rect['y'][0];
 		$x0 = $rect['x'][0];
@@ -108,7 +108,11 @@ class hamBuffer
 
 			for ($x = $x0; $x <= $rect['x'][1]; $x++) {
 
-				$this->buffer[$y][$x] = $overlay->get($y-$y0, $x-$x0, $cfg);
+				if ($overlay !== null) {
+					$this->buffer[$y][$x] = $overlay->get($y-$y0, $x-$x0, $cfg);
+				} else {
+					$this->buffer[$y][$x] = $this->voidChar;
+				}
 			}
 		}
 	}

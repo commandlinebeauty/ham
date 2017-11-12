@@ -38,14 +38,17 @@ class hamBox
 	private $y;
 	private $x;
 	private $hidden;
+//	private $buffer;
+	private $boxes;
 
-	public function __construct($type, $label, $y, $x, $hidden, $cfg = null)
+	public function __construct($type, $label, $y, $x, $hidden, $children = null, $cfg = null)
 	{
 		$this->type = $type;
 		$this->label = $label;
 		$this->y = $y;
 		$this->x = $x;
 		$this->hidden = $hidden;
+		$this->boxes = $children;
 	}
 
 	//! Returns the buffer content of this box
@@ -63,6 +66,17 @@ class hamBox
 		$label = $this->getLabel();
 		$rect = $this->getRect();
 		$typename = hamBoxType::getName($type);
+		$level = $this->getBoxCount();
+
+//		if ($this->buffer !== null) {
+//			$buffer = $this->buffer;
+//			$y0 = $rect['y'][0];
+//			$x0 = $rect['x'][0];
+//			$rect['y'][0] = 0;
+//			$rect['y'][1] -= $y0;
+//			$rect['x'][0] = 0;
+//			$rect['x'][1] -= $x0;
+//		}
 
 		$out = "";
 		$hideBorder = "";
@@ -103,7 +117,7 @@ class hamBox
 		case hamBoxType::ANY:
 		case hamBoxType::PLAIN:
 
-			$out .= "<pre class=\"$typename$hideBorder\">";
+			$out .= "<pre class=\"$typename$hideBorder boxLevel$level\">";
 			$out .= ham_entities($content, $cfg);
 			$out .= "</pre>";
 			break;
@@ -264,6 +278,18 @@ class hamBox
 		$this->x[1] = $rect['x'][1];
 		$this->x[2] = $rect['x'][1];
 		$this->x[3] = $rect['x'][0];
+	}
+
+	public function getBoxes() {
+		return $this->boxes;
+	}
+
+	public function setBoxes($boxes) {
+		$this->boxes = $boxes;
+	}
+
+	public function getBoxCount() {
+		return count($this->getBoxes());
 	}
 }
 
