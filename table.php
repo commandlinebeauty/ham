@@ -280,7 +280,7 @@ class hamTableCell
 
 					$out .= "<a href=\"#" . $label . "\">";
 				}
-
+                
 				$out .= $this->getBox()->render($buffer, $cfg);
 
 				//! Make each cell a link if configured so

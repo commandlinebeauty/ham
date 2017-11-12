@@ -17,9 +17,18 @@ class hamConfig
 		'boxHeightMin'             =>  1       ,
 		//! Minimum width for being recognized as a box
 		'boxWidthMin'              =>  1       ,
+		//! Plain box
+		'boxPlainCornerTop'         => '.'      ,
+		'boxPlainCornerBottom'      => '\''     ,
+		'boxPlainEdgeHorizontal'    => '-'      ,
+		'boxPlainEdgeVertical'      => '|'      ,
+                'boxPlainEdgeBracketLeft'   => '[('    ,
+                'boxPlainEdgeBracketRight'  => '])'    ,
+                'boxPlainEdgeBracketTop'    => '^'      ,
+                'boxPlainEdgeBracketBottom' => 'v'      ,
 		//! Form box
-		'boxFormCornerTop'         => '.'      ,
-		'boxFormCornerBottom'      => '\''     ,
+		'boxFormCornerTop'         => '+'      ,
+		'boxFormCornerBottom'      => '+'     ,
 		'boxFormEdgeHorizontal'    => '-'      ,
 		'boxFormEdgeVertical'      => '|'      ,
                 'boxFormEdgeBracketLeft'   => '[('    ,
@@ -44,6 +53,8 @@ class hamConfig
 		'boxCmdEdgeBracketRight'   => '])'    ,
 		'boxCmdEdgeBracketTop'     => '^'      ,
 		'boxCmdEdgeBracketBottom'  => 'v'      ,
+                //! Overwrite this many characters with the void char when accessing a buffer
+		'bufferMargin'             =>  0       ,
 		//! Links
 		'linkLeft'                 => '['      ,
 		'linkRight'                => ']'      ,

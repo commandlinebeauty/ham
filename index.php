@@ -14,8 +14,8 @@
 			//! Render whole page
 			'page' => true,
 			//! Set layout
-			'layout' => 'plain',
-//			'layout' => 'table',
+//			'layout' => 'plain',
+			'layout' => 'table',
 			//! Fill voids with this character
 			'void' => ' '
 		)

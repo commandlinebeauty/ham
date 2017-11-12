@@ -62,6 +62,22 @@ class hamBuffer
 		return $this->buffer[$y][$x];
 	}
 
+	//! Set the given point in the buffer
+	public function set($y, $x, $value, $cfg = null)
+	{
+		if ($y < 0) {
+			$y = $this->getSizeY() + $y;
+		}
+
+		$length = $this->getWidth($y);
+
+		if ($x < 0) {
+			$x = $length + $x;
+		}
+
+        	$this->buffer[$y][$x] = $value;
+	}
+
 	//! Obtain the content of a rectangle from the buffer
 	public function rect($rect, $cfg = null)
 	{

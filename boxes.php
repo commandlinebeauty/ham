@@ -2,11 +2,12 @@
 
 abstract class hamBoxType
 {
-	const NONE = -1;
-	const ANY  =  0;
-	const FORM =  1;
-	const FILE =  2;
-	const CMD  =  3;
+	const NONE  = -1;
+	const ANY   =  0;
+	const PLAIN =  1;
+	const FORM  =  2;
+	const FILE  =  3;
+	const CMD   =  4;
 
 	//! The name generated here will be used for additional CSS styling classes
 	public function getName($type)
@@ -17,10 +18,12 @@ abstract class hamBoxType
 		case  0:
 			return 'hamBoxAny';
 		case  1:
-			return 'hamBoxForm';
+			return 'hamBoxPlain';
 		case  2:
-			return 'hamBoxFile';
+			return 'hamBoxForm';
 		case  3:
+			return 'hamBoxFile';
+		case  4:
 			return 'hamBoxCmd';
 		default:
 			throw new Exception("Unknown box type \"$type\"!");
@@ -34,17 +37,19 @@ class hamBox
 	private $label;
 	private $y;
 	private $x;
+	private $hidden;
 
-	public function __construct($type, $label, $y, $x, $cfg = null)
+	public function __construct($type, $label, $y, $x, $hidden, $cfg = null)
 	{
 		$this->type = $type;
 		$this->label = $label;
 		$this->y = $y;
 		$this->x = $x;
+		$this->hidden = $hidden;
 	}
 
 	//! Returns the buffer content of this box
-	//! without adding tags (for plain layout)
+	//! without adding tags (e.g. for plain layout)
 	public function rect($buffer, $cfg = null)
 	{
 		$rect = $this->getRect();
@@ -60,11 +65,49 @@ class hamBox
 		$typename = hamBoxType::getName($type);
 
 		$out = "";
+		$hideBorder = "";
+
+		if ($this->hidden) {
+
+			$y_size = $buffer->getSizeY();
+			$x_size = $buffer->getSizeX();
+			$voidChar = $cfg->get('void');
+			$margin = 1;
+
+			//! Delete border from local copy of buffer
+			for ($y = $rect['y'][0]; $y <= $rect['y'][1]; $y++) {
+				for ($x = $rect['x'][0]; $x <= $rect['x'][1]; $x++) {
+					if (
+						$y - $rect['y'][0] < $margin ||
+						$rect['y'][1] - $y < $margin ||
+						$x - $rect['x'][0] < $margin ||
+						$rect['x'][1] - $x < $margin
+					) {
+						$buffer->set($y, $x, $voidChar, $cfg);
+					}
+				}
+			}
+			$hideBorder = " hamBoxHidden";
+//FWS this is prob not a good idea
+//			$rect['y'][0]++;
+//			$rect['y'][1]--;
+//			$rect['x'][0]++;
+//			$rect['x'][1]--;
+		}
+
+		$content = $buffer->rect($rect, $cfg);
 
 		switch ($this->getType()) {
 
 		case hamBoxType::NONE:
 		case hamBoxType::ANY:
+		case hamBoxType::PLAIN:
+
+			$out .= "<pre class=\"$typename$hideBorder\">";
+			$out .= ham_entities($content, $cfg);
+			$out .= "</pre>";
+			break;
+
 		case hamBoxType::FORM:
 
 			$out .= "<form action=\"" .
@@ -72,8 +115,6 @@ class hamBox
 				"\" method=\"post\">";
 
 			$out .= "<input type=\"hidden\" name=\"hamFormLabel\" value=\"$label\">";
-
-			$content = $buffer->rect($rect, $cfg);
 
 			$out .= "<pre class=\"$typename\">";
 			$out .= ham_entities($content, $cfg);
@@ -184,10 +225,12 @@ class hamBox
 	}
 
 	public function setLabel($label) {
+
 		$this->label = $label;
 	}
 
 	public function getY($index = null) {
+
 		if ($index === null) {
 			return $this->y;
 		}
@@ -196,6 +239,7 @@ class hamBox
 	}
 
 	public function getX($index = null) {
+
 		if ($index === null) {
 			return $this->x;
 		}
@@ -204,6 +248,7 @@ class hamBox
 	}
 
 	public function getRect() {
+
 		return array(
 			'y' => array($this->y[0], $this->y[2]),
 			'x' => array($this->x[0], $this->x[2])
@@ -267,6 +312,18 @@ class hamBoxDelimiters
 
 				unset($delim);
 			}
+			break;
+
+		case hamBoxType::PLAIN:
+
+$this->topCorner      = $cfg->get('boxPlainCornerTop');
+$this->bottomCorner   = $cfg->get('boxPlainCornerBottom');
+$this->yEdge          = $cfg->get('boxPlainEdgeVertical');
+$this->xEdge          = $cfg->get('boxPlainEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxPlainEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxPlainEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxPlainEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxPlainEdgeBracketBottom');
 			break;
 	
 		case hamBoxType::FORM:

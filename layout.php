@@ -33,6 +33,7 @@ abstract class hamLayout
 	
 				//! Test each type individually
 				$types = array(
+					hamBoxType::PLAIN,
 					hamBoxType::FORM,
 					hamBoxType::FILE,
 					hamBoxType::CMD
@@ -47,11 +48,12 @@ abstract class hamLayout
 	
 					$break = false;
 					$label = "";
+					$hidden = false;
 	
 					//! Search for edges
 					for ($dir = 0; $dir < 4; $dir++) {
 		
-						if ($this->edge($type, $dir, $buffer, $y, $x, $pos, $label, $cfg)) {
+						if ($this->edge($type, $dir, $buffer, $y, $x, $pos, $label, $hidden, $cfg)) {
 
 							if ($dir == 3) {
 								//! It's a box
@@ -60,6 +62,7 @@ abstract class hamLayout
 									$label,
 									$pos['y'],
 									$pos['x'],
+									$hidden,
 									$cfg
 								));
 		
@@ -96,7 +99,7 @@ abstract class hamLayout
 	}
 
 	//! Scan for box boundary clockwise
-	private function edge($type, $dir, $buffer, $y, $x, &$pos, &$label, $cfg)
+	private function edge($type, $dir, $buffer, $y, $x, &$pos, &$label, &$hidden, $cfg)
 	{
 		//! null means search for any type (FWS: clutter or useful feature?)
 		if ($type === null) {
@@ -188,17 +191,16 @@ abstract class hamLayout
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
 				     	($dy < 0) && ($skip = 1))                                                  ||
 				(strpos($delim->bracketLeft,   $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx < 0) && !($skip = 0))                                                 ||
+				     	($dx < 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketRight,  $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx > 0) && !($skip = 0))                                                 ||
+				     	($dx > 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketTop,    $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy < 0) && !($skip = 0))                                                 ||
+				     	($dy < 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy > 0) && !($skip = 0))                                                 ||
+				     	($dy > 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
 				($skip > 0 && $skip++)
 				)
 			) {
-
 				if ($skip > 1 && $dir == 0) {
 					//! Box header line
 					$label .= $buffer->get($y_next, $x_next, $cfg);
@@ -257,29 +259,5 @@ abstract class hamLayout
 		$this->boxes = $boxes;
 	}
 }
-
-////! Calculate table rows from boxes
-//function ham_layout_rows($buffer, $cfg = null)
-//{
-//	$boxes = ham_xy_boxes($buffer, $cfg);
-//
-//	$rows_start = array();
-//	$rows_end = array();
-//
-//	foreach ($boxes as $box) {
-//		$y0 = $box['y'][0];
-//		$y1 = $box['y'][2];
-//
-//		if (count($rows_end) === 0 || $y0 > end($rows_end)) {
-//			//! The box starts lower than all previous boxes -> add new row
-//			array_push($rows_start, $y0);
-//			array_push($rows_end, $y1);
-//
-//		} else if (count($rows_end) === 0 || $y1 > end($rows_end)) {
-//			//! The box ends lower than some previous box -> adjust row end
-//			$rows_end[-1] = $y1;
-//		}
-//	}
-//}
 
 ?>

@@ -1,0 +1,2 @@
+- 2017-11-11 FWS box edges do not get hidden if [] starts at the beginning of a box (position of top corner[0])
+

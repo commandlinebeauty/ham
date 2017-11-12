@@ -18,53 +18,53 @@
 |<--- The first character of the third line (y = 2, x = 0)
                  The last character of the fourth line (y = 3, x = 79/-1) --->X
 1<--- The recommended maximum width of one line is 79 characters.------------>|
-s
-t #########################################################################
-  #
-r # Documentation and 
-o #
-w #
-  #
-| ###########################################################################
-v
+s       .[]-----------------------------------------------------------.
+t       |#############################################################|
+        |#           H.A.M. - Documentation and Showcase             #|
+r       |#                                                           #|
+o       |# An WYSIWYG ASCII Markup Language for HTML User Interfaces #|
+w       |#                                                           #|
+        |# Author: Fritz-Walter Schwarm <root@commandlinebeauty.com> #|
+|       |#############################################################|
+v       '-------------------------------------------------------------'
 --<- Last line of first row (y = 12, row = 0) ------------------------------->|
-- .--------[Box Layout]-------------------------.     .----------------------.
+- .[Box Layout]---------------------------------+     .[]--------------------.
 2 |\        \__       box label          ^     /|     | Boxes can be next to |
 n | \          [boxFormEdgeBracketLeft]  |    / |     | each other...        |
-d |  \                                   |   /  |     |                      |
-- |   \______      top corners      ____ |__/   |     '----------------------'
-- |             [boxFormCornerTop]       |      |  V  .----------------------.
-3 |                                      |      |     | or below each other  |
-- |<---------     vertical edges    ---- |----->|  O  '----------------------'
-  |            [boxFormEdgeVertical]     |      |     .----..----------------.
-  |                                             |  I  | or || a combination  |
-  |                         horizontal edges    |     '----''----------------'
-  |                     [boxFormEdgeHorizontal] |  D  .----..----------------.
-  |                                             |     | of || both.          |
-  |     _____      bottom corners   ____ |_     |     '----''----------------'
-  |    /       [boxFormBottomCorner]     | \    |     .-..-..-..-..-..-..-..-.
-  |   /                                  |  \   |     |S||m||a||l||l||e||s||t|
-  |  /   ,---------,--- action buttons   |   \  |     '-''-''-''-''-''-''-''-'
+d |  \                                   |   /  |     '----------------------'
+- |   \______      top corners      ____ |__/   |     .----------------------.
+- |             [boxFormCornerTop]       |      |  V  | or below each other  |
+3 |                                      |      |     '----------------------'
+- |<---------     vertical edges    ---- |----->|  O  .----..----------------.
+  |            [boxFormEdgeVertical]     |      |     | or || a combination  |
+  |                                             |  I  '----''----------------'
+  |                         horizontal edges    |     .----..----------------.
+  |                     [boxFormEdgeHorizontal] |  D  | of || both.          |
+  |                                             |     '----''----------------'
+  |     _____      bottom corners   ____ |_     |     .-..-..-..-..-..-..-..-.
+  |    /       [boxFormBottomCorner]     | \    |     |S||m||a||l||l||e||s||t|
+  |   /                                  |  \   |     '-''-''-''-''-''-''-''-'
+  |  /   ,---------,--- action buttons   |   \  |     
   | /    |         |   [inputButtonLeft] |    \ |                    
   |/     v         v                     v     \| .----------------.  This is
-  '---(Submit)--(Reset)-------------------------' |Misaligned boxes|  not a box
+  +---(Submit)--(Reset)-------------------------+ |Misaligned boxes|  not a box
                                                   |are possible as |  but will
   .---------[Box Types]-------------------------. |well.           |  still be
   |                                             | '----------------'  shown.
-  |    Form: A submitable form containing input | 
-  |          and/or data/description fields.    | ;~~~~[doc_filebox.txt]~~~~~;
+  |   Plain: For general purpose description    |
+  |          and information blocks.            | ;~~~~[doc_filebox.txt]~~~~~;
   |                                             | {      - File Box -        }
-  |    File: Shows the content of a text file.  | {   This text will be re-  }
-  |                                             | {   placed by the content  }
-  | Command: Box is filled with the result of a | {   of 'doc_filebox.txt'.  }
-  |          command.                           | '~~~~~~~~~~~~~~~~~~~~~~~~~~'
+  |    Form: A submitable form containing input | {   This text will be re-  }
+  |          and/or data/description fields.    | {   placed by the content  }
+  |                                             | {   of 'doc_filebox.txt'.  }
+  |    File: Shows the content of a text file.  | '~~~~~~~~~~~~~~~~~~~~~~~~~~'
   |                                             |                             
-  |                                             | ;*****[./doc_cmdbox.sh]****;
-  |                                             | *     - Command Box -      *
+  | Command: Box is filled with the result of a | ;*****[./doc_cmdbox.sh]****;
+  |          command.                           | *     - Command Box -      *
   |                                             | *  This text will be re-   *
   '---------------------------------------------' *  placed by the output of *
                                                   *  'doc_cmdbox.sh'         *
-  .--------[./Form.sh]--------------------------. '**************************'
+  +--------[./Form.sh]--------------------------+ '**************************'
   |                                             |
   | A form can contain data and input fields.   | ;*****[top -b -n 1]********; 
   |                                             | *                          *
@@ -77,22 +77,31 @@ d |  \                                   |   /  |     |                      |
   | representation reads 'reset' (e.g. 'Reset', | *                          *
   | 'reSet', ...).                              | *                          *
   |                                             | *                          *
-  '---(Submit)--(Reset)-------------------------' '**************************'
+  +---(Submit)--(Reset)-------------------------+ '**************************'
 
 
-  .---------[Code Structure]-------------------------------------------------.
-  |[ham]--------------------------------------------------------------------.|
-  ||configuration, layout, buffer                                           ||
-  ||[layout]---------------------------------------------------------------.||
-  |||                                                                      |||
-  |||                                                                      |||
-  |||                                                                      |||
-  |||                                                                      |||
-  |||                                                                      |||
-  |||                                                                      |||
-  ||'----------------------------------------------------------------------'||
-  |'------------------------------------------------------------------------'|
-  '--------------------------------------------------------------------------'
+#  .---------[Class Structure]------------------------------------------------.
+#  |.[ham]-------------------------------------------------------------------.|
+#  ||configuration, layout, buffer                                           ||
+#  ||.[layout]--------------------------..[buffer]..[config].---------------.||
+#  |||.[plain]..[boxes].      ||        ||        |               |||
+#  ||||       ||       |      ||        ||        |               |||
+#  ||||       ||       |      ||        ||        |               |||
+#  ||||       ||       |      ||        ||        |               |||
+#  ||||       ||       |      ||        ||        |               |||
+#  |||'-------''-------'      ||        ||        |               |||
+#  ||'.[table]-.-------------------------''--------''--------'---------------'||
+#  |'-|.[cell].|--------------------------------------------------------------'|
+#  '--||      ||---------------------------------------------------------------'
+#     ||      ||
+#     |'------'|
+#     '--------'
+
+
+
+
+
+
 # 
 #  .---------------------------------------------. ############################
 #  | Table Layout                                | #                          #

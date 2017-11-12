@@ -33,6 +33,10 @@
 	background-color: lightgreen;
 }
 
+.hamBoxPlain {
+	background-color: #F0F0F0;
+}
+
 .hamBoxForm {
 	background-color: cyan;
 }
@@ -43,6 +47,10 @@
 
 .hamBoxCmd {
 	background-color: lightgrey;
+}
+
+.hamBoxHidden {
+	background-color: #D0D0D0;
 }
 
 .hamInputText {

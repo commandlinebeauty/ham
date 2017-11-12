@@ -61,11 +61,11 @@ class ham
 			$cfg = $this->cfg;
 		}
 
-		$comment = $cfg->get('comment');
+		$comment = preg_quote($cfg->get('comment'), '/');
 		$nl = PHP_EOL;
-	
-		//! Remove out-commented lines
-		$out = preg_replace("/$comment(.*)$nl/", "", $content);
+
+		//! Remove out-commented lines (starting with $comment char)
+		$out = preg_replace("/^$comment(.*)$$nl?/m", "", $content);
 
 		return $out;
 	}
