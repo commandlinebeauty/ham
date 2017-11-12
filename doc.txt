@@ -19,16 +19,16 @@
                  The last character of the fourth line (y = 3, x = 79/-1) --->X
 1<--- The recommended maximum width of one line is 79 characters.------------>|
 s       .[]-----------------------------------------------------------.
-t       |#############################################################|
-        |#           H.A.M. - Documentation and Showcase             #|
-r       |#                                                           #|
-o       |# An WYSIWYG ASCII Markup Language for HTML User Interfaces #|
-w       |#                                                           #|
-        |# Author: Fritz-Walter Schwarm <root@commandlinebeauty.com> #|
-|       |#############################################################|
+t       |                                                             |
+        |            H.A.M. - Documentation and Showcase              |
+r       |                                                             |
+o       |  An WYSIWYG ASCII Markup Language for HTML User Interfaces  |
+w       |                                                             |
+        |  Author: Fritz-Walter Schwarm <root@commandlinebeauty.com>  |
+|       |                                                             |
 v       '-------------------------------------------------------------'
 --<- Last line of first row (y = 12, row = 0) ------------------------------->|
-- .[Box Layout]---------------------------------+     .[]--------------------.
+- +-----[Box Layout]----------------------------+     .----------------------.
 2 |\        \__       box label          ^     /|     | Boxes can be next to |
 n | \          [boxFormEdgeBracketLeft]  |    / |     | each other...        |
 d |  \                                   |   /  |     '----------------------'
@@ -45,57 +45,94 @@ d |  \                                   |   /  |     '----------------------'
   |    /       [boxFormBottomCorner]     | \    |     |S||m||a||l||l||e||s||t|
   |   /                                  |  \   |     '-''-''-''-''-''-''-''-'
   |  /   ,---------,--- action buttons   |   \  |     
-  | /    |         |   [inputButtonLeft] |    \ |                    
-  |/     v         v                     v     \| .----------------.  This is
-  +---(Submit)--(Reset)-------------------------+ |Misaligned boxes|  not a box
-                                                  |are possible as |  but will
-  .---------[Box Types]-------------------------. |well.           |  still be
-  |                                             | '----------------'  shown.
-  |   Plain: For general purpose description    |
-  |          and information blocks.            | ;~~~~[doc_filebox.txt]~~~~~;
-  |                                             | {      - File Box -        }
-  |    Form: A submitable form containing input | {   This text will be re-  }
-  |          and/or data/description fields.    | {   placed by the content  }
-  |                                             | {   of 'doc_filebox.txt'.  }
-  |    File: Shows the content of a text file.  | '~~~~~~~~~~~~~~~~~~~~~~~~~~'
-  |                                             |                             
-  | Command: Box is filled with the result of a | ;*****[./doc_cmdbox.sh]****;
-  |          command.                           | *     - Command Box -      *
-  |                                             | *  This text will be re-   *
-  '---------------------------------------------' *  placed by the output of *
-                                                  *  'doc_cmdbox.sh'         *
-  +--------[./Form.sh]--------------------------+ '**************************'
-  |                                             |
-  | A form can contain data and input fields.   | ;*****[top -b -n 1]********; 
-  |                                             | *                          *
-  | A variable:     $foo                        | * - Another Command Box -  *
-  | An input field: {foo}                       | *  This text will be re-   *
+  | /    |         |   [inputButtonLeft] |    \ | .----------------.  This is
+  |/     v         v                     v     \| |Misaligned boxes|  not a box
+  +---(Submit)--(Reset)-------------------------+ |are possible as |  but will
+                                                  |well.           |  still be
+  .-----[Box Types]-----------------------------. '----------------'  shown.
+  |                                             |                           
+  |   Plain: For general purpose description    | ;~~~~[doc_filebox.txt]~~~~~;
+  |          and information blocks.            | {      - File Box -        }
+  |                                             | {   This text will be re-  }
+  |    Form: A submitable form containing input | {   placed by the content  }
+  |          and/or data/description fields.    | {   of 'doc_filebox.txt'.  }
+  |                                             | '~~~~~~~~~~~~~~~~~~~~~~~~~~'
+  |    File: Shows the content of a text file.  |
+  |                                             | ;****[./doc_cmdbox.sh]*****;
+  | Command: Box is filled with the result of a | *     - Command Box -      *
+  |          command.                           | *  This text will be re-   *
   |                                             | *  placed by the output of *
-  | The 'Submit' button below posts the field   | *  'top -b -n 1'           *
+  |                                             | *  'doc_cmdbox.sh'         *
+  '---------------------------------------------' '**************************'
+
+  +-----[./Form.sh]-----------------------------+ ;[]***[top -b -n 1]********;  
+  |                                             | *                          *
+  | A form can contain data and input fields.   | * - Another Command Box -  *
+  |                                             | *  This text will be re-   *
+  | A variable:     $foo                        | *  placed by the output of *
+  | An input field: {foo}                       | *  'top -b -n 1'           *
+  |                                             | *                          *
+  | The 'Submit' button below posts the field   | *                          *
   | values to the server. The Reset button must | *                          *
   | be named such that its lowercase            | *                          *
   | representation reads 'reset' (e.g. 'Reset', | *                          *
   | 'reSet', ...).                              | *                          *
   |                                             | *                          *
-  +---(Submit)--(Reset)-------------------------+ '**************************'
+  +---(Submit)--(Reset)-------------------------+ '**************************' 
 
 
-#  .---------[Class Structure]------------------------------------------------.
-#  |.[ham]-------------------------------------------------------------------.|
-#  ||configuration, layout, buffer                                           ||
-#  ||.[layout]--------------------------..[buffer]..[config].---------------.||
-#  |||.[plain]..[boxes].      ||        ||        |               |||
-#  ||||       ||       |      ||        ||        |               |||
-#  ||||       ||       |      ||        ||        |               |||
-#  ||||       ||       |      ||        ||        |               |||
-#  ||||       ||       |      ||        ||        |               |||
-#  |||'-------''-------'      ||        ||        |               |||
-#  ||'.[table]-.-------------------------''--------''--------'---------------'||
-#  |'-|.[cell].|--------------------------------------------------------------'|
-#  '--||      ||---------------------------------------------------------------'
-#     ||      ||
-#     |'------'|
-#     '--------'
+  .-----[Class Structure]-----------------------------------------------------.
+  |                                                                           |
+  | +[ham]------------------------------------------------------------------+ |
+  | |                                                                       | |
+  | | +[configuration]------------------.   +[buffer]---------------------+ | |
+  | | |                                 |   |                             | | |
+  | | | .[options]----. .[defaults]---. |   |                             | | |
+  | | | |             | |             | |-->|                             | | |
+  | | | |             | |             | |   |                             | | |
+  | | | |             | |             | |   |                             | | |
+  | | | '-------------' '-------------' |   |                             | | |
+  | | +---------------------------------+   +-----------------------------+ | |
+  | |                  |                                 |                  | |
+  | |                  v                                 v                  | |
+  | | +[layout]-----------------------------------------------------------+ | |
+  | | |	                                                                  | | |
+  | | | +[box]-------------------+   +[boxType]------+  +[boxDelimiters]+ | | |
+  | | | |                        |   |               |  |               | | | |
+  | | | |                        |   | NONE          |  |               | | | |
+  | | | |                        |   | ANY           |  |               | | | |
+  | | | |                        |   | PLAIN         |  |               | | | |
+  | | | |                        |<--| FORM          |  |               | | | |
+  | | | |                        |   | FILE          |  |               | | | |
+  | | | |                        |   | CMD           |  |               | | | |
+  | | | |                        |   |               |  |               | | | |
+  | | | |                        |   |               |  |               | | | |
+  | | | |                        |   |               |  |               | | | |
+  | | | +------------------------+   +---------------+  +---------------+ | | |
+  | | |              |                       |                  |         | | |
+  | | |              v                       v                  v         | | |
+  | | | .------------------------[Child Classes]------------------------. | | |
+  | | | |                                                               | | | |
+  | | | | +[plainLayout]+              +[tableLayout]--+   +[cellType]+ | | | |
+  | | | | |             |              |               |   |          | | | | |
+  | | | | |             |              | +[tableCell]+ |   |          | | | | |
+  | | | | |             |              | |           | |   |          | | | | |
+  | | | | |             |              | |           | |<--|          | | | | |
+  | | | | |             |              | |           | |   |          | | | | |
+  | | | | |             |              | +-----------+ |   |          | | | | |
+  | | | | |             |              |               |   |          | | | | |
+  | | | | +-------------+              +---------------+   +----------+ | | | |
+  | | | |                                                               | | | |
+  | | | '---------------------------------------------------------------' | | |
+  | | |                                                                   | | |
+  | | +-------------------------------------------------------------------+ | |
+  | |                                                                       | |
+  | +-----------------------------------------------------------------------+ |
+  |                                                                           |
+  '---------------------------------------------------------------------------'
+
+
+
 
 
 
