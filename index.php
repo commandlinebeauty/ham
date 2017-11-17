@@ -5,7 +5,7 @@
 <?php
 	include 'ham.php';
 
-	$ham = new ham(file_get_contents('doc.txt'),
+	$ham = new ham(file_get_contents('ham.txt'),
 		array(
 			//! Enable debugging
 //			'debug' => true,
