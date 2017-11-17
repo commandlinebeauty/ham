@@ -81,6 +81,10 @@ class ham
 			$cfg = $this->cfg;
 		}
 
+		$this->cfg->set('cgi', new hamCGI(
+			$cfg
+		));
+
 		//! Parse content and create buffer
 		unset($this->buffer);
 		unset($this->layout);

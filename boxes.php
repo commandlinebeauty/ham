@@ -243,46 +243,24 @@ class hamBox
 			case hamBoxType::ACTION:
 
 				$label = $this->getLabel();
-//				$cmd = $label . " status";
-//				$result = "";
-//
-//				if ($cmd === null || $cmd === "") {
-//					throw new Exception("Can not execute empty command!");
-//				}
-//
-//				exec(escapeshellcmd($cmd), $result);
-//
-//				if ($result === null || count($result) <= 0) {
-//					throw new Exception("Empty output from command \"$cmd\"!");
-//				}
-//
-//				if($result[0] === 'success') {
-					$actionclass = "hamBoxActionSuccess";
-//
-//				} else if($result[0] === 'failure') {
-//					$actionclass = "hamBoxActionFailure";
-//
-//				} else {
-//					$actionclass = "";
-//				}
+				$id = $this->getId();
+				$cgi = $cfg->get('cgi');
+				$status = $cgi->getFormStatus($id);
 
-//				$overlay = new hamBuffer(implode("\n",$result), $cfg);
-//
-//				$tmp = clone $buffer;
-//
-//				$tmp->overlay(
-//					//! Coordinates in buffer frame
-//					new hamRect(
-//						$rect->getY(0) + 1,
-//						$rect->getY(1) - 1,
-//						$rect->getX(0) + 1,
-//						$rect->getX(1) - 1
-//					),
-//					//! Overlay buffer and configuration
-//					$overlay, $cfg
-//				);
-//
-//				$content = $tmp->rect($rect, $cfg);
+				//! Check for posted execution status of this box
+				if ($status !== null) {
+
+					//! A status has been set for this label
+					if($status === 0) {
+						//! Command executed successfully
+						$actionclass = "hamBoxActionSuccess";
+					} else {
+						//! Failure on previous command execution
+						$actionclass = "hamBoxActionFailure";
+					}
+				} else {
+					$actionclass = "";
+				}
 
 				$content = $buffer->rect($rect, $cfg);
 
@@ -293,6 +271,9 @@ class hamBox
 					"<input type=\"hidden\" "                .
 						"name=\"hamFormLabel\""          .
 						"value=\"$label\">"              .
+					"<input type=\"hidden\" "                .
+						"name=\"hamFormId\""             .
+						"value=\"$id\">"                 .
 					"<input type=\"hidden\" "                .
 						"name=\"hamFormType\""           .
 						"value=\"action\">"              .
@@ -321,6 +302,12 @@ class hamBox
 		$rect = $this->getRect();
 		
 		return $buffer->rect($rect, $cfg);
+	}
+
+	//! Return a unique id for this box
+	public function getId()
+	{
+		return "(".$this->getY(0).",".$this->getX(0).")";
 	}
 
 	//! Getter/Setter methods
