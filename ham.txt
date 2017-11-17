@@ -51,21 +51,21 @@ d |  \                                   |   /  |     '----------------------'
                                                   |well.           |  still be
   .-----[Box Types]-----------------------------. '----------------'  shown.
   |                                             |                           
-  |   Plain: For general purpose description    | ;~~~~[doc_filebox.txt]~~~~~;
+  |   Plain: For general purpose description    | ;~~~~[@doc_filebox.txt]~~~~;
   |          and information blocks.            | {      - File Box -        }
   |                                             | {   This text will be re-  }
   |    Form: A submitable form containing input | {   placed by the content  }
   |          and/or data/description fields.    | {   of 'doc_filebox.txt'.  }
   |                                             | '~~~~~~~~~~~~~~~~~~~~~~~~~~'
   |    File: Shows the content of a text file.  |
-  |                                             | ;****[./doc_cmdbox.sh]*****;
-  | Command: Box is filled with the result of a | *     - Command Box -      *
-  |          command.                           | *  This text will be re-   *
-  |                                             | *  placed by the output of *
-  |  Action: Action button executing the given  | *  'doc_cmdbox.sh'         *
-  |          script.                            | '**************************'
+  |                                             | .----[!./doc_cmdbox.sh]----.
+  | Command: Box is filled with the result of a | |     - Command Box -      |
+  |          command.                           | |  This text will be re-   |
+  |                                             | |  placed by the output of |
+  |  Action: Action button executing the given  | |  'doc_cmdbox.sh'         |
+  |          script.                            | '--------------------------'
   |                                             |
-  '---------------------------------------------' ;[]***[top -b -n 1]********;
+  '---------------------------------------------' ;[]****[top -b -n 1]*******;
                                                   *                          *
   +-----[./Form.sh]-----------------------------+ * - Another Command Box -  *
   |                                             | *  This text will be re-   *

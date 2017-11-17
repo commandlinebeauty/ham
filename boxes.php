@@ -55,9 +55,19 @@ abstract class hamBoxType
 	}
 }
 
+abstract class hamBoxSource
+{
+	const NONE = -1;
+	const ANY  =  0;
+	const TEXT =  1;
+	const FILE =  2;
+	const CMD  =  3;
+}
+
 class hamBox
 {
 	private $type;
+	private $source = hamBoxSource::NONE;
 	private $label;
 	private $y;
 	private $x;
@@ -68,10 +78,26 @@ class hamBox
 	public function __construct($type, $label, $y, $x, $border, $buffer, $cfg)
 	{
 		$this->type = $type;
-		$this->label = $label;
 		$this->y = $y;
 		$this->x = $x;
 		$this->border = $border;
+
+		$modifier = substr($label, 0, 1);
+
+		if ($modifier === '@') {
+			//! Read content from file
+			$this->label = substr($label, 1);
+			$this->source = hamBoxSource::FILE;
+			
+		} else if ($modifier === '!') {
+			//! Read content from command output
+			$this->label = substr($label, 1);
+			$this->source = hamBoxSource::CMD;
+		} else {
+			//! Read content from text inside box
+			$this->label = $label;
+			$this->source = hamBoxSource::TEXT;
+		}
 
 		//! Limit the valid and region of buffer to box area (order matters!)
 		$outer = $buffer->getValid();
@@ -133,7 +159,8 @@ class hamBox
 
 			$out = $this->getLayout()->render($buffer, $cfg);
 		} else {
-			$content = $buffer->rect($rect, $cfg);
+//			$content = $buffer->rect($rect, $cfg);
+			$content = $this->getContent($buffer, $cfg);
 
 			switch ($this->getType()) {
 	
@@ -262,7 +289,7 @@ class hamBox
 					$actionclass = "";
 				}
 
-				$content = $buffer->rect($rect, $cfg);
+//				$content = $buffer->rect($rect, $cfg);
 
 				$out .= "<pre class=\"$typename $actionclass\">" .
 					"<form action=\""                        .
@@ -302,6 +329,79 @@ class hamBox
 		$rect = $this->getRect();
 		
 		return $buffer->rect($rect, $cfg);
+	}
+
+	//! Return the content of the box depending on the source type
+	public function getContent($buffer, $cfg)
+	{
+		$content = "";
+		$rect = $this->getRect();
+
+//		if ($this->source === null || $this->source === hamBoxSource::TEXT) {
+		if ($this->source === hamBoxSource::FILE) {
+
+			$file = $this->getLabel();
+
+			if (!file_exists($file)) {
+				throw new Exception("File \"$file\" not found!");
+			}
+
+			$overlay = new hamBuffer(file_get_contents($file), $cfg);
+
+			$tmp = clone $buffer;
+
+			$tmp->overlay(
+				//! Coordinates in buffer frame
+				new hamRect(
+					$rect->getY(0) + 1,
+					$rect->getY(1) - 1,
+					$rect->getX(0) + 1,
+					$rect->getX(1) - 1
+				),
+				//! Overlay buffer and configuration
+				$overlay, $cfg
+			);
+
+			$content = $tmp->rect($rect, $cfg);
+
+		} else if ($this->source === hamBoxSource::CMD) {
+
+			$cmd = $this->getLabel();
+			$result = "";
+
+			if ($cmd === null || $cmd === "") {
+				throw new Exception("Can not execute empty command!");
+			}
+
+			exec(escapeshellcmd($cmd), $result);
+
+			if ($result === null || count($result) <= 0) {
+				throw new Exception("Empty output from command \"$cmd\"!");
+			}
+
+			$overlay = new hamBuffer(implode("\n",$result), $cfg);
+
+			$tmp = clone $buffer;
+
+			$tmp->overlay(
+				//! Coordinates in buffer frame
+				new hamRect(
+					$rect->getY(0) + 1,
+					$rect->getY(1) - 1,
+					$rect->getX(0) + 1,
+					$rect->getX(1) - 1
+				),
+				//! Overlay buffer and configuration
+				$overlay, $cfg
+			);
+
+			$content = $tmp->rect($rect, $cfg);
+
+		} else if ($this->source === hamBoxSource::TEXT) {
+			$content = $buffer->rect($rect, $cfg);
+		}
+
+		return $content;
 	}
 
 	//! Return a unique id for this box
