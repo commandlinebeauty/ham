@@ -44,8 +44,8 @@ abstract class hamLayout
 		$boxes = array();
 
 		$rect = $buffer->getValid();
-//echo "scanY0: " . $rect->getY(0) . "->" . $rect->getY(1) . "\n";
-//echo "scanX0: " . $rect->getX(0) . "->" . $rect->getX(1) . "\n";
+//echo "scanY: " . $rect->getY(0) . "->" . $rect->getY(1) . "<br>\n";
+//echo "scanX: " . $rect->getX(0) . "->" . $rect->getX(1) . "<br>\n";
 
 		//! Scan buffer line by line
 		for ($y = $rect->getY(0); $y <= $rect->getY(1) - $cfg->get('boxHeightMin'); $y++) {

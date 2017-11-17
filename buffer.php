@@ -41,7 +41,9 @@ class hamBuffer
 
 		foreach ($this->buffer as $line) {
 
-			$cur = count($line) - 1;
+//! FWS DANGER Why -2 and not -1? Seems to produce the right result though...
+//			$cur = count($line) - 1;
+			$cur = count($line) - 2;
 
 			if ($cur > $this->x_max) {
 				$this->x_max = $cur;
