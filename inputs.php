@@ -29,7 +29,9 @@ function ham_inputs_text($in, $cfg)
 			$length = strlen($inputLeft) + strlen($text) +
 //				strlen($inputRight) + strlen($m[3]) - 1;
 //! FWS TODO Why do I need - here for chrome? DANGER this - 3 problably leads to failure for very short input fields
-				strlen($inputRight) + strlen($m[3]) - 3;
+//				strlen($inputRight) + strlen($m[3]) - 3;
+//! FWS Not a good idea... fix this somewhere else!
+				strlen($inputRight) + strlen($m[3]) - 1;
 
 			//! The additional style rule is needed because size is implemented differently on different fonts (and even browsers). It fixes the issue that the input width appears larger on Google Chrome but not on w3m (or links2). lynx does not seem to have this issue.
 			return "$m[1]<input class=\"hamInputText\" type=\"text\" size=$length name=\"$text\" value=\"$text\" style=\"width: ".$length."ch\"> ";
