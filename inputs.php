@@ -21,7 +21,7 @@ function ham_inputs_text($in, $cfg)
 	$inputRightQ = preg_quote($inputRight, "/");
 
 	$out = preg_replace_callback(
-		"/(\s*)$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ(\s*)/m",
+		"/(\s*)$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ([ ]*)/m",
 		function ($m) use($cfg,$inputLeft,$inputRight) {
 
 			$text = $m[2];

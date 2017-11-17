@@ -89,14 +89,19 @@ d |  \                                   |   /  |     '----------------------'
 
 
 
-  .[]--------------------.
-  | Remove borders using |
-  |                      |
-  |                      |
-  |                      |                                                      
-  |                      |                                                      
-  |                      |                                                      
-  '----------------------'                                                      
+
+
+
+
+  .[]---------------------------. .[]----------------------------------------.
+  | Box borders can be removed  | | Box borders can be removed globally by   |
+  | by defining an empty box    | | by setting the 'boxBorder' configuration |
+  | label, possibly in combined | | to false.                                |
+  | with a non-empty label:     | '------------------------------------------'
+  |                             |.[]-----------------------------------------.
+  | .[]--[myLabel]------------. ||                    ^                      |
+  | |       ...               | ||<--- No boundaries necessary between boxes |
+  '-----------------------------''-------------------------------------------'
                                                         
                                                        
   .-----[Class Structure]----------------------------------------------------.

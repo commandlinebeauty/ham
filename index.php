@@ -17,7 +17,9 @@
 //			'layout' => 'plain',
 			'layout' => 'table',
 			//! Fill voids with this character
-			'void' => ' '
+			'void' => ' ',
+			//! Disable box borders
+			'boxBorder' => false
 		)
 	);
 

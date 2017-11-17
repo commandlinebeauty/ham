@@ -72,7 +72,7 @@ abstract class hamLayout
 
 				//! Set x to first point after box
 				if ($skip) {
-					$x = $end + 1;
+					$x = $end;
 					continue;
 				}
 	

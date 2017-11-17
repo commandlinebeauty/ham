@@ -121,7 +121,7 @@ class hamBox
 		$outer = $buffer->getValid();
 
 //		if (! $this->border || ! $cfg->get('boxBorder')) {
-		if (! $this->border) {
+		if (! $this->border || ! $cfg->get('boxBorder')) {
 			$buffer->setValid($rect->offset(1));
 		} else {
 			$buffer->setValid($rect);
