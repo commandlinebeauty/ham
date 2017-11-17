@@ -13,6 +13,8 @@ class hamConfig
 		'comment'                  => '#'      ,
 		//! Empty space
 		'void'                     => ' '      ,
+		//! Default value for box borders (true means draw border)
+		'boxBorder'                =>  false   ,
 		//! Minimum height for being recognized as a box
 		'boxHeightMin'             =>  1       ,
 		//! Minimum width for being recognized as a box

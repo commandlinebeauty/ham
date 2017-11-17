@@ -239,13 +239,13 @@ abstract class hamLayout
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
 				     	($dy < 0) && ($skip = 1))                                                  ||
 				(strpos($delim->bracketLeft,   $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx < 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
+				     	($dx < 0) && ($skip == 1 ? ($border = false) || true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketRight,  $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx > 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
+				     	($dx > 0) && ($skip == 1 ? ($border = false) || true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketTop,    $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy < 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
+				     	($dy < 0) && ($skip == 1 ? ($border = false) || true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy > 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
+				     	($dy > 0) && ($skip == 1 ? ($border = false) || true : true) && !($skip = 0))                                                 ||
 				($skip > 0 && $skip++)
 				)
 			) {

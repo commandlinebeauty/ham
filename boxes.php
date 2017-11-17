@@ -95,45 +95,13 @@ class hamBox
 
 		//! Limit buffer to box area
 		$outer = $buffer->getValid();
-//		$buffer->setValid($rect->offset(1));
-		$buffer->setValid($rect);
 
-//! TODO Implement without modifiying buffer!!!
-//		if (!$this->border) {
-//
-//			$y_size = $buffer->getSizeY();
-//			$x_size = $buffer->getSizeX();
-//			$voidChar = $cfg->get('void');
-//			$margin = 1;
-//
-//			//! Delete border from buffer
-//			for ($y = $rect->getY(0); $y <= $rect->getY(1); $y++) {
-//				for ($x = $rect->getX(0); $x <= $rect->getX(1); $x++) {
-//					if (
-//						$y - $rect->getY(0) < $margin ||
-//						$rect->getY(1) - $y < $margin ||
-//						$x - $rect->getX(0) < $margin ||
-//						$rect->getX(1) - $x < $margin
-//					) {
-//						$buffer->set($y, $x, $voidChar, $cfg);
-//					}
-//				}
-//			}
-//			$hideBorder = " hamBoxHidden";
-//		}
-
-//		foreach ($this->getChildren() as $box) {
-//			$buffer->overlay(
-//				$box->getRect(),
-//				new hamBuffer(
-//					$box->render($buffer, $cfg),
-//					$cfg
-//				),
-//				$cfg
-//			);
-//		}
-//
-//		$content = $buffer->rect($rect, $cfg);
+//		if (! $this->border || ! $cfg->get('boxBorder')) {
+		if (! $this->border) {
+			$buffer->setValid($rect->offset(1));
+		} else {
+			$buffer->setValid($rect);
+		}
 
 		$children = $this->getChildCount();
 
@@ -149,7 +117,7 @@ class hamBox
 			case hamBoxType::ANY:
 			case hamBoxType::PLAIN:
 	
-				$out .= "<pre class=\"$typename$hideBorder boxLevel$children\">";
+				$out .= "<pre class=\"$typename\">";
 	
 				if ($children === 0) {
 					$out .= ham_entities($content, $cfg);
