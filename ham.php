@@ -45,6 +45,35 @@ class ham
 		}
 	}
 
+	//! Render page and return result
+	public function render($cfg = null)
+	{
+		if ($cfg === null) {
+			$cfg = $this->cfg;
+		}
+
+		$page = $cfg->get('page');
+
+		$out = "";
+	
+		//! Add page header if 'page' option is specified
+		if ($page) {
+			$out .= $this->header($cfg);
+		}
+	
+		//! Render layout and parse result
+		$out .= "<div class='ham'>" .
+			$this->parse($this->layout->render($this->buffer, $cfg), $cfg) .
+			"</div>";
+	
+		//! Add page footer if 'page' option is specified
+		if ($page) {
+			$out .= $this->footer($cfg);
+		}
+	
+		return $out;
+	}
+
 	//! (Re-)create buffer
 	public function init($content, $cfg = null)
 	{
@@ -89,33 +118,6 @@ class ham
 		//! Remove out-commented lines (starting with $comment char)
 		$out = preg_replace("/^$comment(.*)$$nl?/m", "", $content);
 
-		return $out;
-	}
-
-	//! Render page and return result
-	public function render($cfg = null)
-	{
-		if ($cfg === null) {
-			$cfg = $this->cfg;
-		}
-
-		$page = $cfg->get('page');
-
-		$out = "";
-	
-		//! Add page header if 'page' option is specified
-		if ($page) {
-			$out .= $this->header($cfg);
-		}
-	
-		//! Render layout and parse result
-		$out .= $this->parse($this->layout->render($this->buffer, $cfg), $cfg);
-	
-		//! Add page footer if 'page' option is specified
-		if ($page) {
-			$out .= $this->footer($cfg);
-		}
-	
 		return $out;
 	}
 

@@ -62,15 +62,17 @@ d |  \                                   |   /  |     '----------------------'
   | Command: Box is filled with the result of a | *     - Command Box -      *
   |          command.                           | *  This text will be re-   *
   |                                             | *  placed by the output of *
-  |                                             | *  'doc_cmdbox.sh'         *
-  '---------------------------------------------' '**************************'
-
-  +-----[./Form.sh]-----------------------------+ ;[]***[top -b -n 1]********;  
-  |                                             | *                          *
-  | A form can contain data and input fields.   | * - Another Command Box -  *
+  |  Action: Action button executing the given  | *  'doc_cmdbox.sh'         *
+  |          script.                            | '**************************'
+  |                                             |
+  '---------------------------------------------' ;[]***[top -b -n 1]********;
+                                                  *                          *
+  +-----[./Form.sh]-----------------------------+ * - Another Command Box -  *
   |                                             | *  This text will be re-   *
-  | A variable:     $foo                        | *  placed by the output of *
-  | An input field: {foo}                       | *  'top -b -n 1'           *
+  | A form can contain data and input fields.   | *  placed by the output of *  
+  |                                             | *  'top -b -n 1'           *
+  | A variable:     $foo                        | *                          *
+  | An input field: {foo}                       | *                          *
   |                                             | *                          *
   | The 'Submit' button below posts the field   | *                          *
   | values to the server. The Reset button must | *                          *
@@ -78,7 +80,15 @@ d |  \                                   |   /  |     '----------------------'
   | representation reads 'reset' (e.g. 'Reset', | *                          *
   | 'reSet', ...).                              | *                          *
   |                                             | *                          *
-  +---(Submit)--(Reset)-------------------------+ '**************************' 
+  +---(Submit)--(Reset)-------------------------+ '**************************'
+
+  .[./action.sh]------------------. .[][./action.sh]-.
+  ! Execute the action1.sh script ! ! Another action !
+  '-------------------------------' '----------------'
+
+
+
+
 
 
   .-----[Class Structure]-----------------------------------------------------.

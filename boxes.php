@@ -2,12 +2,34 @@
 
 abstract class hamBoxType
 {
-	const NONE  = -1;
-	const ANY   =  0;
-	const PLAIN =  1;
-	const FORM  =  2;
-	const FILE  =  3;
-	const CMD   =  4;
+	const NONE   = -1;
+	const ANY    =  0;
+	const PLAIN  =  1;
+	const FORM   =  2;
+	const FILE   =  3;
+	const CMD    =  4;
+	const ACTION =  5;
+
+	//! Return array of all real box types (no meta-types)
+	public function getTypes($meta = false)
+	{
+		if ($meta) {
+			$out = array(
+				$this->NONE,
+				$this->ANY
+			);
+		} else {
+			$out = array();
+		}
+
+		array_push($out, hamBoxType::PLAIN);
+		array_push($out, hamBoxType::FORM);
+		array_push($out, hamBoxType::FILE);
+		array_push($out, hamBoxType::CMD);
+		array_push($out, hamBoxType::ACTION);
+
+		return $out;
+	}
 
 	//! The name generated here will be used for additional CSS styling classes
 	public function getName($type)
@@ -25,6 +47,8 @@ abstract class hamBoxType
 			return 'hamBoxFile';
 		case  4:
 			return 'hamBoxCmd';
+		case  5:
+			return 'hamBoxAction';
 		default:
 			throw new Exception("Unknown box type \"$type\"!");
 		}
@@ -214,6 +238,69 @@ class hamBox
 				$out .= "<pre class=\"$typename\">";
 				$out .= ham_entities($content, $cfg);
 				$out .= "</pre>";
+				break;
+
+			case hamBoxType::ACTION:
+
+				$label = $this->getLabel();
+//				$cmd = $label . " status";
+//				$result = "";
+//
+//				if ($cmd === null || $cmd === "") {
+//					throw new Exception("Can not execute empty command!");
+//				}
+//
+//				exec(escapeshellcmd($cmd), $result);
+//
+//				if ($result === null || count($result) <= 0) {
+//					throw new Exception("Empty output from command \"$cmd\"!");
+//				}
+//
+//				if($result[0] === 'success') {
+					$actionclass = "hamBoxActionSuccess";
+//
+//				} else if($result[0] === 'failure') {
+//					$actionclass = "hamBoxActionFailure";
+//
+//				} else {
+//					$actionclass = "";
+//				}
+
+//				$overlay = new hamBuffer(implode("\n",$result), $cfg);
+//
+//				$tmp = clone $buffer;
+//
+//				$tmp->overlay(
+//					//! Coordinates in buffer frame
+//					new hamRect(
+//						$rect->getY(0) + 1,
+//						$rect->getY(1) - 1,
+//						$rect->getX(0) + 1,
+//						$rect->getX(1) - 1
+//					),
+//					//! Overlay buffer and configuration
+//					$overlay, $cfg
+//				);
+//
+//				$content = $tmp->rect($rect, $cfg);
+
+				$content = $buffer->rect($rect, $cfg);
+
+				$out .= "<pre class=\"$typename $actionclass\">" .
+					"<form action=\""                        .
+					htmlspecialchars($_SERVER["PHP_SELF"])   .
+					"#$label" .  "\" method=\"post\">"       .
+					"<input type=\"hidden\" "                .
+						"name=\"hamFormLabel\""          .
+						"value=\"$label\">"              .
+					"<input type=\"hidden\" "                .
+						"name=\"hamFormType\""           .
+						"value=\"action\">"              .
+					"<button type=submit>"                   .
+					ham_entities($content, $cfg)             .
+					"</button>"                              .
+					"</form>"                                .
+					"</pre>"                                 ;
 				break;
 	
 			default:
@@ -411,6 +498,18 @@ $this->bracketLeft    = $cfg->get('boxCmdEdgeBracketLeft');
 $this->bracketRight   = $cfg->get('boxCmdEdgeBracketRight');
 $this->bracketTop     = $cfg->get('boxCmdEdgeBracketTop');
 $this->bracketBottom  = $cfg->get('boxCmdEdgeBracketBottom');
+			break;
+
+		case hamBoxType::ACTION:
+
+$this->topCorner      = $cfg->get('boxActionCornerTop');
+$this->bottomCorner   = $cfg->get('boxActionCornerBottom');
+$this->yEdge          = $cfg->get('boxActionEdgeVertical');
+$this->xEdge          = $cfg->get('boxActionEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxActionEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxActionEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxActionEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxActionEdgeBracketBottom');
 			break;
 	
 		default:

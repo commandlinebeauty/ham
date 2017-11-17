@@ -80,12 +80,13 @@ abstract class hamLayout
 				$x_start = $x;
 	
 				//! Test each type individually
-				$types = array(
-					hamBoxType::PLAIN,
-					hamBoxType::FORM,
-					hamBoxType::FILE,
-					hamBoxType::CMD
-				);
+//				$types = array(
+//					hamBoxType::PLAIN,
+//					hamBoxType::FORM,
+//					hamBoxType::FILE,
+//					hamBoxType::CMD
+//				);
+                                $types = hamBoxType::getTypes();
 	
 				foreach ($types as $type) {
 	

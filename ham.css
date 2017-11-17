@@ -1,3 +1,11 @@
+.ham * {
+	font-family: monospace;
+	font-size: 100%;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
 .hamLayoutPlain {
 	font-family: monospace;
 	padding: 0;
@@ -30,7 +38,8 @@
 }
 
 .hamLayoutTable td a pre:hover {
-	background-color: lightgreen;
+/*	background-color: lightgreen;*/
+/*	filter: brightness(150%);*/
 }
 
 .hamLayoutLevel0 {
@@ -70,6 +79,14 @@
 	background-color: lightgrey;
 }
 
+.hamBoxAction {
+	background-color: lightgrey;
+}
+
+.hamBoxAction:hover {
+	filter: brightness(120%);
+}
+
 .hamBoxHidden {
 	background-color: #D0D0D0;
 }
@@ -83,9 +100,11 @@
 	padding: 0;
 }
 
+/*
 .hamInputText:hover {
 	background-color: lightblue;
 }
+*/
 
 .hamInputButton {
 	font-family: inherit;
@@ -95,6 +114,17 @@
 	padding: 0;
 }
 
+/*
 .hamInputButton:hover {
 	background-color: lightblue;
 }
+*/
+
+.hamBoxActionFailure * {
+	background-color: red;
+}
+
+.hamBoxActionSuccess * {
+	background-color: lightgreen;
+}
+
