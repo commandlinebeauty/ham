@@ -19,17 +19,50 @@ class hamLayoutTable extends hamLayout
 	private $x = array();
 	private $cells = array();
 
-	public function __construct($buffer, $cfg = null)
+	public function __construct($buffer, $cfg)
 	{
 		//! Call general layout constructor
 		parent::__construct($buffer, $cfg);
 		
+		$this->init($buffer, $cfg);
+	}
+
+	//! Render HTML table and return as string
+	public function render($buffer, $cfg = null)
+	{
+		$out = "";
+
+		$level = $this->getLevel();
+
+		//! Table start tag
+		$out .= "<table role='presentation' border=0 cellspacing=0 cellpadding=0 class='hamLayoutTable hamLayoutLevel$level'>\n";
+
+		for ($row = 0; $row < $this->getRowspan(); $row++) {
+	
+			$out .= "<tr>";
+	
+			for ($col = 0; $col < $this->getColspan(); $col++) {
+
+				$out .= $this->getCell($row, $col)->render($buffer, $cfg);
+			}
+	
+			$out .= "</tr>\n";
+		}
+	
+		$out .= "</table>";
+	
+		return $out;
+	}
+
+	public function init($buffer, $cfg = null)
+	{
 		//! Helper grid for table construction
-		$this->y = array(0, $buffer->getSizeY());
-		$this->x = array(0, $buffer->getSizeX());
+		$valid = $buffer->getValid();
+		$this->y = array($valid->getY(0), $valid->getY(1) + 1);
+		$this->x = array($valid->getX(0), $valid->getX(1) + 1);
 
 		//! Add a point at the start and one char after the end of each box
-		foreach (parent::getBoxes() as $box) {
+		foreach ($this->getBoxes() as $box) {
 
 			array_push($this->y, $box->getY(0)    );
 			array_push($this->y, $box->getY(2) + 1);
@@ -181,38 +214,15 @@ class hamLayoutTable extends hamLayout
 						$cell->setSpan(1, 1);
 					}
 
-					$cell->setRect(array(
-						'y' => array($y_start, $y_stop),
-						'x' => array($x_start, $x_stop)
+					$cell->setRect(new hamRect(
+						$y_start,
+						$y_stop,
+						$x_start,
+						$x_stop
 					));
 				}
 			}
 		}
-	}
-
-	//! Render HTML table and return as string
-	public function render($buffer, $cfg = null)
-	{
-		$out = "";
-
-		//! Table start tag
-		$out .= "<table role='presentation' border=0 cellspacing=0 cellpadding=0 class='hamLayoutTable'>\n";
-
-		for ($row = 0; $row < $this->getRowspan(); $row++) {
-	
-			$out .= "<tr>";
-	
-			for ($col = 0; $col < $this->getColspan(); $col++) {
-
-				$out .= $this->getCell($row, $col)->render($buffer, $cfg);
-			}
-	
-			$out .= "</tr>\n";
-		}
-	
-		$out .= "</table>";
-	
-		return $out;
 	}
 
 	//! Getter/Setter methods
@@ -266,6 +276,7 @@ class hamTableCell
 			$type === hamCellType::BKG) {
 
 			if ($type === hamCellType::BOX) {
+
 				$label = $this->getBox()->getLabel();
 			} else {
 				$label = "";

@@ -5,41 +5,76 @@ abstract class hamLayout
 {
 	//! Layout type
 	private $type;
-	private $boxes;
+	//! Layout nesting level
+	private $level;
+	//! Boxes contained in this layout
+	private $boxes = array();
 
+	//! Should be called at the beginning of all inherited layout classes' contructors
+	//! @param $buffer Buffer storing the ASCII content to be layouted (see #hamBuffer).
+	//! @param $region Restrict layout work to this region of $buffer. The remaining valid area of the buffer will be interpreted as background. Use complete buffer if null is given.
 	public function __construct($buffer, $cfg)
 	{
-		//! Scan for boxes
-		$this->boxes = $this->scan($buffer, null, $cfg);
-	}
+		$this->level = $cfg->get('layoutLevel');
 
-	//! Scan buffer for boxes
-	public function scan($inbuf, $rect, $cfg)
-	{
-		$buffer = clone $inbuf;
+		$outer = $buffer->getValid();
+		$region = $cfg->get('layoutScanRect');
 
-		if ($rect === null) {
-			$rect = array (
-				'y' => array(0, $buffer->getSizeY()),
-				'x' => array(0, $buffer->getSizeX())
-			);
+		//! Limit scan region
+		if ($region !== null) {
+			$buffer->setValid($region);
 		}
 
+		//! Scan for boxes
+		$this->boxes = $this->scan($buffer, $cfg);
+
+		if ($region !== null) {
+			$buffer->setValid($outer);
+		}
+	}
+
+//	public function render($buffer, $cfg = null)
+//	{
+//		//! Common rendering tasks
+//	}
+
+	//! Scan valid area of buffer for boxes
+	public function scan($buffer, $cfg)
+	{
 		$boxes = array();
-	
+
+		$rect = $buffer->getValid();
+//echo "scanY0: " . $rect->getY(0) . "->" . $rect->getY(1) . "\n";
+//echo "scanX0: " . $rect->getX(0) . "->" . $rect->getX(1) . "\n";
+
 		//! Scan buffer line by line
-		for ($y = $rect['y'][0]; $y < $rect['y'][1] - $cfg->get('boxHeightMin'); $y++) {
-	
-			$y_tmp = $y;
-	
+		for ($y = $rect->getY(0); $y <= $rect->getY(1) - $cfg->get('boxHeightMin'); $y++) {
+
 			$lineWidth = $buffer->getWidth($y);
 
-			if ($lineWidth > $rect['x'][1]) {
-				$lineWidth = $rect['x'][1];
+			if ($lineWidth > $rect->getX(1)) {
+				$lineWidth = $rect->getX(1) + 1;
 			}
 	
 			//! Scan each line char by char
-			for ($x = $rect['x'][0]; $x < $lineWidth - $cfg->get('boxWidthMin'); $x++) {
+			for ($x = $rect->getX(0); $x < $lineWidth - $cfg->get('boxWidthMin'); $x++) {
+
+				$skip = false;
+
+				//! Skip point if it is already contained inside another box
+				foreach ($boxes as $box) {
+					if ($box->getRect()->contains($y, $x)) {
+						$end = $box->getRect()->getX(1);
+						$skip = true;
+						break;
+					}
+				}
+
+				//! Set x to first point after box
+				if ($skip) {
+					$x = $end + 1;
+					continue;
+				}
 	
 				$y_start = $y;
 				$x_start = $x;
@@ -61,48 +96,25 @@ abstract class hamLayout
 	
 					$break = false;
 					$label = "";
-					$hidden = false;
+					$border = true;
 	
 					//! Search for edges
 					for ($dir = 0; $dir < 4; $dir++) {
 		
-						if ($this->edge($type, $dir, $buffer, $y, $x, $pos, $label, $hidden, $cfg)) {
+						if ($this->edge($type, $dir, $buffer, $y, $x, $pos, $label, $border, $cfg)) {
 
 							if ($dir == 3) {
 								//! It's a box
-
-								$boxrect = array(
-									'y' => array($pos['y'][0]+1, $pos['y'][2]-1),
-									'x' => array($pos['x'][0]+1, $pos['x'][2]-1)
-								);
-
-//								//! Create content buffer
-//								$boxbuf = new hamBuffer(
-//									$buffer->rect($boxrect),
-//									$cfg
-//								);
-
-								//! Cut box content from buffer
-//FWS TODO Think about how box nesting makes most sense... remove boxbuf, only one buffer
-//should be used for everything -> an updated buffer change all content at once
-//should set absolute box coordinates...
-
 								//! Scan for nested boxes recursively
 								$box = new hamBox(
 									$type,
 									$label,
 									$pos['y'],
 									$pos['x'],
-									$hidden,
-									$this->scan(
-										$buffer,
-										$boxrect,
-										$cfg
-									),
+									$border,
+									$buffer,
 									$cfg
 								);
-
-								$buffer->overlay($boxrect);
 
 								array_push($boxes, $box);
 
@@ -112,7 +124,7 @@ abstract class hamLayout
 	
 								$break = true;
 							} else {
-								//! Start at end corner
+								//! Start at end corner and scan for the next edge
 								$y = $pos['y'][$dir+1];
 								$x = $pos['x'][$dir+1];
 							}
@@ -135,7 +147,7 @@ abstract class hamLayout
 	}
 
 	//! Scan for box boundary clockwise
-	private function edge($type, $dir, $buffer, $y, $x, &$pos, &$label, &$hidden, $cfg)
+	private function edge($type, $dir, $buffer, $y, $x, &$pos, &$label, &$border, $cfg)
 	{
 		//! null means search for any type (FWS: clutter or useful feature?)
 		if ($type === null) {
@@ -227,13 +239,13 @@ abstract class hamLayout
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
 				     	($dy < 0) && ($skip = 1))                                                  ||
 				(strpos($delim->bracketLeft,   $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx < 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
+				     	($dx < 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketRight,  $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dx > 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
+				     	($dx > 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketTop,    $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy < 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
+				     	($dy < 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
 				(strpos($delim->bracketBottom, $buffer->get($y_next, $x_next, $cfg)) !== FALSE &&
-				     	($dy > 0) && ($skip == 1 ? $hidden = true : true) && !($skip = 0))                                                 ||
+				     	($dy > 0) && ($skip == 1 ? $border = false || true : true) && !($skip = 0))                                                 ||
 				($skip > 0 && $skip++)
 				)
 			) {
@@ -273,11 +285,6 @@ abstract class hamLayout
 		return false;
 	}
 
-//	public function render($buffer, $cfg = null)
-//	{
-//		//! Common rendering tasks
-//	}
-
 	//! Getter/Setter methods
 	public function getType() {
 		return $this->type;
@@ -293,6 +300,14 @@ abstract class hamLayout
 
 	public function setBoxes($boxes) {
 		$this->boxes = $boxes;
+	}
+
+	public function getLevel() {
+		return $this->level;
+	}
+
+	public function setLevel($level) {
+		return $this->level = $level;
 	}
 }
 

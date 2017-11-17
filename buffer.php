@@ -4,14 +4,22 @@ class hamBuffer
 {
 	//! Array of char arrays
 	private $buffer;
-	//! Number of lines
-	private $y_size;
-	//! Maximum number of characters per line
-	private $x_size;
+
+	//! Index of last line (count($buffer) - 1)
+	private $y_max;
+
+	//! Last character of the longest line
+	private $x_max;
+
 	//! Character for filling voids
 	private $voidChar;
 
-	public function __construct($content, $cfg = null)
+	//! The valid area of the buffer
+	//! Characters outside this area are replaced by $voidChar chars
+	private $valid;
+
+	//! Transform the content into an array of arrays of chars
+	public function __construct($content, $cfg)
 	{
 		if ($content === null || $content === '') {
 			throw new Exception('Empty content!');
@@ -27,36 +35,86 @@ class hamBuffer
 			}
 		}, $lines);
 
-		$this->y_size = count($this->buffer);
-		$this->x_size = 0;
+		$this->y_max = count($this->buffer) - 1;
+
+		$this->x_max = 0;
 
 		foreach ($this->buffer as $line) {
-			$length = count($line);
-			if ($length > $this->x_size) {
-				$this->x_size = $length;
+
+			$cur = count($line) - 1;
+
+			if ($cur > $this->x_max) {
+				$this->x_max = $cur;
 			}
 		}
+
+		$this->valid = $this->getMax();
 	}
 
-	//! Obtain the given point from the buffer
-	public function get($y, $x, $cfg = null)
+	//! Warning: This function actually changes the given point!
+	public function validate(&$y, &$x, $cfg = null)
 	{
+		$rect = $this->getValid();
+
+		//! Negativ index means: this many steps (+1) from the bottom
 		if ($y < 0) {
-			$y = $this->getSizeY() + $y;
+			$y += $this->getSizeY();
 		}
 
-		if ($y >= $this->getSizeY()) {
-			return $this->voidChar;
+		//! Test if it is still negativ
+		if ($y < 0) {
+			$y -= $this->getSizeY();
+			return false;
+		}
+
+		//! Point must be inside buffer and inside the valid rectangle
+		if (
+			$y <  $rect->getY(0) ||
+			$y >  $rect->getY(1) ||
+			$y >= $this->getSizeY()
+		) {
+			return false;
 		}
 
 		$length = $this->getWidth($y);
 
+		//! Invert negative index (count from right side instead)
 		if ($x < 0) {
-			$x = $length + $x;
+			$x += $length;
 		}
 
-		if ($x >= $length) {
+		//! Test if it is still negativ
+		if ($x < 0) {
+			$x -= $length;
+			return false;
+		}
+
+		//! Point must be inside buffer and inside the valid rectangle
+		if (
+			$x <  $rect->getX(0) ||
+			$x >  $rect->getX(1) ||
+			$x >= $length
+		) {
+			return false;
+		}
+
+		return true;
+	}
+
+	//! Obtain the given point from the buffer
+	public function get($y, $x, $cfg = null, &$success = null)
+	{
+		if (! $this->validate($y, $x, $cfg)) {
+
+			if ($success !== null) {
+				$success = false;
+			}
+
 			return $this->voidChar;
+		}
+
+		if ($success !== null) {
+			$success = true;
 		}
 
 		return $this->buffer[$y][$x];
@@ -65,32 +123,34 @@ class hamBuffer
 	//! Set the given point in the buffer
 	public function set($y, $x, $value, $cfg = null)
 	{
-		if ($y < 0) {
-			$y = $this->getSizeY() + $y;
+		if (! $this->validate($y, $x, $cfg)) {
+
+			return false;
+		} else {
+	        	$this->buffer[$y][$x] = $value;
+
+			return true;
 		}
-
-		$length = $this->getWidth($y);
-
-		if ($x < 0) {
-			$x = $length + $x;
-		}
-
-        	$this->buffer[$y][$x] = $value;
 	}
 
 	//! Obtain the content of a rectangle from the buffer
 	public function rect($rect, $cfg = null)
 	{
 		$out = "";
-	
-		for ($y = $rect['y'][0]; $y <= $rect['y'][1]; $y++) {
-	
-			for ($x = $rect['x'][0]; $x <= $rect['x'][1]; $x++) {
-	
+
+		$y_min = $rect->getY(0);
+		$y_max = $rect->getY(1);
+		$x_min = $rect->getX(0);
+		$x_max = $rect->getX(1);
+
+		for ($y = $y_min; $y <= $y_max; $y++) {
+
+			for ($x = $x_min; $x <= $x_max; $x++) {
+
 				$out .= $this->get($y, $x, $cfg);
 			}
-	
-			if ($y != $rect['y'][1]) {
+
+			if ($y != $rect->getY(1)) {
 				$out .= PHP_EOL;
 			}
 		}
@@ -101,48 +161,70 @@ class hamBuffer
 	//! Overlay given area of another buffer
 	public function overlay($rect, $overlay = null, $cfg = null)
 	{
-		$y0 = $rect['y'][0];
-		$x0 = $rect['x'][0];
+		$y0 = $rect->getY(0);
+		$x0 = $rect->getX(0);
+		$y1 = $rect->getY(1);
+		$x1 = $rect->getX(1);
 
-		for ($y = $y0; $y <= $rect['y'][1]; $y++) {
+		for ($y = $y0; $y <= $y1; $y++) {
 
-			for ($x = $x0; $x <= $rect['x'][1]; $x++) {
+			for ($x = $x0; $x <= $x1; $x++) {
 
 				if ($overlay !== null) {
-					$this->buffer[$y][$x] = $overlay->get($y-$y0, $x-$x0, $cfg);
+					$this->set($y, $x,
+						$overlay->get($y-$y0, $x-$x0, $cfg), $cfg);
+//					$this->buffer[$y][$x] = $overlay->get($y-$y0, $x-$x0, $cfg);
 				} else {
-					$this->buffer[$y][$x] = $this->voidChar;
+					$this->set($y, $x,
+						$this->voidChar, $cfg);
+//					$this->buffer[$y][$x] = $this->voidChar;
 				}
 			}
 		}
 	}
 
 	//! Maximum rectangle covered by this buffer
-	public function getRect()
+	public function getMax()
 	{
-		return array(
-			'y' => array(0, $this->y_size),
-			'x' => array(0, $this->x_size)
-		);
+		return new hamRect(0, $this->y_max, 0, $this->x_max);
+	}
+
+	//! Getter/Setter methods
+	public function getSizeY() {
+		return $this->y_max + 1;
+	}
+
+	public function getSizeX() {
+		return $this->x_max + 1;
+	}
+
+	//! Return valid rectangle
+	public function getValid()
+	{
+		return $this->valid;
+	}
+
+	//! Set valid rectangle
+	//! Set to full buffer size for $rect === null
+	public function setValid($rect)
+	{
+		if ($rect === null) {
+
+			$this->valid = $this->getMax();
+		} else {
+			$this->valid = $rect;
+		}
 	}
 
 	//! Return buffer content as string
 	public function getContent()
 	{
-		$content = $this->rect($this->getRect());
+		$content = $this->rect($this->getValid());
 
 		return $content;
 	}
 
-	//! Getter/Setter methods
-	public function getSizeY() {
-		return $this->y_size;
-	}
-
-	public function getSizeX() {
-		return $this->x_size;
-	}
-
+	//! Width of one line
 	public function getWidth($y) {
 		return count($this->buffer[$y]);
 	}

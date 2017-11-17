@@ -37,18 +37,226 @@ class hamBox
 	private $label;
 	private $y;
 	private $x;
-	private $hidden;
-//	private $buffer;
-	private $boxes;
+	private $border;
 
-	public function __construct($type, $label, $y, $x, $hidden, $children = null, $cfg = null)
+	private $layout = null;
+
+	public function __construct($type, $label, $y, $x, $border, $buffer, $cfg)
 	{
 		$this->type = $type;
 		$this->label = $label;
 		$this->y = $y;
 		$this->x = $x;
-		$this->hidden = $hidden;
-		$this->boxes = $children;
+		$this->border = $border;
+
+		//! Limit the valid and region of buffer to box area (order matters!)
+		$outer = $buffer->getValid();
+		$buffer->setValid($this->getRect());
+
+		//! Limit scan region of buffer to inside box area
+		//! This is necessary in order to avoid infinite recursion (box finds itself as child box)
+		$oldScanRect = $cfg->get('layoutScanRect');
+		$oldTableLevel = $cfg->get('layoutLevel');
+
+		$cfg->set('layoutScanRect', $this->getRect()->offset(1));
+		$cfg->set('layoutLevel', $oldTableLevel + 1);
+
+		switch ($cfg->get('layout')) {
+
+		case 'plain':
+			$this->layout = new hamLayoutPlain($buffer, $cfg);
+			break;
+
+		case 'table':
+			$this->layout = new hamLayoutTable($buffer, $cfg);
+			break;
+
+		default:
+			error_log("Unknown layout type " . $cfg->get('layout') . "!");
+			break;
+		}
+
+		//! Restore scan region and valid buffer region
+		$cfg->set('layoutLevel', $oldTableLevel);
+		$cfg->set('layoutScanRect', $oldScanRect);
+		$buffer->setValid($outer);
+	}
+
+	public function render($buffer, $cfg = null)
+	{
+		$type = $this->getType();
+		$label = $this->getLabel();
+		$rect = $this->getRect();
+		$typename = hamBoxType::getName($type);
+		
+
+		$out = "";
+		$hideBorder = "";
+
+		//! Limit buffer to box area
+		$outer = $buffer->getValid();
+//		$buffer->setValid($rect->offset(1));
+		$buffer->setValid($rect);
+
+//! TODO Implement without modifiying buffer!!!
+//		if (!$this->border) {
+//
+//			$y_size = $buffer->getSizeY();
+//			$x_size = $buffer->getSizeX();
+//			$voidChar = $cfg->get('void');
+//			$margin = 1;
+//
+//			//! Delete border from buffer
+//			for ($y = $rect->getY(0); $y <= $rect->getY(1); $y++) {
+//				for ($x = $rect->getX(0); $x <= $rect->getX(1); $x++) {
+//					if (
+//						$y - $rect->getY(0) < $margin ||
+//						$rect->getY(1) - $y < $margin ||
+//						$x - $rect->getX(0) < $margin ||
+//						$rect->getX(1) - $x < $margin
+//					) {
+//						$buffer->set($y, $x, $voidChar, $cfg);
+//					}
+//				}
+//			}
+//			$hideBorder = " hamBoxHidden";
+//		}
+
+//		foreach ($this->getChildren() as $box) {
+//			$buffer->overlay(
+//				$box->getRect(),
+//				new hamBuffer(
+//					$box->render($buffer, $cfg),
+//					$cfg
+//				),
+//				$cfg
+//			);
+//		}
+//
+//		$content = $buffer->rect($rect, $cfg);
+
+		$children = $this->getChildCount();
+
+		if ($children > 0) {
+
+			$out = $this->getLayout()->render($buffer, $cfg);
+		} else {
+			$content = $buffer->rect($rect, $cfg);
+
+			switch ($this->getType()) {
+	
+			case hamBoxType::NONE:
+			case hamBoxType::ANY:
+			case hamBoxType::PLAIN:
+	
+				$out .= "<pre class=\"$typename$hideBorder boxLevel$children\">";
+	
+				if ($children === 0) {
+					$out .= ham_entities($content, $cfg);
+				} else {
+					$out .= $content;
+				}
+				$out .= "</pre>";
+				break;
+	
+			case hamBoxType::FORM:
+	
+				$out .= "<form action=\"" .
+					htmlspecialchars($_SERVER["PHP_SELF"]) . "#$label" .
+					"\" method=\"post\">";
+	
+				$out .= "<input type=\"hidden\" name=\"hamFormLabel\" value=\"$label\">";
+	
+				$out .= "<pre class=\"$typename\">";
+	
+				if ($children === 0) {
+					$out .= ham_entities($content, $cfg);
+				} else {
+					$out .= $content;
+				}
+				$out .= "</pre>";
+	
+				$out .= "</form>";
+				break;
+	
+			case hamBoxType::FILE:
+	
+				$file = $this->getLabel();
+	
+				if (!file_exists($file)) {
+					throw new Exception("File \"$file\" not found!");
+				}
+	
+				$overlay = new hamBuffer(file_get_contents($file), $cfg);
+	
+				$tmp = clone $buffer;
+	
+				$tmp->overlay(
+					//! Coordinates in buffer frame
+					new hamRect(
+						$rect->getY(0) + 1,
+						$rect->getY(1) - 1,
+						$rect->getX(0) + 1,
+						$rect->getX(1) - 1
+					),
+					//! Overlay buffer and configuration
+					$overlay, $cfg
+				);
+	
+				$content = $tmp->rect($rect, $cfg);
+	
+				$out .= "<pre class=\"$typename\">";
+				$out .= ham_entities($content, $cfg);
+				$out .= "</pre>";
+				break;
+			
+			case hamBoxType::CMD:
+	
+				$cmd = $this->getLabel();
+				$result = "";
+	
+				if ($cmd === null || $cmd === "") {
+					throw new Exception("Can not execute empty command!");
+				}
+	
+				exec(escapeshellcmd($cmd), $result);
+	
+				if ($result === null || count($result) <= 0) {
+					throw new Exception("Empty output from command \"$cmd\"!");
+				}
+	
+				$overlay = new hamBuffer(implode("\n",$result), $cfg);
+	
+				$tmp = clone $buffer;
+	
+				$tmp->overlay(
+					//! Coordinates in buffer frame
+					new hamRect(
+						$rect->getY(0) + 1,
+						$rect->getY(1) - 1,
+						$rect->getX(0) + 1,
+						$rect->getX(1) - 1
+					),
+					//! Overlay buffer and configuration
+					$overlay, $cfg
+				);
+	
+				$content = $tmp->rect($rect, $cfg);
+	
+				$out .= "<pre class=\"$typename\">";
+				$out .= ham_entities($content, $cfg);
+				$out .= "</pre>";
+				break;
+	
+			default:
+				throw new Exception("Unknown box type $type!");
+			}
+		}
+
+		//! Set buffer to previous size
+		$buffer->setValid($outer);
+
+		return $out;
 	}
 
 	//! Returns the buffer content of this box
@@ -58,167 +266,6 @@ class hamBox
 		$rect = $this->getRect();
 		
 		return $buffer->rect($rect, $cfg);
-	}
-
-	public function render($buffer, $cfg = null)
-	{
-		$type = $this->getType();
-		$label = $this->getLabel();
-		$rect = $this->getRect();
-		$typename = hamBoxType::getName($type);
-		$level = $this->getBoxCount();
-
-		$out = "";
-		$hideBorder = "";
-
-//FWS TODO The original buffer should not be modified by box render()
-// also each box instance should have a layout instead of storing boxes directly
-// i.e. do not scan for child boxes in scan() but instead the box layout should
-// be carried out (not rendered) in scan
-		if ($this->hidden) {
-
-			$y_size = $buffer->getSizeY();
-			$x_size = $buffer->getSizeX();
-			$voidChar = $cfg->get('void');
-			$margin = 1;
-
-			//! Delete border from buffer
-			for ($y = $rect['y'][0]; $y <= $rect['y'][1]; $y++) {
-				for ($x = $rect['x'][0]; $x <= $rect['x'][1]; $x++) {
-					if (
-						$y - $rect['y'][0] < $margin ||
-						$rect['y'][1] - $y < $margin ||
-						$x - $rect['x'][0] < $margin ||
-						$rect['x'][1] - $x < $margin
-					) {
-						$buffer->set($y, $x, $voidChar, $cfg);
-					}
-				}
-			}
-			$hideBorder = " hamBoxHidden";
-		}
-
-		foreach ($this->getBoxes() as $box) {
-			$buffer->overlay(
-				$box->getRect(),
-				new hamBuffer(
-					$box->render($buffer, $cfg),
-					$cfg
-				),
-				$cfg
-			);
-		}
-
-		$content = $buffer->rect($rect, $cfg);
-
-		switch ($this->getType()) {
-
-		case hamBoxType::NONE:
-		case hamBoxType::ANY:
-		case hamBoxType::PLAIN:
-
-			$out .= "<pre class=\"$typename$hideBorder boxLevel$level\">";
-			$out .= ham_entities($content, $cfg);
-			$out .= "</pre>";
-			break;
-
-		case hamBoxType::FORM:
-
-			$out .= "<form action=\"" .
-				htmlspecialchars($_SERVER["PHP_SELF"]) . "#$label" .
-				"\" method=\"post\">";
-
-			$out .= "<input type=\"hidden\" name=\"hamFormLabel\" value=\"$label\">";
-
-			$out .= "<pre class=\"$typename\">";
-			$out .= ham_entities($content, $cfg);
-			$out .= "</pre>";
-
-			$out .= "</form>";
-			break;
-
-		case hamBoxType::FILE:
-
-			$file = $this->getLabel();
-
-			if (!file_exists($file)) {
-				throw new Exception("File \"$file\" not found!");
-			}
-
-			$overlay = new hamBuffer(file_get_contents($file), $cfg);
-
-			$tmp = clone $buffer;
-
-			$tmp->overlay(
-				//! Coordinates in buffer frame
-				array(
-					'y' => array(
-						$rect['y'][0] + 1,
-						$rect['y'][1] - 1
-					),
-					'x' => array(
-						$rect['x'][0] + 1,
-						$rect['x'][1] - 1
-					)
-				),
-				//! Overlay buffer and configuration
-				$overlay, $cfg
-			);
-
-			$content = $tmp->rect($rect, $cfg);
-
-			$out .= "<pre class=\"$typename\">";
-			$out .= ham_entities($content, $cfg);
-			$out .= "</pre>";
-			break;
-		
-		case hamBoxType::CMD:
-
-			$cmd = $this->getLabel();
-			$result = "";
-
-			if ($cmd === null || $cmd === "") {
-				throw new Exception("Can not execute empty command!");
-			}
-
-			exec(escapeshellcmd($cmd), $result);
-
-			if ($result === null || count($result) <= 0) {
-				throw new Exception("Empty output from command \"$cmd\"!");
-			}
-
-			$overlay = new hamBuffer(implode("\n",$result), $cfg);
-
-			$tmp = clone $buffer;
-
-			$tmp->overlay(
-				//! Coordinates in buffer frame
-				array(
-					'y' => array(
-						$rect['y'][0] + 1,
-						$rect['y'][1] - 1
-					),
-					'x' => array(
-						$rect['x'][0] + 1,
-						$rect['x'][1] - 1
-					)
-				),
-				//! Overlay buffer and configuration
-				$overlay, $cfg
-			);
-
-			$content = $tmp->rect($rect, $cfg);
-
-			$out .= "<pre class=\"$typename\">";
-			$out .= ham_entities($content, $cfg);
-			$out .= "</pre>";
-			break;
-
-		default:
-			throw new Exception("Unknown box type $type!");
-		}
-
-		return $out;
 	}
 
 	//! Getter/Setter methods
@@ -243,6 +290,14 @@ class hamBox
 		$this->label = $label;
 	}
 
+	public function getLayout() {
+		return $this->layout;
+	}
+
+	public function setLayout($layout) {
+		$this->layout = $layout;
+	}
+
 	public function getY($index = null) {
 
 		if ($index === null) {
@@ -263,33 +318,35 @@ class hamBox
 
 	public function getRect() {
 
-		return array(
-			'y' => array($this->y[0], $this->y[2]),
-			'x' => array($this->x[0], $this->x[2])
+		return new hamRect(
+			$this->y[0],
+			$this->y[2],
+			$this->x[0],
+			$this->x[2]
 		);
 	}
 
 	public function setRect($rect) {
-		$this->y[0] = $rect['y'][0];
-		$this->y[1] = $rect['y'][0];
-		$this->y[2] = $rect['y'][1];
-		$this->y[3] = $rect['y'][1];
-		$this->x[0] = $rect['x'][0];
-		$this->x[1] = $rect['x'][1];
-		$this->x[2] = $rect['x'][1];
-		$this->x[3] = $rect['x'][0];
+		$this->y[0] = $rect->getY(0);
+		$this->y[1] = $rect->getY(0);
+		$this->y[2] = $rect->getY(1);
+		$this->y[3] = $rect->getY(1);
+		$this->x[0] = $rect->getX(0);
+		$this->x[1] = $rect->getX(1);
+		$this->x[2] = $rect->getX(1);
+		$this->x[3] = $rect->getX(0);
 	}
 
-	public function getBoxes() {
-		return $this->boxes;
+	public function getChildren() {
+		return $this->layout->getBoxes();
 	}
 
-	public function setBoxes($boxes) {
-		$this->boxes = $boxes;
-	}
-
-	public function getBoxCount() {
-		return count($this->getBoxes());
+	public function getChildCount() {
+		if ($this->layout === null) {
+			return 0;
+		} else {
+			return count($this->layout->getBoxes());
+		}
 	}
 }
 

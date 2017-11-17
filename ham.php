@@ -6,6 +6,7 @@
 <?php
 
 //! Include files (order matters)
+include "rect.php";
 include "cgi.php";
 include "entities.php";
 include "config.php";
@@ -39,8 +40,6 @@ class ham
 
 		$this->init($content, $this->cfg);
 
-		$this->layout($this->cfg);
-
 		if ($this->cfg->get('debug')) {
 			echo ham_debug_boxes($this->layout->getBoxes(), $this->buffer, $this->cfg);
 		}
@@ -55,7 +54,26 @@ class ham
 
 		//! Parse content and create buffer
 		unset($this->buffer);
-		$this->buffer = new hamBuffer($this->filter($content, $cfg), $cfg);
+		unset($this->layout);
+
+		$this->buffer = new hamBuffer(
+			$this->filter($content, $cfg)
+		, $cfg);
+
+		switch ($cfg->get('layout')) {
+
+		case 'plain':
+			$this->layout = new hamLayoutPlain($this->buffer, $cfg);
+			break;
+
+		case 'table':
+			$this->layout = new hamLayoutTable($this->buffer, $cfg);
+			break;
+
+		default:
+			error_log("Unknown layout type " . $cfg->get('layout') . "!");
+			break;
+		}
 	}
 
 	//! Filter provided content (before buffer creation)
@@ -72,29 +90,6 @@ class ham
 		$out = preg_replace("/^$comment(.*)$$nl?/m", "", $content);
 
 		return $out;
-	}
-
-	//! Layout page according to buffer
-	public function layout($cfg = null)
-	{
-		if ($cfg === null) {
-			$cfg = $this->cfg;
-		}
-
-		switch ($cfg->get('layout')) {
-
-		case 'plain':
-			$this->layout = new hamLayoutPlain($this->buffer, $cfg);
-			break;
-
-		case 'table':
-			$this->layout = new hamLayoutTable($this->buffer, $cfg);
-			break;
-
-		default:
-			error_log("Unknown layout type " . $cfg->get('layout') . "!");
-			break;
-		}
 	}
 
 	//! Render page and return result

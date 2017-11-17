@@ -33,6 +33,26 @@
 	background-color: lightgreen;
 }
 
+.hamLayoutLevel0 {
+	background-color: #F2F2F2;
+}
+
+.hamLayoutLevel1 {
+	background-color: #E2E2E2;
+}
+
+.hamLayoutLevel2 {
+	background-color: #D2D2D2;
+}
+
+.hamLayoutLevel3 {
+	background-color: #C2C2C2;
+}
+
+.hamLayoutLevel4 {
+	background-color: #B2B2B2;
+}
+
 .hamBoxPlain {
 	background-color: #F0F0F0;
 }

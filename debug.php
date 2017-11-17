@@ -30,18 +30,13 @@ function ham_debug_boxes($boxes, $buffer, $cfg = null)
 			$box->getType(),
 			$box->getY()[0], $box->getY()[2],
 			$box->getX()[0], $box->getX()[2],
-			"<pre>".$buffer->rect(
-				array(
-					'y' => array(
-						$box->getY()[0],
-						$box->getY()[2]),
-					'x' => array(
-						$box->getX()[0],
-						$box->getX()[2])
-				), $buffer, $cfg
-			)."</pre>",
-			$box->getBoxCount() > 0 ?
-				ham_debug_boxes($box->getBoxes(), $buffer, $cfg) :
+			"<pre>".
+//				ham_entities($buffer->rect($box->getRect(), $buffer, $cfg), $cfg).
+//				ham_entities($box->render($buffer, $cfg), $buffer, $cfg) .
+				$box->render($buffer, $cfg) .
+				"</pre>",
+			$box->getChildCount() > 0 ?
+				ham_debug_boxes($box->getLayout()->getBoxes(), $buffer, $cfg) :
 				""
 		);
 

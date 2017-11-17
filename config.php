@@ -63,9 +63,13 @@ class hamConfig
 		'inputButtonRight'         => ')'      ,
 		'inputTextLeft'            => '{'      ,
 		'inputTextRight'           => '}'      ,
+		//! Scan region inside layout. null means: scan the whole valid region
+		'layoutScanRect'           => null     ,
+		//! Table nesting level (0 means not nested inside another table)
+		'layoutLevel'              => 0        ,
 		//! Render background into as few cells as possible
-//		'tableUnify'            => true        ,
-		'tableUnify'            => false       ,
+//		'tableUnify'               => true     ,
+		'tableUnify'               => false    ,
 		//! Make a link out of each box
 //		'tableCellBoxLink'         => true     ,
 		'tableCellBoxLink'         => false    ,

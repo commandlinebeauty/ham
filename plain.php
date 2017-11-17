@@ -21,7 +21,8 @@ class hamLayoutPlain extends hamLayout
 
 			$tmp->overlay(
 				//! Coordinates in buffer frame
-				$box->getRect(),
+//				$box->getRect(),
+				$box->render($buffer, $cfg),
 				//! Overlay buffer and configuration
 				$overlay, $cfg
 			);
