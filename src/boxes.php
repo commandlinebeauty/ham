@@ -55,6 +55,7 @@ abstract class hamBoxType
 	}
 }
 
+//! The different box source types
 abstract class hamBoxSource
 {
 	const NONE = -1;
@@ -64,8 +65,11 @@ abstract class hamBoxSource
 	const CMD  =  3;
 }
 
+//! Main box class
 class hamBox
 {
+	private $status = 0;
+
 	private $type;
 	private $source = hamBoxSource::NONE;
 	private $label;
@@ -270,13 +274,15 @@ class hamBox
 		$content = "";
 		$rect = $this->getRect();
 
-//		if ($this->source === null || $this->source === hamBoxSource::TEXT) {
 		if ($this->source === hamBoxSource::FILE) {
 
 			$file = $this->getLabel();
 
 			if (!file_exists($file)) {
-				throw new Exception("File \"$file\" not found!");
+//				throw new Exception("File \"$file\" not found!");
+				$this->status++;
+//				error_log("\"$file\" not found!");
+				return "\"$file\" not found!";
 			}
 
 			$overlay = new hamBuffer(file_get_contents($file), $cfg);
@@ -303,13 +309,21 @@ class hamBox
 			$result = "";
 
 			if ($cmd === null || $cmd === "") {
-				throw new Exception("Can not execute empty command!");
+				$this->status++;
+				return "Empty command!";
 			}
 
-			exec(escapeshellcmd($cmd), $result);
+			$retval = -1;
 
-			if ($result === null || count($result) <= 0) {
-				throw new Exception("Empty output from command \"$cmd\"!");
+			exec(escapeshellcmd($cmd), $result, $retval);
+
+			if ($retval !== 0) {
+				$this->status++;
+				return "`$cmd` not found!";
+			}
+
+			if (count($result) <= 0) {
+				return "";
 			}
 
 			$overlay = new hamBuffer(implode("\n",$result), $cfg);

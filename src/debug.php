@@ -1,5 +1,49 @@
 <?php
 
+function ham_debug_config($cfg)
+{
+	$out = "";
+	$names = array('Name', 'Value');
+
+	$out .= "
+<table border=1>
+	<tr>
+	";
+
+	foreach ($names as $name) {
+		$out .= "
+		<th>
+			$name
+		</th>
+		";
+	}
+
+	$out .= "
+	</tr>
+	";
+
+	$count = 0;
+
+	foreach ($cfg->getArray() as $name => $value) {
+
+		$out .= "
+	<tr>
+		<td>
+			$name
+		</td>
+		<td align=center>
+			$value
+		</td>
+	</tr>
+	";
+		$count++;
+	}
+
+	$out .= "</table>";
+
+	return $out;
+}
+
 function ham_debug_boxes($boxes, $buffer, $cfg = null)
 {
 	$out = "";

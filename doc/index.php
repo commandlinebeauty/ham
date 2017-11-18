@@ -3,7 +3,7 @@
      @usage Access this file from your browser to see the documentation
  -->
 <?php
-	include 'ham.php';
+	include '../src/ham.php';
 
 	$ham = new ham(file_get_contents('ham.txt'),
 		array(

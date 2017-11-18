@@ -51,18 +51,18 @@ d |  \                                   |   /  |     '----------------------'
                                                   |well.           |  still be
   .-----[Box Types]-----------------------------. '----------------'  shown.
   |                                             |                           
-  | Different box types are distinguished by    | .----[@doc_filebox.txt]----.
+  | Different box types are distinguished by    | .----[@source_file.txt]----.
   | the box corners and edge symbols.           | |      - File Box -        |
   |                                             | |   This text will be re-  |
   |    Info: For general purpose description    | |   placed by the content  |
-  |          and information blocks.            | |   of 'doc_filebox.txt'.  |
+  |          and information blocks.            | |   of 'source_file.txt'.  |
   |                                             | '--------------------------'
   |    Form: A submitable form containing input |
-  |          and/or data/description fields.    | .----[!./doc_cmdbox.sh]----.
+  |          and/or data/description fields.    | .----[!./source_cmd.sh]----.
   |                                             | |     - Command Box -      |
   |                                             | |  This text will be re-   |
   |                                             | |  placed by the output of |
-  |  Action: Action button executing the given  | |  'doc_cmdbox.sh'         |
+  |  Action: Action button executing the given  | |  'source_cmd.sh'         |
   |          script.                            | '--------------------------'
   |                                             |
   '---------------------------------------------' .[]----[!top -b -n 1]------.

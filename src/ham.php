@@ -1,11 +1,9 @@
-<!-- @file H.A.M. main library file
-     @author Fritz-Walter Schwarm
-     @usage Include this file to your project and call ham()
- -->
-
 <?php
+//! @file H.A.M. main library file
+//! @usage Include this file to your project and call ham()
+//!
+//! @author Fritz-Walter Schwarm
 
-//! Include files (order matters)
 include "parse.php";
 include "rect.php";
 include "cgi.php";
@@ -13,18 +11,13 @@ include "config.php";
 include "buffer.php";
 include "boxes.php";
 include "layout.php";
-
-//! Layouts
 include "plain.php";
 include "table.php";
-
 include "links.php";
 include "inputs.php";
-include "header.php";
-include "footer.php";
 include "debug.php";
 
-//! Main class
+//! Main interface class
 class ham
 {
 	private $cfg;
@@ -41,6 +34,7 @@ class ham
 		$this->init($content, $this->cfg);
 
 		if ($this->cfg->get('debug')) {
+			echo ham_debug_config($this->cfg);
 			echo ham_debug_boxes($this->layout->getBoxes(), $this->buffer, $this->cfg);
 		}
 	}
@@ -143,6 +137,7 @@ class ham
 		}
 
 		$title = $cfg->get('title');
+		$css = $cfg->get('css');
 	
 		return "
 <!DOCTYPE html>
@@ -153,7 +148,7 @@ class ham
 		</title>
 
 		<link rel='stylesheet' type='text/css'
-			href='ham.css' />
+			href='$css' />
 	</head>
 	<body>\n";
 	}
@@ -168,6 +163,10 @@ class ham
 	</body>
 </html>
 		";
+	}
+
+	public function getConfig() {
+		return $this->cfg;
 	}
 }
 

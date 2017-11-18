@@ -5,6 +5,12 @@ class hamConfig
 	private $options = array();
 
 	private $defaults = array(
+//		//! HAM root dir
+//		'root_dir'                    => '../'    ,
+//		//! Directory for CGI scripts
+//		'cgi_dir'                     => '../cgi' ,
+		//! CSS style file
+		'css'                         => '../css/ham.css',
 		//! Debugging
 		'debug'                       => false    ,
 		//! Layout
@@ -97,8 +103,25 @@ class hamConfig
 		return $this->defaults[$name];
 	}
 
+	public function getKeys()
+	{
+		return array_keys($this->defaults);
+	}
+
+	public function getArray()
+	{
+		$out = array();
+
+		foreach ($this->getKeys() as $key) {
+			$out[$key] = $this->get($key);
+		}
+
+		return $out;
+	}
+
 	//! Return requested value
-	public function get($name, $default = null) {
+	public function get($name, $default = null)
+	{
 
 		if (array_key_exists($name, $this->options)) {
 
@@ -115,7 +138,8 @@ class hamConfig
 		return $value;
 	}
 
-	public function set($name, $value = null) {
+	public function set($name, $value = null)
+	{
 
 		if ($value === null) {
 			$this->options[$name] = $this->defaults[$name];
