@@ -105,7 +105,7 @@ class ham
 			break;
 
 		default:
-			error_log("Unknown layout type " . $cfg->get('layout') . "!");
+			throw new Exception("Unknown layout type " . $cfg->get('layout') . "!");
 			break;
 		}
 	}

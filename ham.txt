@@ -87,43 +87,29 @@ d |  \                                   |   /  |     '----------------------'
   | A form can contain data and input fields as | | This is a form type box. |
   | well as buttons:                            | |                          |
   |                                             | |                          |
-  |                Variable: $foo               | |     Variable: $foo       |
-  |               Textfield: {foo}              | |    Textfield: {foo}      |
+  |                Variable: $foo               | |      Variable: $foo      |
+  |               Textfield: {foo}              | |     Textfield: {foo}     |
   |                                             | |                          |
   | The 'Submit' button posts the field values  | |                          |
   | to the script given as box label. The Reset | |                          |
-  | button must be named such that its lower-   | | Submit button: (Submit)  |
-  | case representation reads 'reset' ('Reset', | |  Reset button: (Reset)   |
-  | 'reSet', ...).                              | |                          |
+  | button must be named such that its lower-   | |                          |
+  | case representation reads 'reset' ('Reset', | | Submit button: (Submit)  |
+  | 'reSet', ...). Both can be placed on edges. | |  Reset button: (Reset)   |
   |                                             | |                          |
   '---(Submit)--(Reset)-------------------------' +--------------------------+
 
+  .[exit 0]-------------. .[./action.sh]------------------. .[][./action.sh]-. 
+  !      Action Box     ! ! Execute the action1.sh script ! ! Another action ! 
+  '---------------------' '-------------------------------' '----------------' 
 
-  .[./action.sh]------------------. .[][./action.sh]-. 
-  ! Execute the action1.sh script ! ! Another action ! 
-  '-------------------------------' '----------------' 
-
-  .-----[Action Boxes]---------------------------. .----[Source Selection]----.
+  .-----[Action Boxes]--------------------------. .---------[Note]-----------.
   |                                             | |                          |
-  |    Text: Get content from the static text   | | Source can be configured |
-  |          inside the box.                    | | independent of the box   |
-  |                                             | | type by starting the box |
-  |    File: Shows the content of a text file.  | | label with a special     |
-  |                                             | | modifier:                |
-  | Command: Box is filled with the result of a | |                          |
-  |          command.                           | | '@': Text file           |
-  |                                             | | '!': Command output      |
+  | Action boxes are basically buttons exe-     | | The meaning of a com-    |
+  | cuting the script provided as box label.    | | bination of the action   |
+  | The script's exit status (0 for success) is | | type and file/cmd type   |
+  | displayed on the updated page.              | | sources is questionable. |
   |                                             | |                          |
   '---------------------------------------------' '--------------------------'
-
-
-
-
-
-
-
-
-
 
   .-----[Box Sources]---------------------------. .----[Source Selection]----.
   |                                             | |                          |
@@ -138,8 +124,6 @@ d |  \                                   |   /  |     '----------------------'
   |                                             | |                          |
   '---------------------------------------------' '--------------------------'
 
-
-
   .[]---------------------------. .[]----------------------------------------.
   | Box borders can be removed  | | Box borders can be removed globally by   |
   | by defining an empty box    | | by setting the 'boxBorder' configuration |
@@ -150,7 +134,6 @@ d |  \                                   |   /  |     '----------------------'
   | |       ...               | ||<--- No boundaries necessary between boxes |
   '-----------------------------''-------------------------------------------'
                                                         
-                                                       
   .-----[Class Structure]----------------------------------------------------.
   |                                                                          |
   | +[ham]-----------------------------------------------------------------+ |
@@ -201,35 +184,4 @@ d |  \                                   |   /  |     '----------------------'
   |                                                                          |
   '--------------------------------------------------------------------------'
 
-
-
-
-
-
-
-
-
-# 
-#  .---------------------------------------------. ############################
-#  | Table Layout                                | #                          #
-#  | ------------                                | #                          #
-#  |                                             | #                          #
-#  | When the 'table' layout is used, each box   | #                          #
-#  | is put into its own table cell.	         | #                          #
-#  '---------------------------------------------' ############################
-#
-#  ..........................                                                  
-# .                          .                                                 
-# .                          .                                                 
-# .                          .                                                 
-# .                          .                                                 
-#  ..........................                                                  
-
-
-
-
-
-
-
-                                                 
 |<- This is the last line ($y = $N_y-2) ------------------------------------->|

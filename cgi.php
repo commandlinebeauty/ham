@@ -37,13 +37,7 @@ class hamCGI
 				exec(escapeshellcmd($cmd), $out, $status);
 
 				$this->formStatus[$id] = $status;
-		
-				if ($status != 0) {
-					//! An error occured
-					error_log("Error on command \"$cmd\"!");
-//					throw new Exception("Error on command \"$cmd\"!");
-				}
-				
+
 			} else if ($label !== null && file_exists($label)) {
 				//! Check if a script for handling this POST exists
 				foreach (array_keys($_POST) as $field) {

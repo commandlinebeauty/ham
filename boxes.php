@@ -122,7 +122,7 @@ class hamBox
 			break;
 
 		default:
-			error_log("Unknown layout type " . $cfg->get('layout') . "!");
+			throw new Exception("Unknown layout type " . $cfg->get('layout') . "!");
 			break;
 		}
 
@@ -198,75 +198,6 @@ class hamBox
 				$out .= "</pre>";
 	
 				$out .= "</form>";
-				break;
-	
-			case hamBoxType::FILE:
-	
-				$file = $this->getLabel();
-	
-				if (!file_exists($file)) {
-					throw new Exception("File \"$file\" not found!");
-				}
-	
-				$overlay = new hamBuffer(file_get_contents($file), $cfg);
-	
-				$tmp = clone $buffer;
-	
-				$tmp->overlay(
-					//! Coordinates in buffer frame
-					new hamRect(
-						$rect->getY(0) + 1,
-						$rect->getY(1) - 1,
-						$rect->getX(0) + 1,
-						$rect->getX(1) - 1
-					),
-					//! Overlay buffer and configuration
-					$overlay, $cfg
-				);
-	
-				$content = $tmp->rect($rect, $cfg);
-	
-				$out .= "<pre class=\"$typename\">";
-				$out .= ham_parse_htmlentities($content, $cfg);
-				$out .= "</pre>";
-				break;
-			
-			case hamBoxType::CMD:
-	
-				$cmd = $this->getLabel();
-				$result = "";
-	
-				if ($cmd === null || $cmd === "") {
-					throw new Exception("Can not execute empty command!");
-				}
-	
-				exec(escapeshellcmd($cmd), $result);
-	
-				if ($result === null || count($result) <= 0) {
-					throw new Exception("Empty output from command \"$cmd\"!");
-				}
-	
-				$overlay = new hamBuffer(implode("\n",$result), $cfg);
-	
-				$tmp = clone $buffer;
-	
-				$tmp->overlay(
-					//! Coordinates in buffer frame
-					new hamRect(
-						$rect->getY(0) + 1,
-						$rect->getY(1) - 1,
-						$rect->getX(0) + 1,
-						$rect->getX(1) - 1
-					),
-					//! Overlay buffer and configuration
-					$overlay, $cfg
-				);
-	
-				$content = $tmp->rect($rect, $cfg);
-	
-				$out .= "<pre class=\"$typename\">";
-				$out .= ham_parse_htmlentities($content, $cfg);
-				$out .= "</pre>";
 				break;
 
 			case hamBoxType::ACTION:

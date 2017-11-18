@@ -53,12 +53,13 @@ function ham_inputs_button($in, $cfg = null)
 	$inputRightQ = preg_quote($inputRight, "/");
 
 	$out = preg_replace_callback(
-		"/(\s*)$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ(\s*)/m",
+//		"/(\s*)$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ(\s*)/m",
+		"/$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ/m",
 		function ($m) use($cfg,$inputLeft,$inputRight) {
 
-			$text = $m[2];
+			$text = $m[1];
 			$length = strlen($inputLeft) + strlen($text) +
-				strlen($inputRight) + strlen($m[3]) - 1;
+				strlen($inputRight) - 1;
 
 			if (strtolower($text) === "reset") {
 				$type = "reset";
@@ -66,7 +67,7 @@ function ham_inputs_button($in, $cfg = null)
 				$type = "submit";
 			}
 
-                        return "$m[1]$inputLeft<input class=\"hamInputButton\" type=\"$type\" size=$length value=\"$text\">$inputRight";
+                        return "$inputLeft<input class=\"hamInputButton\" type=\"$type\" size=$length value=\"$text\">$inputRight";
 	}, $in);
 
 	return $out;
