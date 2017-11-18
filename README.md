@@ -1,5 +1,5 @@
-Html Ascii Markup Documentation	{#mainpage}
-===========================================
+README {#mainpage}
+==================
 
 [TOC]
 
@@ -96,10 +96,10 @@ If that is not an option for you, please mail your bug report to the
 Bugs                    {#bugs}
 =====
 
-Bug form                {#bugform}
+Form                {#bugform}
 -----------
 
-Bug list                {#buglist}
+List                {#buglist}
 -----------
 
 Mail to: ham-bugs@commandlinebeauty.com

@@ -6,10 +6,10 @@
 
     <tab type="user" url="@ref install" title="Installation"/>
     <tab type="user" url="@ref usage" title="Usage"/>
+    <tab type="user" url="@ref doc" title="Showcase"/>
     <tab type="user" url="@ref contribute" title="Contribute"/>
 
-    <tab type="user" url="@ref rcl-tool" title="Command line tool"/>
-
+    <tab type="files" visible="no" title="" intro=""/>
     <tab type="pages" visible="no" title="" intro=""/>
 
     <tab type="modules" visible="yes" title="Modules" intro=""/>
@@ -18,15 +18,11 @@
       <tab type="namespacemembers" visible="no" title="" intro=""/>
     </tab>
 
-    <tab type="usergroup" url="@ref slang" title="S-Lang">
-      <tab type="user" url="@ref ignored" title="Ignored symbols"/>
-    </tab>
-
-    <tab type="classes" visible="no" title="">
-      <tab type="classlist" visible="no" title="Types" intro=""/>
-      <tab type="classindex" visible="no" title=""/>
-      <tab type="hierarchy" visible="no" title="" intro=""/>
-      <tab type="classmembers" visible="no" title="" intro=""/>
+    <tab type="classes" visible="yes" title="">
+      <tab type="classlist" visible="yes" title="Types" intro=""/>
+      <tab type="classindex" visible="yes" title=""/>
+      <tab type="hierarchy" visible="yes" title="" intro=""/>
+      <tab type="classmembers" visible="yes" title="" intro=""/>
     </tab>
     <tab type="files" visible="no" title="">
       <tab type="filelist" visible="yes" title="Files" intro=""/>
@@ -34,7 +30,9 @@
     </tab>
     <tab type="examples" visible="yes" title="" intro=""/>  
 
+<!--
     <tab type="user" url="@ref git" title="Git"/>
+-->
 
     <tab type="user" url="@ref citelist" title="Bibliography"/>
   </navindex>

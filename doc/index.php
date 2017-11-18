@@ -1,8 +1,8 @@
-<!-- @file H.A.M. Documentation
-     @author Fritz-Walter Schwarm
-     @usage Access this file from your browser to see the documentation
- -->
 <?php
+//! @file H.A.M. Documentation {doc}
+//! @author Fritz-Walter Schwarm
+//! @usage Access this file from your browser to see the documentation
+
 	include '../src/ham.php';
 
 	$ham = new ham(file_get_contents('ham.txt'),

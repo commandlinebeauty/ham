@@ -1,3 +1,9 @@
+##! @file ham.txt
+##! @brief User Documentation & Showcase
+##!
+##! User Documentation
+##! =========================
+#
 # .-----------------------------------------------------------.
 # | H.A.M. - Documentation                                    |
 # |                                                           |
