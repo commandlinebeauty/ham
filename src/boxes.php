@@ -6,8 +6,8 @@ abstract class hamBoxType
 	const ANY    =  0;
 	const INFO   =  1;
 	const FORM   =  2;
-	const FILE   =  3;
-	const CMD    =  4;
+//	const FILE   =  3;
+//	const CMD    =  4;
 	const ACTION =  5;
 
 	//! Return array of all real box types (no meta-types)
@@ -24,8 +24,8 @@ abstract class hamBoxType
 
 		array_push($out, hamBoxType::INFO);
 		array_push($out, hamBoxType::FORM);
-		array_push($out, hamBoxType::FILE);
-		array_push($out, hamBoxType::CMD);
+//		array_push($out, hamBoxType::FILE);
+//		array_push($out, hamBoxType::CMD);
 		array_push($out, hamBoxType::ACTION);
 
 		return $out;
@@ -43,10 +43,10 @@ abstract class hamBoxType
 			return 'hamBoxPlain';
 		case  2:
 			return 'hamBoxForm';
-		case  3:
-			return 'hamBoxFile';
-		case  4:
-			return 'hamBoxCmd';
+//		case  3:
+//			return 'hamBoxFile';
+//		case  4:
+//			return 'hamBoxCmd';
 		case  5:
 			return 'hamBoxAction';
 		default:
@@ -510,29 +510,29 @@ $this->bracketTop     = $cfg->get('boxFormEdgeBracketTop');
 $this->bracketBottom  = $cfg->get('boxFormEdgeBracketBottom');
 			break;
 	
-		case hamBoxType::FILE:
-
-$this->topCorner      = $cfg->get('boxFileCornerTop');
-$this->bottomCorner   = $cfg->get('boxFileCornerBottom');
-$this->yEdge          = $cfg->get('boxFileEdgeVertical');
-$this->xEdge          = $cfg->get('boxFileEdgeHorizontal');
-$this->bracketLeft    = $cfg->get('boxFileEdgeBracketLeft');
-$this->bracketRight   = $cfg->get('boxFileEdgeBracketRight');
-$this->bracketTop     = $cfg->get('boxFileEdgeBracketTop');
-$this->bracketBottom  = $cfg->get('boxFileEdgeBracketBottom');
-			break;
-	
-		case hamBoxType::CMD:
-
-$this->topCorner      = $cfg->get('boxCmdCornerTop');
-$this->bottomCorner   = $cfg->get('boxCmdCornerBottom');
-$this->yEdge          = $cfg->get('boxCmdEdgeVertical');
-$this->xEdge          = $cfg->get('boxCmdEdgeHorizontal');
-$this->bracketLeft    = $cfg->get('boxCmdEdgeBracketLeft');
-$this->bracketRight   = $cfg->get('boxCmdEdgeBracketRight');
-$this->bracketTop     = $cfg->get('boxCmdEdgeBracketTop');
-$this->bracketBottom  = $cfg->get('boxCmdEdgeBracketBottom');
-			break;
+//		case hamBoxType::FILE:
+//
+//$this->topCorner      = $cfg->get('boxFileCornerTop');
+//$this->bottomCorner   = $cfg->get('boxFileCornerBottom');
+//$this->yEdge          = $cfg->get('boxFileEdgeVertical');
+//$this->xEdge          = $cfg->get('boxFileEdgeHorizontal');
+//$this->bracketLeft    = $cfg->get('boxFileEdgeBracketLeft');
+//$this->bracketRight   = $cfg->get('boxFileEdgeBracketRight');
+//$this->bracketTop     = $cfg->get('boxFileEdgeBracketTop');
+//$this->bracketBottom  = $cfg->get('boxFileEdgeBracketBottom');
+//			break;
+//	
+//		case hamBoxType::CMD:
+//
+//$this->topCorner      = $cfg->get('boxCmdCornerTop');
+//$this->bottomCorner   = $cfg->get('boxCmdCornerBottom');
+//$this->yEdge          = $cfg->get('boxCmdEdgeVertical');
+//$this->xEdge          = $cfg->get('boxCmdEdgeHorizontal');
+//$this->bracketLeft    = $cfg->get('boxCmdEdgeBracketLeft');
+//$this->bracketRight   = $cfg->get('boxCmdEdgeBracketRight');
+//$this->bracketTop     = $cfg->get('boxCmdEdgeBracketTop');
+//$this->bracketBottom  = $cfg->get('boxCmdEdgeBracketBottom');
+//			break;
 
 		case hamBoxType::ACTION:
 

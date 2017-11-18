@@ -5,6 +5,9 @@ doxyfile := Doxyfile
 ##! Directory containing configuration for and builds of the developer documentation
 doc_dir := doc
 
+.PHONY: all
+all: doc
+
 .PHONY: doc
 ##! Generate documentation
 ##!
