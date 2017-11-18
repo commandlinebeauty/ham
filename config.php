@@ -19,15 +19,15 @@ class hamConfig
 		'boxHeightMin'                =>  1       ,
 		//! Minimum width for being recognized as a box
 		'boxWidthMin'                 =>  1       ,
-		//! Plain box
-		'boxPlainCornerTop'           => '.'      ,
-		'boxPlainCornerBottom'        => '\''     ,
-		'boxPlainEdgeHorizontal'      => '-'      ,
-		'boxPlainEdgeVertical'        => '|'      ,
-                'boxPlainEdgeBracketLeft'     => '[('     ,
-                'boxPlainEdgeBracketRight'    => '])'     ,
-                'boxPlainEdgeBracketTop'      => '^'      ,
-                'boxPlainEdgeBracketBottom'   => 'v'      ,
+		//! Info box
+		'boxInfoCornerTop'           => '.'      ,
+		'boxInfoCornerBottom'        => '\''     ,
+		'boxInfoEdgeHorizontal'      => '-'      ,
+		'boxInfoEdgeVertical'        => '|'      ,
+                'boxInfoEdgeBracketLeft'     => '[('     ,
+                'boxInfoEdgeBracketRight'    => '])'     ,
+                'boxInfoEdgeBracketTop'      => '^'      ,
+                'boxInfoEdgeBracketBottom'   => 'v'      ,
 		//! Form box
 		'boxFormCornerTop'            => '+'      ,
 		'boxFormCornerBottom'         => '+'      ,

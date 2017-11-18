@@ -51,45 +51,92 @@ d |  \                                   |   /  |     '----------------------'
                                                   |well.           |  still be
   .-----[Box Types]-----------------------------. '----------------'  shown.
   |                                             |                           
-  |   Plain: For general purpose description    | .----[@doc_filebox.txt]----.
-  |          and information blocks.            | |      - File Box -        |
+  | Different box types are distinguished by    | .----[@doc_filebox.txt]----.
+  | the box corners and edge symbols.           | |      - File Box -        |
   |                                             | |   This text will be re-  |
-  |    Form: A submitable form containing input | |   placed by the content  |
-  |          and/or data/description fields.    | |   of 'doc_filebox.txt'.  |
+  |    Info: For general purpose description    | |   placed by the content  |
+  |          and information blocks.            | |   of 'doc_filebox.txt'.  |
   |                                             | '--------------------------'
-  |    File: Shows the content of a text file.  |
-  |                                             | .----[!./doc_cmdbox.sh]----.
-  | Command: Box is filled with the result of a | |     - Command Box -      |
-  |          command.                           | |  This text will be re-   |
+  |    Form: A submitable form containing input |
+  |          and/or data/description fields.    | .----[!./doc_cmdbox.sh]----.
+  |                                             | |     - Command Box -      |
+  |                                             | |  This text will be re-   |
   |                                             | |  placed by the output of |
   |  Action: Action button executing the given  | |  'doc_cmdbox.sh'         |
   |          script.                            | '--------------------------'
   |                                             |
   '---------------------------------------------' .[]----[!top -b -n 1]------.
                                                   |                          |
-  +-----[./Form.sh]-----------------------------+ | - Another Command Box -  |
+  .-----[Info Box]------------------------------. | - Another Command Box -  |
   |                                             | |  This text will be re-   |
-  | A form can contain data and input fields.   | |  placed by the output of |  
-  |                                             | |  'top -b -n 1'           |
-  | A variable:     $foo                        | |                          |
-  | An input field: {foo}                       | |                          |
+  | Info boxes are mainly used for descriptive  | |  placed by the output of |  
+  | purposes. Their content can be static or    | |  'top -b -n 1'           |
+  | generated from the content of a file or the | |                          |
+  | output of a command (just like the content  | |                          |
+  | of all other box types as well). The input  | |                          |
+  | is interpreted as static text contrary to   | |                          |
+  | the other box types. HTML entities will be  | |                          |
+  | replaced but special HAM entities will not  | |                          |
+  | be substituted by the corresponding input   | |                          |
+  | or output element.                          | |                          |
   |                                             | |                          |
-  | The 'Submit' button below posts the field   | |                          |
-  | values to the server. The Reset button must | |                          |
-  | be named such that its lowercase            | |                          |
-  | representation reads 'reset' (e.g. 'Reset', | |                          |
+  '---------------------------------------------' '--------------------------'
+
+  .-----[Form Box]------------------------------. +-------[./Form.sh]--------+
+  |                                             | |                          |
+  | A form can contain data and input fields as | | This is a form type box. |
+  | well as buttons:                            | |                          |
+  |                                             | |                          |
+  |                Variable: $foo               | |     Variable: $foo       |
+  |               Textfield: {foo}              | |    Textfield: {foo}      |
+  |                                             | |                          |
+  | The 'Submit' button posts the field values  | |                          |
+  | to the script given as box label. The Reset | |                          |
+  | button must be named such that its lower-   | | Submit button: (Submit)  |
+  | case representation reads 'reset' ('Reset', | |  Reset button: (Reset)   |
   | 'reSet', ...).                              | |                          |
   |                                             | |                          |
-  +---(Submit)--(Reset)-------------------------+ '--------------------------'
+  '---(Submit)--(Reset)-------------------------' +--------------------------+
+
 
   .[./action.sh]------------------. .[][./action.sh]-. 
   ! Execute the action1.sh script ! ! Another action ! 
   '-------------------------------' '----------------' 
 
+  .-----[Action Boxes]---------------------------. .----[Source Selection]----.
+  |                                             | |                          |
+  |    Text: Get content from the static text   | | Source can be configured |
+  |          inside the box.                    | | independent of the box   |
+  |                                             | | type by starting the box |
+  |    File: Shows the content of a text file.  | | label with a special     |
+  |                                             | | modifier:                |
+  | Command: Box is filled with the result of a | |                          |
+  |          command.                           | | '@': Text file           |
+  |                                             | | '!': Command output      |
+  |                                             | |                          |
+  '---------------------------------------------' '--------------------------'
 
 
 
 
+
+
+
+
+
+
+  .-----[Box Sources]---------------------------. .----[Source Selection]----.
+  |                                             | |                          |
+  |    Text: Get content from the static text   | | Source can be configured |
+  |          inside the box.                    | | independent of the box   |
+  |                                             | | type by starting the box |
+  |    File: Shows the content of a text file.  | | label with a special     |
+  |                                             | | modifier:                |
+  | Command: Box is filled with the result of a | |                          |
+  |          command.                           | | '@': Text file           |
+  |                                             | | '!': Command output      |
+  |                                             | |                          |
+  '---------------------------------------------' '--------------------------'
 
 
 

@@ -304,7 +304,7 @@ class hamTableCell
 				$content = $buffer->rect($rect, $cfg);
 
 				$out .= "<pre>";
-				$out .= ham_entities($content, $cfg);
+				$out .= ham_parse_htmlentities($content, $cfg);
 				$out .= "</pre>";
 			}
 

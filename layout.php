@@ -81,7 +81,7 @@ abstract class hamLayout
 	
 				//! Test each type individually
 //				$types = array(
-//					hamBoxType::PLAIN,
+//					hamBoxType::INFO,
 //					hamBoxType::FORM,
 //					hamBoxType::FILE,
 //					hamBoxType::CMD

@@ -6,9 +6,9 @@
 <?php
 
 //! Include files (order matters)
+include "parse.php";
 include "rect.php";
 include "cgi.php";
-include "entities.php";
 include "config.php";
 include "buffer.php";
 include "boxes.php";
@@ -63,7 +63,8 @@ class ham
 	
 		//! Render layout and parse result
 		$out .= "<div class='ham'>" .
-			$this->parse($this->layout->render($this->buffer, $cfg), $cfg) .
+//			$this->parse($this->layout->render($this->buffer, $cfg), $cfg) .
+			$this->layout->render($this->buffer, $cfg) .
 			"</div>";
 	
 		//! Add page footer if 'page' option is specified
@@ -132,17 +133,7 @@ class ham
 			$cfg = $this->cfg;
 		}
 
-		$out = $content;
-
-		//! Parse individual elements
-	//	$out = ham_links($out, $cfg);
-	
-		//! Replace input elements
-		$out = ham_inputs($out, $cfg);
-		
-		//! Replace variables
-	
-		return $out;
+		return ham_parse_hamentities($content, $cfg);
 	}
 
 	public function header($cfg = null)

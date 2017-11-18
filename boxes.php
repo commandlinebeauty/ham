@@ -4,7 +4,7 @@ abstract class hamBoxType
 {
 	const NONE   = -1;
 	const ANY    =  0;
-	const PLAIN  =  1;
+	const INFO   =  1;
 	const FORM   =  2;
 	const FILE   =  3;
 	const CMD    =  4;
@@ -22,7 +22,7 @@ abstract class hamBoxType
 			$out = array();
 		}
 
-		array_push($out, hamBoxType::PLAIN);
+		array_push($out, hamBoxType::INFO);
 		array_push($out, hamBoxType::FORM);
 		array_push($out, hamBoxType::FILE);
 		array_push($out, hamBoxType::CMD);
@@ -159,19 +159,19 @@ class hamBox
 
 			$out = $this->getLayout()->render($buffer, $cfg);
 		} else {
-//			$content = $buffer->rect($rect, $cfg);
 			$content = $this->getContent($buffer, $cfg);
 
 			switch ($this->getType()) {
 	
 			case hamBoxType::NONE:
 			case hamBoxType::ANY:
-			case hamBoxType::PLAIN:
+			case hamBoxType::INFO:
 	
 				$out .= "<pre class=\"$typename\">";
 	
 				if ($children === 0) {
-					$out .= ham_entities($content, $cfg);
+
+					$out .= ham_parse_htmlentities($content, $cfg);
 				} else {
 					$out .= $content;
 				}
@@ -181,15 +181,17 @@ class hamBox
 			case hamBoxType::FORM:
 	
 				$out .= "<form action=\"" .
-					htmlspecialchars($_SERVER["PHP_SELF"]) . "#$label" .
-					"\" method=\"post\">";
+					htmlspecialchars($_SERVER["PHP_SELF"]) .
+					"#$label\" method=\"post\">";
 	
-				$out .= "<input type=\"hidden\" name=\"hamFormLabel\" value=\"$label\">";
+				$out .= "<input type=\"hidden\"
+					name=\"hamFormLabel\" value=\"$label\">";
 	
 				$out .= "<pre class=\"$typename\">";
-	
+
 				if ($children === 0) {
-					$out .= ham_entities($content, $cfg);
+
+					$out .= ham_parse($content, $cfg);
 				} else {
 					$out .= $content;
 				}
@@ -225,7 +227,7 @@ class hamBox
 				$content = $tmp->rect($rect, $cfg);
 	
 				$out .= "<pre class=\"$typename\">";
-				$out .= ham_entities($content, $cfg);
+				$out .= ham_parse_htmlentities($content, $cfg);
 				$out .= "</pre>";
 				break;
 			
@@ -263,7 +265,7 @@ class hamBox
 				$content = $tmp->rect($rect, $cfg);
 	
 				$out .= "<pre class=\"$typename\">";
-				$out .= ham_entities($content, $cfg);
+				$out .= ham_parse_htmlentities($content, $cfg);
 				$out .= "</pre>";
 				break;
 
@@ -305,7 +307,7 @@ class hamBox
 						"name=\"hamFormType\""           .
 						"value=\"action\">"              .
 					"<button type=submit>"                   .
-					ham_entities($content, $cfg)             .
+					ham_parse_htmlentities($content, $cfg)   .
 					"</button>"                              .
 					"</form>"                                .
 					"</pre>"                                 ;
@@ -539,16 +541,16 @@ class hamBoxDelimiters
 			}
 			break;
 
-		case hamBoxType::PLAIN:
+		case hamBoxType::INFO:
 
-$this->topCorner      = $cfg->get('boxPlainCornerTop');
-$this->bottomCorner   = $cfg->get('boxPlainCornerBottom');
-$this->yEdge          = $cfg->get('boxPlainEdgeVertical');
-$this->xEdge          = $cfg->get('boxPlainEdgeHorizontal');
-$this->bracketLeft    = $cfg->get('boxPlainEdgeBracketLeft');
-$this->bracketRight   = $cfg->get('boxPlainEdgeBracketRight');
-$this->bracketTop     = $cfg->get('boxPlainEdgeBracketTop');
-$this->bracketBottom  = $cfg->get('boxPlainEdgeBracketBottom');
+$this->topCorner      = $cfg->get('boxInfoCornerTop');
+$this->bottomCorner   = $cfg->get('boxInfoCornerBottom');
+$this->yEdge          = $cfg->get('boxInfoEdgeVertical');
+$this->xEdge          = $cfg->get('boxInfoEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxInfoEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxInfoEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxInfoEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxInfoEdgeBracketBottom');
 			break;
 	
 		case hamBoxType::FORM:

@@ -33,7 +33,7 @@ class hamLayoutPlain extends hamLayout
 		//! Render content as simple as possible
 		$out .= "<pre class='hamLayoutPlain'>\n";
 
-		$out .= ham_entities($tmp->getContent(), $cfg);
+		$out .= ham_parse_htmlentities($tmp->getContent(), $cfg);
 	
 		$out .= "</pre>";
 	
