@@ -8,6 +8,8 @@
     <tab type="user" url="@ref usage" title="Usage"/>
     <tab type="user" url="@ref doc" title="Showcase"/>
     <tab type="user" url="@ref contribute" title="Contribute"/>
+    <tab type="user" url="@ref buglist" title="Bugs"/>
+    <tab type="user" url="@ref todo" title="Todo"/>
 
     <tab type="files" visible="no" title="" intro=""/>
     <tab type="pages" visible="no" title="" intro=""/>

@@ -99,7 +99,7 @@ Bugs                    {#bugs}
 Form                {#bugform}
 -----------
 
-List                {#buglist}
+List                {#bugmail}
 -----------
 
 Mail to: ham-bugs@commandlinebeauty.com
