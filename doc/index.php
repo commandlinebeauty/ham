@@ -1,10 +1,12 @@
 <?php
-//! @file H.A.M. Documentation {doc}
-//! @author Fritz-Walter Schwarm
+//! @file index.php
+//! @brief Renders the user documentation
 //! @usage Access this file from your browser to see the documentation
+//! @author Fritz-Walter Schwarm
 
 	include '../src/ham.php';
 
+	//! Main HAM class instance
 	$ham = new ham(file_get_contents('ham.txt'),
 		array(
 			//! Enable debugging

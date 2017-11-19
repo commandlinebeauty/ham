@@ -1,5 +1,6 @@
 <?php
 
+//! TODO Reimplement this class for the new layout->boxes structure
 class hamLayoutPlain extends hamLayout
 {
 	public function __construct($buffer, $cfg = null)

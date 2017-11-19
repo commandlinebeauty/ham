@@ -11,8 +11,8 @@ abstract class hamLayout
 	private $boxes = array();
 
 	//! Should be called at the beginning of all inherited layout classes' contructors
-	//! @param $buffer Buffer storing the ASCII content to be layouted (see #hamBuffer).
-	//! @param $region Restrict layout work to this region of $buffer. The remaining valid area of the buffer will be interpreted as background. Use complete buffer if null is given.
+	//! @param $buffer Buffer storing the ASCII content to be layouted (see #hamBuffer)
+	//! @param $cfg    Configuration object of type #hamConfig
 	public function __construct($buffer, $cfg)
 	{
 		$this->level = $cfg->get('layoutLevel');
@@ -286,27 +286,32 @@ abstract class hamLayout
 		return false;
 	}
 
-	//! Getter/Setter methods
+	//! Get layout type
 	public function getType() {
 		return $this->type;
 	}
 
+	//! Set layout type
 	public function setType($type) {
 		return $this->type = $type;
 	}
 
+	//! Get contained boxes
 	public function getBoxes() {
 		return $this->boxes;
 	}
 
+	//! Set contained boxes
 	public function setBoxes($boxes) {
 		$this->boxes = $boxes;
 	}
 
+	//! Get level of nesting
 	public function getLevel() {
 		return $this->level;
 	}
 
+	//! Set nesting level
 	public function setLevel($level) {
 		return $this->level = $level;
 	}

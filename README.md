@@ -1,3 +1,4 @@
+
 README {#mainpage}
 ==================
 
@@ -46,8 +47,8 @@ Enter the newly cloned local copy and build the documentation:
 
 	cd ham && make doc
 
-Usage {#usage}
-==============
+Usage                   {#usage}
+=====
 
 Just include .... TODO
 
@@ -81,8 +82,10 @@ and hardening is very desired.
 
 If you want to contribute please [contact me](#contact).
 
-Bug reports
+Bug reports             {#bugreports}
 -----------
+
+You can find a list of all reported (and open) bugs [here](@ref buglist).
 
 Please make sure that the browser you are using is on the
 [list of fully supported browsers](#browsers) before submitting a bug report.
@@ -93,20 +96,18 @@ failing, bad, and/or dangerous code.
 If that is not an option for you, please mail your bug report to the
 [buglist](#buglist).
 
-Bugs                    {#bugs}
-=====
+### Form                {#bugform}
 
-Form                {#bugform}
------------
+TODO
 
-List                {#bugmail}
------------
+### Email               {#bugmail}
 
-Mail to: ham-bugs@commandlinebeauty.com
+Mail to: bugs@commandlinebeauty.com
 
 The email should obey the following rules:
 
-* choose a short but meaningful subject
+* the subject must start with "HAM - " (without quotes)
+* followed by a short but meaningful bug title (example: "HAM - unintended extra char at the right side of rendered layout")
 * omit greeting phrases but end the mail with an empty line followed by some name
 * start the mail with a short description of the problem followed by an empty line
 * include a line (enclosed by empty lines) stating your browser and its version in the following format:
@@ -124,12 +125,29 @@ About			{#about}
 This Html Ascii Markup parser has been developed from a need of a framework
 for creating simple user interfaces in very short time. TODO
 
+License                 {#license}
+-------
+
+This program is free software: you can redistribute it and/or modify     
+it under the terms of the GNU Affero General Public License as published 
+by the Free Software Foundation, either version 3 of the License, or     
+(at your option) any later version.                                      
+                                                                         
+This program is distributed in the hope that it will be useful,          
+but WITHOUT ANY WARRANTY; without even the implied warranty of           
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            
+GNU Affero General Public License for more details.                      
+                                                                         
+You should have received a
+[copy of the GNU Affero General Public License](@ref agpl)
+along with this program. If not, see <http://www.gnu.org/licenses/>.    
+
 Contact			{#contact}
 -------
 
 For HAM related issues (please use the [buglist](#buglist) for bug reports):
-	Email: ham@commandlinebeauty.com
+	dev@commandlinebeauty.com
 
 For general requests:
-	Email: schwarm@commandlinebeauty.com
+	root@commandlinebeauty.com
 

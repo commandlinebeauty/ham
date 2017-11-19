@@ -1,24 +1,29 @@
 <?php
 
+//! Type of a table cell
 abstract class hamCellType {
-	//! Uninitialized
+	//! Uninitialized cell
 	const NONE = -1;
-	//! Void -> do not render
+	//! This cell is not rendered (covered by another cell with row/colspan > 1)
 	const VOID =  0;
-	//! Cell covers a box
+	//! Cell contains a box
 	const BOX  =  1;
-	//! Other content
+	//! Cell contains background
 	const BKG  =  2;
 }
 
+//! Table layout
+//!
+//! Layout the page as (possibly nested) HTML tables
 class hamLayoutTable extends hamLayout
 {
-	private $rowspan = 0;
-	private $colspan = 0;
-	private $y = array();
-	private $x = array();
-	private $cells = array();
+	private $rowspan = 0;     ///< Number of rows
+	private $colspan = 0;     ///< Number of columns
+	private $y = array();     ///< Coordinates of row borders
+	private $x = array();     ///< Coordinates of column borders
+	private $cells = array(); ///< All table cells of type #hamTableCell
 
+	//! Initialize table layout
 	public function __construct($buffer, $cfg)
 	{
 		//! Call general layout constructor
@@ -54,6 +59,7 @@ class hamLayoutTable extends hamLayout
 		return $out;
 	}
 
+	//! Helper function for initialization
 	public function init($buffer, $cfg = null)
 	{
 		//! Helper grid for table construction
@@ -225,46 +231,54 @@ class hamLayoutTable extends hamLayout
 		}
 	}
 
-	//! Getter/Setter methods
+	//! Get row border coordinates
 	public function getY() {
 		return $this->y;
 	}
 
+	//! Get row column border coordinates
 	public function getX() {
 		return $this->x;
 	}
 
+	//! Get number of rows
 	public function getRowspan() {
 		return $this->rowspan;
 	}
 
+	//! Get number of columns
 	public function getColspan() {
 		return $this->colspan;
 	}
 
+	//! Get a cell by its row and column
 	public function getCell($row, $col) {
 		return $this->cells[$row][$col];
 	}
 
+	//! Set a cell at a specific row and column
 	public function setCell($row, $col, $cell) {
 		$this->cells[$row][$col] = $cell;
 	}
 }
 
+//! Describes on table cell
 class hamTableCell
 {
-	private $type = hamCellType::NONE;
-	private $rowspan = 1;
-	private $colspan = 1;
-	private $box = null;
-	private $rect;
+	private $type = hamCellType::NONE; ///< Cell type
+	private $rowspan = 1;              ///< Number of rows covered by this cell
+	private $colspan = 1;              ///< Number of columns covered by this cell
+	private $box = null;               ///< Box contained in this cell
+	private $rect;                     ///< Cell area of type #hamRect
 
+	//! Initialize table cell
 	public function __construct($rowspan, $colspan)
 	{
 		$this->rowspan = $rowspan;
 		$this->colspan = $colspan;
 	}
 
+	//! Render the cell
 	public function render($buffer, $cfg = null)
 	{
 		$out = "";
@@ -314,48 +328,58 @@ class hamTableCell
 		return $out;
 	}
 
-	//! Setter/Getter methods
+	//! Set number of rows and columns
 	public function setSpan($rowspan, $colspan) {
 		$this->setRowspan($rowspan);
 		$this->setColspan($colspan);
 	}
 
-	public function setRowspan($rowspan) {
-		$this->rowspan = $rowspan;
-	}
-
+	//! Get number of rows
 	public function getRowspan() {
 		return $this->rowspan;
 	}
 
-	public function setColspan($colspan) {
-		$this->colspan = $colspan;
+	//! Set number of rows
+	public function setRowspan($rowspan) {
+		$this->rowspan = $rowspan;
 	}
 
+	//! Get number of columns
 	public function getColspan() {
 		return $this->colspan;
 	}
 
+	//! Set number of columns
+	public function setColspan($colspan) {
+		$this->colspan = $colspan;
+	}
+
+	//! Get cell type
 	public function getType() {
 		return $this->type;
 	}
 
+	//! Set cell type
 	public function setType($type) {
 		$this->type = $type;
 	}
 
+	//! Get box
 	public function getBox() {
 		return $this->box;
 	}
 
+	//! Set box
 	public function setBox($box) {
 		$this->box = $box;
 	}
 
+	//! Get covered area
 	public function getRect() {
 		return $this->rect;
 	}
 
+	//! Set covered area
 	public function setRect($rect) {
 		$this->rect = $rect;
 	}

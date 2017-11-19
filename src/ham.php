@@ -1,8 +1,24 @@
 <?php
-//! @file H.A.M. main library file
+//! @file ham.php
 //! @usage Include this file to your project and call ham()
+//! @brief H.A.M. main library file
+//! @author Fritz-Walter Schwarm <root@commandlinebeauty.com>
+//! @copyright Copyright (C) 2017 Fritz-Walter Schwarm
+//! @license This project is released under the [GNU AGPLv3](#license)
+//! 
+//! This program is free software: you can redistribute it and/or modify     
+//! it under the terms of the GNU Affero General Public License as published 
+//! by the Free Software Foundation, either version 3 of the License, or     
+//! (at your option) any later version.                                      
+//!                                                                          
+//! This program is distributed in the hope that it will be useful,          
+//! but WITHOUT ANY WARRANTY; without even the implied warranty of           
+//! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            
+//! GNU Affero General Public License for more details.                      
+//!                                                                          
+//! You should have received a copy of the GNU Affero General Public License 
+//! along with this program. If not, see <http://www.gnu.org/licenses/>.    
 //!
-//! @author Fritz-Walter Schwarm
 
 include "parse.php";
 include "rect.php";
@@ -20,9 +36,9 @@ include "debug.php";
 //! Main interface class
 class ham
 {
-	private $cfg;
-	private $buffer;
-	private $layout;
+	private $cfg;    ///< Configuration object of type #hamConfig
+	private $buffer; ///< ASCII buffer of type #hamBuffer
+	private $layout; ///< Site layout of type #hamLayout
 
 	//! Create configuration and initialize buffer and layout
 	public function __construct($content, $opts = null)
@@ -31,8 +47,10 @@ class ham
 		unset($this->cfg);
 		$this->cfg = new hamConfig($opts);
 
+		//! Initialize buffer from content
 		$this->init($content, $this->cfg);
 
+		//! Optional debugging
 		if ($this->cfg->get('debug')) {
 			echo ham_debug_config($this->cfg);
 			echo ham_debug_boxes($this->layout->getBoxes(), $this->buffer, $this->cfg);
@@ -130,6 +148,7 @@ class ham
 		return ham_parse_hamentities($content, $cfg);
 	}
 
+	//! Render header
 	public function header($cfg = null)
 	{
 		if ($cfg === null) {
@@ -153,6 +172,7 @@ class ham
 	<body>\n";
 	}
 
+	//! Render footer
 	public function footer($cfg = null)
 	{
 		if ($cfg === null) {
@@ -165,6 +185,7 @@ class ham
 		";
 	}
 
+	//! Obtain internal configuration object
 	public function getConfig() {
 		return $this->cfg;
 	}

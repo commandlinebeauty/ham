@@ -1,9 +1,11 @@
 <?php
 
+//! Stores all configuration options
 class hamConfig
 {
-	private $options = array();
+	private $options = array(); ///< Array of option/value pairs
 
+	//! Default values
 	private $defaults = array(
 //		//! HAM root dir
 //		'root_dir'                    => '../'    ,
@@ -92,22 +94,27 @@ class hamConfig
 		'tableCellBoxLink'            => false    ,
 	);
 
+	//! Initialize configuration from an array of option/value pairs
 	public function __construct($opts = null) {
 		foreach ($opts as $key => $value) {
 			$this->options[$key] = $value;
 		}
 	}
 
+	//! Get the default value for an option
 	public function getDefault($name) {
 
 		return $this->defaults[$name];
 	}
 
+	//! Get all option names
 	public function getKeys()
 	{
 		return array_keys($this->defaults);
 	}
 
+	//! Get an array of all option/value pairs
+	//! TODO FWS: Why not return options array instead?
 	public function getArray()
 	{
 		$out = array();
@@ -138,6 +145,8 @@ class hamConfig
 		return $value;
 	}
 
+	//! Set an option to the given value
+	//! Sets the option to the default value if $value is null
 	public function set($name, $value = null)
 	{
 

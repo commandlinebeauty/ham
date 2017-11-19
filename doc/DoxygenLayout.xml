@@ -10,6 +10,7 @@
     <tab type="user" url="@ref contribute" title="Contribute"/>
     <tab type="user" url="@ref buglist" title="Bugs"/>
     <tab type="user" url="@ref todo" title="Todo"/>
+    <tab type="user" url="@ref agpl" title="License"/>
 
     <tab type="files" visible="no" title="" intro=""/>
     <tab type="pages" visible="no" title="" intro=""/>

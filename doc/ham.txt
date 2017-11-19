@@ -1,46 +1,42 @@
 ##! @file ham.txt
-##! @brief User Documentation & Showcase
+##! @author Fritz-Walter Schwarm
+##! @brief HAM - User Documentation & Showcase
 ##!
-##! User Documentation
-##! =========================
-#
-# .-----------------------------------------------------------.
-# | H.A.M. - Documentation                                    |
-# |                                                           |
-# | An WYSIWYG ASCII Markup Language for HTML User Interfaces |
-# |                                                           |
-# | Author: Fritz-Walter Schwarm <root@commandlinebeauty.com> |
-# '-----------------------------------------------------------'
-#
-# Un-/Commenting
-# --------------
-#
-# This header is a comment which is completely ignored.
-#
-# <- The first table cell starts at the first non-comment-line (see below).
-#
---<- This is the first line of the first row (y = 0, row = 0) --------------->|
-^ <- This is the second line of the first row (y = 1, row = 0) -------------->|
-|<--- The first character of the third line (y = 2, x = 0)
-                 The last character of the fourth line (y = 3, x = 79/-1) --->X
-1<--- The recommended maximum width of one line is 79 characters.------------>|
-s       .[]-----------------------------------------------------------.
-t       |                                                             |
+##! This file contains examples of all HAM features and describes its usage.
+
+
+        .[]-----------------------------------------------------------.
+        |                                                             |
         |            H.A.M. - Documentation and Showcase              |
-r       |                                                             |
-o       |  An WYSIWYG ASCII Markup Language for HTML User Interfaces  |
-w       |                                                             |
+        |                                                             |
+        |  An WYSIWYG ASCII Markup Language for HTML User Interfaces  |
+        |                                                             |
         |  Author: Fritz-Walter Schwarm <root@commandlinebeauty.com>  |
-|       |                                                             |
-v       '-------------------------------------------------------------'
---<- Last line of first row (y = 12, row = 0) ------------------------------->|
-- +-----[Box Layout]----------------------------+     .----------------------.
-2 |\        \__       box label          ^     /|     | Boxes can be next to |
-n | \          [boxFormEdgeBracketLeft]  |    / |     | each other...        |
-d |  \                                   |   /  |     '----------------------'
-- |   \______      top corners      ____ |__/   |     .----------------------.
-3 |             [boxFormCornerTop]       |      |  V  | or below each other  |
-- |                                      |      |     '----------------------'
+        |                                                             |
+        '-------------------------------------------------------------'
+
+
+  .-----------------------------------------------. .------------------------.
+  |               Documentation                   | |        License         |
+  |                                               | |                        |
+  | This end user documentation shows all the     | |                        |
+  | library features and describes its basic      | |                        |
+  | usage.                                        | |                        |
+  |                                               | |                        |
+  | The [developer documentation](html) contains  | |                        |
+  | a description of the code and details about   | |                        |
+  | the implementation as well as more detailed   | |                        |
+  | instructions about its installation.          | |                        |
+  |                                               | |                        |
+  '-----------------------------------------------' '------------------------'
+
+  +-----[Box Layout]----------------------------+     .----------------------.
+  |\        \__       box label          ^     /|     | Boxes can be next to |
+  | \          [boxFormEdgeBracketLeft]  |    / |     | each other...        |
+  |  \                                   |   /  |     '----------------------'
+  |   \______      top corners      ____ |__/   |     .----------------------.
+  |             [boxFormCornerTop]       |      |  V  | or below each other  |
+  |                                      |      |     '----------------------'
   |<---------     vertical edges    ---- |----->|  O  .----..----------------.
   |            [boxFormEdgeVertical]     |      |     | or || a combination  |
   |                                             |  I  '----''----------------'
@@ -190,4 +186,9 @@ d |  \                                   |   /  |     '----------------------'
   |                                                                          |
   '--------------------------------------------------------------------------'
 
-|<- This is the last line ($y = $N_y-2) ------------------------------------->|
+ # Un-/Commenting
+ # --------------
+ # This would be a comment that is completely ignored if the line would start
+ # with the configured comment character (default: '#'). It is visible because
+ # the first character is actually a space character. Comments are completely
+ # removed from a file, i.e., they do not appear as empty lines or so.

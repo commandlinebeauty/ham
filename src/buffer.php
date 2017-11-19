@@ -1,5 +1,6 @@
 <?php
 
+//! Stores text content in an easily accessible manner
 class hamBuffer
 {
 	//! Array of char arrays
@@ -194,11 +195,12 @@ class hamBuffer
 		return new hamRect(0, $this->y_max, 0, $this->x_max);
 	}
 
-	//! Getter/Setter methods
+	//! Get number of rows
 	public function getSizeY() {
 		return $this->y_max + 1;
 	}
 
+	//! Get maximum number of columns
 	public function getSizeX() {
 		return $this->x_max + 1;
 	}

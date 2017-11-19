@@ -1,16 +1,15 @@
 <?php
 
+//! Type of a box, i.e., its look
 abstract class hamBoxType
 {
-	const NONE   = -1;
-	const ANY    =  0;
-	const INFO   =  1;
-	const FORM   =  2;
-//	const FILE   =  3;
-//	const CMD    =  4;
-	const ACTION =  5;
+	const NONE   = -1; ///< Uninitalized
+	const ANY    =  0; ///< Means: any of the following types
+	const INFO   =  1; ///< Info boxes parse their content unaltered
+	const FORM   =  2; ///< A form box is nested into an HTML form
+	const ACTION =  5; ///< Action boxes are rendered as button like elements
 
-	//! Return array of all real box types (no meta-types)
+	//! Return array of all box types (no meta-types)
 	public function getTypes($meta = false)
 	{
 		if ($meta) {
@@ -24,8 +23,6 @@ abstract class hamBoxType
 
 		array_push($out, hamBoxType::INFO);
 		array_push($out, hamBoxType::FORM);
-//		array_push($out, hamBoxType::FILE);
-//		array_push($out, hamBoxType::CMD);
 		array_push($out, hamBoxType::ACTION);
 
 		return $out;
@@ -43,10 +40,6 @@ abstract class hamBoxType
 			return 'hamBoxPlain';
 		case  2:
 			return 'hamBoxForm';
-//		case  3:
-//			return 'hamBoxFile';
-//		case  4:
-//			return 'hamBoxCmd';
 		case  5:
 			return 'hamBoxAction';
 		default:
@@ -55,30 +48,31 @@ abstract class hamBoxType
 	}
 }
 
-//! The different box source types
+//! The different box source types, i.e., methods of content aquisition
 abstract class hamBoxSource
 {
-	const NONE = -1;
-	const ANY  =  0;
-	const TEXT =  1;
-	const FILE =  2;
-	const CMD  =  3;
+	const NONE = -1; ///< Uninitialized
+	const ANY  =  0; ///< Any of the types below
+	const TEXT =  1; ///< Use text inside box
+	const FILE =  2; ///< Load text from file
+	const CMD  =  3; ///< Obtain content from command output
 }
 
 //! Main box class
 class hamBox
 {
-	private $status = 0;
+	private $status = 0; ///< Will be increased on errors
 
-	private $type;
-	private $source = hamBoxSource::NONE;
-	private $label;
-	private $y;
-	private $x;
-	private $border;
+	private $type;       ///< Box type of type #hamBoxType
+	private $source = hamBoxSource::NONE; ///< Source type of type #hamBoxType
+	private $label;      ///< Label (text on box edges)
+	private $y;          ///< y-coordinates in buffer frame
+	private $x;          ///< x-coordinates in buffer frame
+	private $border;     ///< Border is shown if this is != 0
 
-	private $layout = null;
+	private $layout = null; ///< Layout for rendering child boxes
 
+	//! Initialization of a new box
 	public function __construct($type, $label, $y, $x, $border, $buffer, $cfg)
 	{
 		$this->type = $type;
@@ -88,17 +82,18 @@ class hamBox
 
 		$modifier = substr($label, 0, 1);
 
+		//! Set source type depending on the label modifier:
 		if ($modifier === '@') {
-			//! Read content from file
+			//! - Read content from file
 			$this->label = substr($label, 1);
 			$this->source = hamBoxSource::FILE;
 			
 		} else if ($modifier === '!') {
-			//! Read content from command output
+			//! - Read content from command output
 			$this->label = substr($label, 1);
 			$this->source = hamBoxSource::CMD;
 		} else {
-			//! Read content from text inside box
+			//! - Read content from text inside box
 			$this->label = $label;
 			$this->source = hamBoxSource::TEXT;
 		}
@@ -136,6 +131,7 @@ class hamBox
 		$buffer->setValid($outer);
 	}
 
+	//! Render box
 	public function render($buffer, $cfg = null)
 	{
 		$type = $this->getType();
@@ -357,11 +353,12 @@ class hamBox
 		return "(".$this->getY(0).",".$this->getX(0).")";
 	}
 
-	//! Getter/Setter methods
+	//! Get the box type
 	public function getType() {
 		return $this->type;
 	}
 
+	//! Set the box type
 	public function setType($type = null) {
 		if ($type === null) {
 			$this->type = hamBoxType::NONE;
@@ -370,23 +367,28 @@ class hamBox
 		}
 	}
 
+	//! Get box label
 	public function getLabel() {
 		return $this->label;
 	}
 
+	//! Set box label
 	public function setLabel($label) {
 
 		$this->label = $label;
 	}
 
+	//! Get layout for child boxes
 	public function getLayout() {
 		return $this->layout;
 	}
 
+	//! Set layout for child boxes
 	public function setLayout($layout) {
 		$this->layout = $layout;
 	}
 
+	//! Get y-coordinates 0/1/2/3
 	public function getY($index = null) {
 
 		if ($index === null) {
@@ -396,6 +398,7 @@ class hamBox
 		return $this->y[$index];
 	}
 
+	//! Get x-coordinates 0/1/2/3
 	public function getX($index = null) {
 
 		if ($index === null) {
@@ -405,6 +408,7 @@ class hamBox
 		return $this->x[$index];
 	}
 
+	//! Get box area
 	public function getRect() {
 
 		return new hamRect(
@@ -415,6 +419,7 @@ class hamBox
 		);
 	}
 
+	//! Set box coordinates
 	public function setRect($rect) {
 		$this->y[0] = $rect->getY(0);
 		$this->y[1] = $rect->getY(0);
@@ -426,10 +431,12 @@ class hamBox
 		$this->x[3] = $rect->getX(0);
 	}
 
+	//! Get array of child boxes
 	public function getChildren() {
 		return $this->layout->getBoxes();
 	}
 
+	//! Get number of child boxes
 	public function getChildCount() {
 		if ($this->layout === null) {
 			return 0;
@@ -439,22 +446,25 @@ class hamBox
 	}
 }
 
+//! Used for storing a set of delimiters for one box type
 class hamBoxDelimiters
 {
-	public $topCorner     = "";
-	public $bottomCorner  = "";
-	public $yEdge         = "";
-	public $xEdge         = "";
-	public $bracketLeft   = "";
-	public $bracketRight  = "";
-	public $bracketTop    = "";
-	public $bracketBottom = "";
+	public $topCorner     = ""; ///< Top corner symbol
+	public $bottomCorner  = ""; ///< Bottom corner symbol
+	public $yEdge         = ""; ///< Symbol for vertical edges
+	public $xEdge         = ""; ///< Symbol for horizontal edges
+	public $bracketLeft   = ""; ///< Start bracket from left to right
+	public $bracketRight  = ""; ///< Start bracket from right to left
+	public $bracketTop    = ""; ///< Start bracket from top to bottom
+	public $bracketBottom = ""; ///< Start bracket from bottom to top
 
+	//! Initialize delimiters for a specific box type
 	public function __construct($type, $cfg)
 	{
 		$this->setType($type, $cfg);
 	}
 
+	//! Update delimiter type
 	public function setType($type, $cfg)
 	{
 		//! Set needle strings according to box type

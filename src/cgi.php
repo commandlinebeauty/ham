@@ -1,14 +1,18 @@
 <?php
 
+//! CGI handling class
 class hamCGI
 {
+	//! Hidden fields with additional information
 	private $hiddenFields = array(
 		'hamFormLabel',
 		'hamBoxAction'
 	);
 
+	//! Execution status of a submitted form (0 means success)
 	private $formStatus = array();
 
+	//! Initialize CGI
 	public function __construct($cfg)
 	{
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -63,8 +67,7 @@ class hamCGI
 		}
 	}
 
-	//! Getter/Setter methods
-
+	//! Get the execution status of a form
 	public function getFormStatus($id) {
 		//! Check for posted execution status of box with given id
 		if(array_key_exists($id, $this->formStatus)) {
