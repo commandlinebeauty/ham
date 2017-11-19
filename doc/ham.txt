@@ -19,13 +19,13 @@
   .-----------------------------------------------. .------------------------.
   |               Documentation                   | |        License         |
   |                                               | |                        |
-  | This end user documentation shows all the     | |                        |
-  | library features and describes its basic      | |                        |
-  | usage.                                        | |                        |
-  |                                               | |                        |
-  | The [developer documentation](html) contains  | |                        |
+  | This end user documentation shows all the     | | GNU Affero General     |
+  | library features and describes its basic      | |     Public License     |
+  | usage.                                        | | as published by the    |
+  |                                               | | Free Software          |
+  | The [developer documentation](html) contains  | | Foundation             |
   | a description of the code and details about   | |                        |
-  | the implementation as well as more detailed   | |                        |
+  | the implementation as well as more detailed   | |     TODO               |
   | instructions about its installation.          | |                        |
   |                                               | |                        |
   '-----------------------------------------------' '------------------------'
