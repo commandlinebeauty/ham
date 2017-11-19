@@ -3,6 +3,8 @@
 ##! @brief HAM - User Documentation & Showcase
 ##!
 ##! This file contains examples of all HAM features and describes its usage.
+##!
+##! These are comment lines which are completely ignored by HAM.
 
 
         .[]-----------------------------------------------------------.
@@ -17,9 +19,9 @@
 
 
   .-----------------------------------------------. .------------------------.
-  |               Documentation                   | |        License         |
+  |               Documentation                   | |        Usage           |
   |                                               | |                        |
-  | This end user documentation shows all the     | | GNU Affero General     |
+  | This end user documentation shows all the     | | 1.)                    |
   | library features and describes its basic      | |     Public License     |
   | usage.                                        | | as published by the    |
   |                                               | | Free Software          |
@@ -29,6 +31,20 @@
   | instructions about its installation.          | |                        |
   |                                               | |                        |
   '-----------------------------------------------' '------------------------'
+
+  .--------------------------------------------------------------------------.
+  |                                  Usage                                   |
+  |                                                                          |
+  | 1.) Clone the GIT repository: git clone https://github                                                                        |
+  |                                                                          |
+  |                                                                          |
+  |                                                                          |
+  |                                                                          |
+  |                                                                          |
+  |                                                                          |
+  |                                                                          |
+  |                                                                          |
+  '--------------------------------------------------------------------------'
 
   +-----[Box Layout]----------------------------+     .----------------------.
   |\        \__       box label          ^     /|     | Boxes can be next to |
@@ -192,3 +208,16 @@
  # with the configured comment character (default: '#'). It is visible because
  # the first character is actually a space character. Comments are completely
  # removed from a file, i.e., they do not appear as empty lines or so.
+
+
+  .[]------------------------------------------------------------------------.
+  |                         Copyright & License                              |
+  |                                                                          |
+  |     Copyright 2017 Fritz-Walter Schwarm <root@commandlinebeauty.com>     |
+  |                                                                          |
+  | This project is distributed WITHOUT ANY WARRANTY under the terms of the  |
+  |   GNU Affero General Public License (AGPLv3) as published by the Free    |
+  | Software Foundation. A copy of the full license can be found in the file |
+  |     [LICENSE.md] or at  https://www.gnu.org/licenses/agpl-3.0.html       |
+  |                                                                          |
+  '--------------------------------------------------------------------------'
