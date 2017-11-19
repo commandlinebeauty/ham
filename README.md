@@ -1,6 +1,6 @@
 
-README {#mainpage}
-==================
+README          {#mainpage}
+======
 
 [TOC]
 
@@ -52,8 +52,8 @@ Usage                   {#usage}
 
 Just include .... TODO
 
-Makefile target list	{#targets}
-====================
+Makefile targets        {#targets}
+================
 
 | Target     | Action                   |
 | -------    | -------                  |
@@ -85,7 +85,7 @@ If you want to contribute please [contact me](#contact).
 Bug reports             {#bugreports}
 -----------
 
-You can find a list of all reported (and open) bugs [here](@ref buglist).
+You can find a list of all reported (and open) bugs [here](@ref bugs).
 
 Please make sure that the browser you are using is on the
 [list of fully supported browsers](#browsers) before submitting a bug report.
@@ -94,7 +94,7 @@ You can use the [bug report form](#bugform) for submitting unexpected behavior,
 failing, bad, and/or dangerous code.
 
 If that is not an option for you, please mail your bug report to the
-[buglist](#buglist).
+[via mail](#bugmail).
 
 ### Form                {#bugform}
 
@@ -119,6 +119,23 @@ The email should obey the following rules:
 Your mail address as well as the content of your bug report might be publicly
 visible. Please use the [bug report form](#bugform) if the former is not desired.
 
+Donations
+---------
+
+At the moment this is an one-man project and I need to make a living.
+Therefore I am often not able to work on my private projects as much as I would
+like to. If you like this projects, or other projects of mine (see
+<http://www.commandlinebeauty.com/projects/>), you can help me by donating to
+this address:
+
+TODO
+
+If you prefer to be sure that your money is invested in development time for
+the Html Ascii Markup (HAM) project only, please send your donation to this
+address instead:
+
+TODO
+
 About			{#about}
 =====
 
@@ -139,7 +156,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.                      
                                                                          
 You should have received a
-[copy of the GNU Affero General Public License](@ref agpl)
+[copy of the GNU Affero General Public License](@ref agplv3)
 along with this program. If not, see <http://www.gnu.org/licenses/>.    
 
 Contact			{#contact}

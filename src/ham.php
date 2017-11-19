@@ -4,7 +4,7 @@
 //! @brief H.A.M. main library file
 //! @author Fritz-Walter Schwarm <root@commandlinebeauty.com>
 //! @copyright Copyright (C) 2017 Fritz-Walter Schwarm
-//! @license This project is released under the [GNU AGPLv3](#license)
+//! @license This project is released under the [GNU AGPLv3](@ref agplv3)
 //! 
 //! This program is free software: you can redistribute it and/or modify     
 //! it under the terms of the GNU Affero General Public License as published 

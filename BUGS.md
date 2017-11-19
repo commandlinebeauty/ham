@@ -1,6 +1,6 @@
 
-List of bugs {#buglist}
-=======================
+Known bugs {#bugs}
+==========
 
 Confirmed
 ---------
