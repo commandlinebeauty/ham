@@ -18,24 +18,24 @@
         '-------------------------------------------------------------'
 
 
-  .-----------------------------------------------. .------------------------.
-  |               Documentation                   | |        Usage           |
+  +----------------[Documentation]----------------+ +--------[Go to]---------+
   |                                               | |                        |
-  | This end user documentation shows all the     | | 1.)                    |
-  | library features and describes its basic      | |     Public License     |
-  | usage.                                        | | as published by the    |
-  |                                               | | Free Software          |
-  | The [developer documentation](html) contains  | | Foundation             |
-  | a description of the code and details about   | |                        |
-  | the implementation as well as more detailed   | |     TODO               |
-  | instructions about its installation.          | |                        |
+  | This end user documentation shows all the     | | [#Usage]               |
+  | library features and describes its basic      | |                        |
+  | usage.                                        | |                        |
   |                                               | |                        |
-  '-----------------------------------------------' '------------------------'
+  | The developer documentation within the [html] | |                        |
+  | directory contains a description of the code  | |                        |
+  | and details about the implementation as well  | |                        |
+  | as more detailed instructions about its       | |                        |
+  | installation.                                 | |                        |
+  |                                               | |                        |
+  +-----------------------------------------------+ +------------------------+
 
-  .--------------------------------------------------------------------------.
-  |                                  Usage                                   |
+  .---------------------------------[Usage]----------------------------------.
   |                                                                          |
-  | 1.) Clone the GIT repository: git clone https://github                                                                        |
+  |                                                                          |
+  | 1.) Clone the GIT repository: git clone https://github                   |
   |                                                                          |
   |                                                                          |
   |                                                                          |

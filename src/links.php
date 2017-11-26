@@ -18,7 +18,7 @@ function ham_links($in, $cfg = null)
 //				strlen($linkLeft) + strlen($linkRight);
 			$name = $m[2];
 
-                        return "$linkLeft<a href=\"#$name\" id=\"$name\">$name</a>$linkRight";
+                        return "$m[1]$linkLeft<a href=\"$name\" id=\"$name\">$name</a>$linkRight$m[3]";
 	}, $in);
 
 	return $out;

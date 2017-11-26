@@ -20,7 +20,7 @@ function ham_parse_hamentities($in, $cfg = null)
 	$out = $in;
 
 	//! Replace links
-	//$out = ham_links($out, $cfg);
+	$out = ham_links($out, $cfg);
 	
 	//! Replace input elements
 	$out = ham_inputs($out, $cfg);
