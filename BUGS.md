@@ -7,6 +7,7 @@ Confirmed
 
 - box edges do not get hidden if [] starts at the beginning of a box (position of top corner[0])
 - nested box label links not working
+- Submit/Reset buttons in bottom box border not working
 
 Fixed (testing)
 ---------------

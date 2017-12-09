@@ -17,7 +17,7 @@ function ham_links_anchor($in, $cfg = null)
 
 	$out = preg_replace_callback(
 //		"/(\s*)$linkLeftQ([^$linkRightQ]*)$linkRightQ(\s*)/m",
-		"/(\s*)$linkLeftQ([a-zA-Z0-9#]*)$linkRightQ(\s*)/m",
+		"/(\s*)$linkLeftQ([a-zA-Z0-9#.\/]*)$linkRightQ(\s*)/m",
 		function ($m) use($cfg,$linkLeft,$linkRight) {
 
 //			$length = array_sum(array_map('strlen', $m)) +

@@ -114,7 +114,7 @@
   | case representation reads 'reset' ('Reset', | | Submit button: (Submit)  |
   | 'reSet', ...). Both can be placed on edges. | |  Reset button: (Reset)   |
   |                                             | |                          |
-  '---(Submit)--(Reset)-------------------------' +--------------------------+
+  '---------------------------------------------' +--------------------------+
 
   .[exit 0]-------------. .[../examples/action.sh]--------. .[][./action.sh]-.
   !      Action Box     ! ! Execute the action1.sh script ! ! Another action !
@@ -145,11 +145,11 @@
   .[]---------------------------. .[]----------------------------------------.
   | Box borders can be removed  | | Box borders can be removed globally by   |
   | by defining an empty box    | | by setting the 'boxBorder' configuration |
-  | label, possibly in combined | | to false.                                |
+  | label, possibly combined    | | to false.                                |
   | with a non-empty label:     | '------------------------------------------'
-  |                             |.[]-----------------------------------------.
+  |                             |.-------------------------------------------.
   | .[]--[myLabel]------------. ||                    ^                      |
-  | |       ...               | ||<--- No boundaries necessary between boxes |
+  | |       ...               | ||  <--- No margin necessary between boxes   |
   '-----------------------------''-------------------------------------------'
                                                         
   .-----[Class Structure]----------------------------------------------------.
@@ -210,7 +210,7 @@
  # removed from a file, i.e., they do not appear as empty lines or so.
 
 
-  .[]------------------------------------------------------------------------.
+  +[]------------------------------------------------------------------------+
   |                         Copyright & License                              |
   |                                                                          |
   |     Copyright 2017 Fritz-Walter Schwarm <root@commandlinebeauty.com>     |
@@ -218,6 +218,6 @@
   | This project is distributed WITHOUT ANY WARRANTY under the terms of the  |
   |   GNU Affero General Public License (AGPLv3) as published by the Free    |
   | Software Foundation. A copy of the full license can be found in the file |
-  |     [LICENSE.md] or at  https://www.gnu.org/licenses/agpl-3.0.html       |
+  |    [../LICENSE.md] or at  https://www.gnu.org/licenses/agpl-3.0.html     |
   |                                                                          |
-  '--------------------------------------------------------------------------'
+  +--------------------------------------------------------------------------+
