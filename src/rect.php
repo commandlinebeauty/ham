@@ -41,6 +41,68 @@ class hamRect
 		);
 	}
 
+//	//! Return smaller (or larger for negativ values of $offset) rectangle
+//	public function offsetY($pos, $offset, $cfg = null)
+//	{
+//		if (pos == -1) {
+//
+//			return new hamRect(
+//				$this->getY(0)+$offset,
+//				$this->getY(1)-$offset,
+//				$this->getX(0),
+//				$this->getX(1)
+//			);
+//		} else if (pos == 0) {
+//
+//			return new hamRect(
+//				$this->getY(0)+$offset,
+//				$this->getY(1),
+//				$this->getX(0),
+//				$this->getX(1)
+//			);
+//
+//		} else if (pos == 1) {
+//
+//			return new hamRect(
+//				$this->getY(0),
+//				$this->getY(1)-$offset,
+//				$this->getX(0),
+//				$this->getX(1)
+//			);
+//		}
+//	}
+//
+//	//! Return smaller (or larger for negativ values of $offset) rectangle
+//	public function offsetX($pos, $offset, $cfg = null)
+//	{
+//		if (pos == -1) {
+//
+//			return new hamRect(
+//				$this->getY(0),
+//				$this->getY(1),
+//				$this->getX(0)+$offset,
+//				$this->getX(1)-$offset
+//			);
+//		} else if (pos == 0) {
+//
+//			return new hamRect(
+//				$this->getY(0),
+//				$this->getY(1),
+//				$this->getX(0)+$offset,
+//				$this->getX(1)
+//			);
+//
+//		} else if (pos == 1) {
+//
+//			return new hamRect(
+//				$this->getY(0),
+//				$this->getY(1),
+//				$this->getX(0),
+//				$this->getX(1)-$offset
+//			);
+//		}
+//	}
+
 	//! Get y-coordinate 0/1
 	public function getY($index) {
 		if ($index < 0) {

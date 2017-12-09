@@ -5,6 +5,11 @@ Known bugs {#bugs}
 Confirmed
 ---------
 
-- 2017-11-11 FWS box edges do not get hidden if [] starts at the beginning of a box (position of top corner[0])
-- one char to much on the right side in outer layout
+- box edges do not get hidden if [] starts at the beginning of a box (position of top corner[0])
+- nested box label links not working
+
+Fixed (testing)
+---------------
+
+- one char to much on the right side in outer layout (this actually wasn't a bug)
 

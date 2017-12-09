@@ -113,11 +113,11 @@ class hamBox
 		switch ($cfg->get('layout')) {
 
 		case 'plain':
-			$this->layout = new hamLayoutPlain($buffer, $cfg);
+			$this->layout = new hamLayoutPlain($buffer, $label, $cfg);
 			break;
 
 		case 'table':
-			$this->layout = new hamLayoutTable($buffer, $cfg);
+			$this->layout = new hamLayoutTable($buffer, $label, $cfg);
 			break;
 
 		default:
@@ -138,7 +138,6 @@ class hamBox
 		$label = $this->getLabel();
 		$rect = $this->getRect();
 		$typename = hamBoxType::getName($type);
-		
 
 		$out = "";
 		$hideBorder = "";
@@ -146,11 +145,14 @@ class hamBox
 		//! Limit buffer to box area
 		$outer = $buffer->getValid();
 
-//		if (! $this->border || ! $cfg->get('boxBorder')) {
 		if (! $this->border || ! $cfg->get('boxBorder')) {
+
 			$buffer->setValid($rect->offset(1));
+			$hideBorder = true;
 		} else {
 			$buffer->setValid($rect);
+			$hideBorder = false;
+
 		}
 
 		$children = $this->getChildCount();
@@ -159,7 +161,12 @@ class hamBox
 
 			$out = $this->getLayout()->render($buffer, $cfg);
 		} else {
-			$content = $this->getContent($buffer, $cfg);
+			$content = ham_parse_htmlentities($this->getContent($buffer, $cfg), $cfg);
+
+			if (! $hideBorder) {
+
+				$content = ham_links_label($content, $cfg);
+			}
 
 			switch ($this->getType()) {
 	
@@ -171,7 +178,8 @@ class hamBox
 	
 				if ($children === 0) {
 
-					$out .= ham_parse_htmlentities($content, $cfg);
+//					$out .= ham_parse_htmlentities($content, $cfg);
+					$out .= $content;
 				} else {
 					$out .= $content;
 				}
@@ -192,6 +200,7 @@ class hamBox
 				if ($children === 0) {
 
 					$out .= ham_parse($content, $cfg);
+//					$out .= $content;
 				} else {
 					$out .= $content;
 				}
@@ -238,7 +247,8 @@ class hamBox
 						"name=\"hamFormType\""           .
 						"value=\"action\">"              .
 					"<button type=submit>"                   .
-					ham_parse_htmlentities($content, $cfg)   .
+//					ham_parse_htmlentities($content, $cfg)   .
+					$content                                 .
 					"</button>"                              .
 					"</form>"                                .
 					"</pre>"                                 ;

@@ -87,7 +87,7 @@
                                                   |                          |
   .-----[Info Box]------------------------------. | - Another Command Box -  |
   |                                             | |  This text will be re-   |
-  | Info boxes are mainly used for descriptive  | |  placed by the output of |  
+  | Info boxes are mainly used for descriptive  | |  placed by the output of |
   | purposes. Their content can be static or    | |  'top -b -n 1'           |
   | generated from the content of a file or the | |                          |
   | output of a command (just like the content  | |                          |
@@ -116,9 +116,9 @@
   |                                             | |                          |
   '---(Submit)--(Reset)-------------------------' +--------------------------+
 
-  .[exit 0]-------------. .[./action.sh]------------------. .[][./action.sh]-. 
-  !      Action Box     ! ! Execute the action1.sh script ! ! Another action ! 
-  '---------------------' '-------------------------------' '----------------' 
+  .[exit 0]-------------. .[../examples/action.sh]--------. .[][./action.sh]-.
+  !      Action Box     ! ! Execute the action1.sh script ! ! Another action !
+  '---------------------' '-------------------------------' '----------------'
 
   .-----[Action Boxes]--------------------------. .---------[Note]-----------.
   |                                             | |                          |

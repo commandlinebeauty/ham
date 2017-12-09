@@ -24,10 +24,10 @@ class hamLayoutTable extends hamLayout
 	private $cells = array(); ///< All table cells of type #hamTableCell
 
 	//! Initialize table layout
-	public function __construct($buffer, $cfg)
+	public function __construct($buffer, $label, $cfg)
 	{
 		//! Call general layout constructor
-		parent::__construct($buffer, $cfg);
+		parent::__construct($buffer, $label, $cfg);
 		
 		$this->init($buffer, $cfg);
 	}

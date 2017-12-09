@@ -21,6 +21,8 @@ class hamConfig
 		'comment'                     => '#'      ,
 		//! Empty space
 		'void'                        => ' '      ,
+		//! Offset for parsing of special elements (ignore top and bottom rows)
+		'parseOffset'                 =>  1       ,
 		//! Default value for box borders (true means draw border)
 		'boxBorder'                   =>  true    ,
 		//! Minimum height for being recognized as a box
@@ -72,6 +74,9 @@ class hamConfig
 		'boxActionEdgeBracketRight'   => '])'     ,
 		'boxActionEdgeBracketTop'     => '^'      ,
 		'boxActionEdgeBracketBottom'  => 'v'      ,
+		//! Label
+		'boxLabelLeft'                => '['      ,
+		'boxLabelRight'               => ']'      ,
                 //! Overwrite this many characters with the void char when accessing a buffer
 		'bufferMargin'                =>  0       ,
 		//! Links

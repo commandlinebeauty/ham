@@ -3,6 +3,8 @@
 //! Base class for all layout types
 abstract class hamLayout
 {
+	//! Layout label
+	private $label;
 	//! Layout type
 	private $type;
 	//! Layout nesting level
@@ -13,8 +15,9 @@ abstract class hamLayout
 	//! Should be called at the beginning of all inherited layout classes' contructors
 	//! @param $buffer Buffer storing the ASCII content to be layouted (see #hamBuffer)
 	//! @param $cfg    Configuration object of type #hamConfig
-	public function __construct($buffer, $cfg)
+	public function __construct($buffer, $label, $cfg)
 	{
+		$this->label = $label;
 		$this->level = $cfg->get('layoutLevel');
 
 		$outer = $buffer->getValid();

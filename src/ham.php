@@ -109,11 +109,11 @@ class ham
 		switch ($cfg->get('layout')) {
 
 		case 'plain':
-			$this->layout = new hamLayoutPlain($this->buffer, $cfg);
+			$this->layout = new hamLayoutPlain($this->buffer, $cfg->get('title'), $cfg);
 			break;
 
 		case 'table':
-			$this->layout = new hamLayoutTable($this->buffer, $cfg);
+			$this->layout = new hamLayoutTable($this->buffer, $cfg->get('title'), $cfg);
 			break;
 
 		default:
