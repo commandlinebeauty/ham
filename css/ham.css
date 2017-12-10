@@ -87,6 +87,10 @@
 	filter: brightness(120%);
 }
 
+.hamBoxChart {
+	background-color: yellow;
+}
+
 .hamBoxHidden {
 	background-color: #D0D0D0;
 }

@@ -7,7 +7,8 @@ abstract class hamBoxType
 	const ANY    =  0; ///< Means: any of the following types
 	const INFO   =  1; ///< Info boxes parse their content unaltered
 	const FORM   =  2; ///< A form box is nested into an HTML form
-	const ACTION =  5; ///< Action boxes are rendered as button like elements
+	const ACTION =  3; ///< Action boxes are rendered as button like elements
+	const CHART  =  4; ///< Chart boxes are rendered as diagrams
 
 	//! Return array of all box types (no meta-types)
 	public function getTypes($meta = false)
@@ -24,6 +25,7 @@ abstract class hamBoxType
 		array_push($out, hamBoxType::INFO);
 		array_push($out, hamBoxType::FORM);
 		array_push($out, hamBoxType::ACTION);
+		array_push($out, hamBoxType::CHART);
 
 		return $out;
 	}
@@ -40,8 +42,10 @@ abstract class hamBoxType
 			return 'hamBoxPlain';
 		case  2:
 			return 'hamBoxForm';
-		case  5:
+		case  3:
 			return 'hamBoxAction';
+		case  4:
+			return 'hamBoxChart';
 		default:
 			throw new Exception("Unknown box type \"$type\"!");
 		}
@@ -71,6 +75,7 @@ class hamBox
 	private $border;     ///< Border is shown if this is != 0
 
 	private $layout = null; ///< Layout for rendering child boxes
+	private $chart  = null; ///< Chart component or null
 
 	//! Initialization of a new box
 	public function __construct($type, $label, $y, $x, $border, $buffer, $cfg)
@@ -140,7 +145,7 @@ class hamBox
 		$typename = hamBoxType::getName($type);
 
 		$out = "";
-		$hideBorder = "";
+		$hideBorder = null;
 
 		//! Limit buffer to box area
 		$outer = $buffer->getValid();
@@ -256,7 +261,29 @@ class hamBox
 					"</form>"                                .
 					"</pre>"                                 ;
 				break;
+
+			case hamBoxType::CHART:
+
+				unset($this->chart);
+
+				$this->chart = new hamChart(
+					$content,
+					$cfg
+				);
+
+				$out .= "<pre class=\"$typename\">";
 	
+				if ($children === 0) {
+
+//					$out .= ham_parse_htmlentities($content, $cfg);
+//					$out .= $content;
+					$out .= $this->chart->render($cfg);
+				} else {
+					$out .= $content;
+				}
+				$out .= "</pre>";
+				break;
+
 			default:
 				throw new Exception("Unknown box type $type!");
 			}
@@ -399,6 +426,16 @@ class hamBox
 	//! Set layout for child boxes
 	public function setLayout($layout) {
 		$this->layout = $layout;
+	}
+
+	//! Return associated chart component
+	public function getChart() {
+		return $this->chart;
+	}
+
+	//! Set associated chart component
+	public function setChart($chart) {
+		$this->chart = $chart;
 	}
 
 	//! Get y-coordinates 0/1/2/3
@@ -567,6 +604,18 @@ $this->bracketLeft    = $cfg->get('boxActionEdgeBracketLeft');
 $this->bracketRight   = $cfg->get('boxActionEdgeBracketRight');
 $this->bracketTop     = $cfg->get('boxActionEdgeBracketTop');
 $this->bracketBottom  = $cfg->get('boxActionEdgeBracketBottom');
+			break;
+
+		case hamBoxType::CHART:
+
+$this->topCorner      = $cfg->get('boxChartCornerTop');
+$this->bottomCorner   = $cfg->get('boxChartCornerBottom');
+$this->yEdge          = $cfg->get('boxChartEdgeVertical');
+$this->xEdge          = $cfg->get('boxChartEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxChartEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxChartEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxChartEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxChartEdgeBracketBottom');
 			break;
 	
 		default:

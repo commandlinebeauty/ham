@@ -74,6 +74,16 @@ class hamConfig
 		'boxActionEdgeBracketRight'   => '])'     ,
 		'boxActionEdgeBracketTop'     => '^'      ,
 		'boxActionEdgeBracketBottom'  => 'v'      ,
+		//! Chart
+		'boxChartCornerTop'           => '^.'      ,
+		'boxChartCornerBottom'        => '+>'     ,
+		'boxChartEdgeHorizontal'      => '-'      ,
+		'boxChartEdgeVertical'        => '|'      ,
+		'boxChartEdgeBracketLeft'     => '[('     ,
+		'boxChartEdgeBracketRight'    => '])'     ,
+		'boxChartEdgeBracketTop'      => '-'      ,
+		'boxChartEdgeBracketBottom'   => '-'      ,
+		'chartSeriesDelimiter'        => ','      ,
 		//! Label
 		'boxLabelLeft'                => '['      ,
 		'boxLabelRight'               => ']'      ,

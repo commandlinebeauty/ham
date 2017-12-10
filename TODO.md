@@ -6,3 +6,4 @@ TODO {#todo}
 - render box border and content independently for each box
 --> BUG nested box label links not working
 
+- replace 'ham' in hamChart/hamBox/... classes with a namespace scheme
