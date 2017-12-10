@@ -20,6 +20,8 @@
 //! along with this program. If not, see <http://www.gnu.org/licenses/>.    
 //!
 
+include "form.php";
+include "vars.php";
 include "parse.php";
 include "rect.php";
 include "cgi.php";

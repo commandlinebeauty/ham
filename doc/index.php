@@ -21,7 +21,8 @@
 			//! Fill voids with this character
 			'void' => ' ',
 			//! Disable box borders
-//			'boxBorder' => false
+//			'boxBorder' => false,
+//			'tableUnify' => true
 		)
 	);
 

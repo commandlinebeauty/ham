@@ -100,13 +100,13 @@
   |                                             | |                          |
   '---------------------------------------------' '--------------------------'
 
-  .-----[Form Box]------------------------------. +-------[./Form.sh]--------+
+  .-----[Form Box]------------------------------. +--[../examples/form.sh]---+
   |                                             | |                          |
   | A form can contain data and input fields as | | This is a form type box. |
   | well as buttons:                            | |                          |
   |                                             | |                          |
   |                Variable: $foo               | |      Variable: $foo      |
-  |               Textfield: {foo}              | |     Textfield: {foo}     |
+  |               Textfield: {foo}              | |     Textfield: {bar}     |
   |                                             | |                          |
   | The 'Submit' button posts the field values  | |                          |
   | to the script given as box label. The Reset | |                          |

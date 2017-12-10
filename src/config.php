@@ -87,6 +87,9 @@ class hamConfig
 		'inputButtonRight'            => ')'      ,
 		'inputTextLeft'               => '{'      ,
 		'inputTextRight'              => '}'      ,
+		//! Variables
+		'varLeft'                     => '$'      ,
+		'varRight'                    => ' '      ,
 		//! Scan region inside layout. null means: scan the whole valid region
 		'layoutScanRect'              => null     ,
 		//! Table nesting level (0 means not nested inside another table)
@@ -97,6 +100,7 @@ class hamConfig
 		//! Make a link out of each box
 //		'tableCellBoxLink'            => true     ,
 		'tableCellBoxLink'            => false    ,
+		'currentForm'                 => null     ,
 	);
 
 	//! Initialize configuration from an array of option/value pairs

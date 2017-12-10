@@ -199,8 +199,11 @@ class hamBox
 
 				if ($children === 0) {
 
+					$cfg->set('currentForm', $label);
+//					$content = ham_parse_form($content, $label, $cfg);
 					$out .= ham_parse($content, $cfg);
 //					$out .= $content;
+					$cfg->set('currentForm', null);
 				} else {
 					$out .= $content;
 				}

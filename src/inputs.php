@@ -19,14 +19,23 @@ function ham_inputs_text($in, $cfg)
 	$inputLeftQ  = preg_quote($inputLeft, "/");
 	$inputRight  = $cfg->get('inputTextRight');
 	$inputRightQ = preg_quote($inputRight, "/");
+	$form = $cfg->get('currentForm');
 
 	$out = preg_replace_callback(
 		"/([ ]*)$inputLeftQ([_a-zA-Z0-9]*)$inputRightQ([ ]*)/m",
-		function ($m) use($cfg,$inputLeft,$inputRight) {
+		function ($m) use($cfg,$inputLeft,$inputRight,$form) {
 
-			$text = $m[2];
 			$name = $m[2];
-			$length = strlen($inputLeft) + strlen($text) +
+			$valLength = strlen($m[2]);
+
+			if ($form !== null) {
+				$text = ham_form_get($form, $name, $cfg);
+//				$valLength = strlen($text) - strlen($m[2]);
+			} else {
+				$text = $m[2];
+			}
+
+			$length = strlen($inputLeft) + $valLength +
 //				strlen($inputRight) + strlen($m[3]) - 1;
 //! FWS TODO Why do I need - here for chrome? DANGER this - 3 problably leads to failure for very short input fields
 //				strlen($inputRight) + strlen($m[3]) - 3;

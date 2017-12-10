@@ -12,8 +12,6 @@ abstract class hamCellType {
 	const BKG  =  2;
 }
 
-//! Table layout
-//!
 //! Layout the page as (possibly nested) HTML tables
 class hamLayoutTable extends hamLayout
 {

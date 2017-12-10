@@ -18,6 +18,13 @@ then
 		echo "Echo value of \"$1\" -> \"$value\"" >> cgi.log
 		echo $value
 		exit 0;
+
+	elif [ "$1" = "bar" ]
+	then
+		value="foobar"
+		echo "Echo value of \"$1\" -> \"$value\"" >> cgi.log
+		echo $value
+		exit 0;
 	else
 		value=""
 		echo "Failed to obtain value for \"$1\"!" | tee -a cgi.log
