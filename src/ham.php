@@ -21,6 +21,7 @@
 //!
 
 include "chart.php";
+include "image.php";
 include "form.php";
 include "vars.php";
 include "parse.php";

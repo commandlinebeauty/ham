@@ -83,7 +83,17 @@ class hamConfig
 		'boxChartEdgeBracketRight'    => '])'     ,
 		'boxChartEdgeBracketTop'      => '-'      ,
 		'boxChartEdgeBracketBottom'   => '-'      ,
-		'chartSeriesDelimiter'        => ','      ,
+		'boxChartCmd'                 => '',
+		//! Image
+		'boxImageCornerTop'           => '.'      ,
+		'boxImageCornerBottom'        => '\''     ,
+		'boxImageEdgeHorizontal'      => '~'      ,
+		'boxImageEdgeVertical'        => '|'      ,
+		'boxImageEdgeBracketLeft'     => '[('     ,
+		'boxImageEdgeBracketRight'    => '])'     ,
+		'boxImageEdgeBracketTop'      => '^'      ,
+		'boxImageEdgeBracketBottom'   => 'v'      ,
+		'boxImageCmd'                 => '',
 		//! Label
 		'boxLabelLeft'                => '['      ,
 		'boxLabelRight'               => ']'      ,

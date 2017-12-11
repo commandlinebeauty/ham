@@ -2,41 +2,23 @@
 
 class hamChart {
 	private $lines = null;
-	private $series = null;
-	private $axes = null;
+	private $content = null;
+	private $width = 0;
+	private $height = 0;
 
 	//! Instantiation of a new chart
 	public function __construct($content, $cfg)
 	{
-		$this->init($content, $cfg);
-	}
-
-	//! Initialization helper function
-	public function init($content, $cfg)
-	{
-		$delimiter = $cfg->get('chartSeriesDelimiter');
-
-		$delim = new hamBoxDelimiters(hamBoxType::CHART, $cfg);
-		$yEdge = preg_quote($delim->yEdge, "/");
-
-//		$this->series = str_getcsv($content, $delimiter); // [, string $enclosure = '"' [, string $escape = "\\" ]]] )
+		$this->content = preg_replace('/^.(.*).$/m', '$1', $content);
+		$this->content = substr($this->content, strpos($this->content, "\n")+1);
+		$this->content = substr($this->content, 0, strrpos($this->content, "\n"));
+//		$this->content = preg_replace(/^.*PHP_EOL(.*)PHP_EOL.*$/", "$1", $this->content);
+echo $this->content;
 
 		$this->lines = explode(PHP_EOL, $content);
-		$lines = $this->lines;
-		$count = count($lines);
 
-		unset($this->series);
-		$this->series = array();
-
-//		$line = preg_replace("/[$yEdge]\s*(.*)\s*[$yEdge]/", "$1", $lines[1]);
-//		array_push($this->series, explode($delimiter, $line));
-//		$cols = count($this->series[0]);
-
-		for ($i = 1; $i < $count - 1; $i++) {
-
-			$line = preg_replace("/[$yEdge]\s*(.*)\s*[$yEdge]/", "$1", $lines[$i]);
-			array_push($this->series, explode($delimiter, $line));
-		}
+		$this->width = min(array_map('strlen', $this->lines));
+		$this->height = count($this->lines);
 	}
 
 	//! Render chart
@@ -44,17 +26,18 @@ class hamChart {
 	{
 		$out = "";
 
-		$lines = $this->lines;
-		$count = count($lines);
+		$key_cmd = "set nokey;";
+		$cmd = "printf \"$this->content\" | (cat > /dev/shm/hamChartData.tmp && trap 'rm /dev/shm/hamChartData.tmp' EXIT && gnuplot -e \"$key_cmd set terminal dumb $this->width $this->height; plot for [i=2:5] '/dev/shm/hamChartData.tmp' u 1:i\")"; // 2> /dev/null";
 
-		$header = $lines[0];
-		$footer = $lines[$count - 1];
+		$status = 0;
+		unset($plot);
 
-		foreach ($this->series as $series) {
-			$out .= implode('-', $series) . PHP_EOL;
-		}
+//		exec(escapeshellcmd($cmd), $out, $status);
+		exec($cmd, $plot, $status);
 
-		$out .= $lines[count($lines)-1];
+		$out .= $this->lines[0] . PHP_EOL;
+		$out .= implode(PHP_EOL, $plot) . PHP_EOL;
+		$out .= $this->lines[count($this->lines) - 1];
 
 		return $out;
 	}

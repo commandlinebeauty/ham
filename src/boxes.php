@@ -9,6 +9,7 @@ abstract class hamBoxType
 	const FORM   =  2; ///< A form box is nested into an HTML form
 	const ACTION =  3; ///< Action boxes are rendered as button like elements
 	const CHART  =  4; ///< Chart boxes are rendered as diagrams
+	const IMAGE  =  5; ///< Image boxes render images as ASCII art
 
 	//! Return array of all box types (no meta-types)
 	public function getTypes($meta = false)
@@ -26,6 +27,7 @@ abstract class hamBoxType
 		array_push($out, hamBoxType::FORM);
 		array_push($out, hamBoxType::ACTION);
 		array_push($out, hamBoxType::CHART);
+		array_push($out, hamBoxType::IMAGE);
 
 		return $out;
 	}
@@ -46,6 +48,8 @@ abstract class hamBoxType
 			return 'hamBoxAction';
 		case  4:
 			return 'hamBoxChart';
+		case  5:
+			return 'hamBoxImage';
 		default:
 			throw new Exception("Unknown box type \"$type\"!");
 		}
@@ -76,6 +80,7 @@ class hamBox
 
 	private $layout = null; ///< Layout for rendering child boxes
 	private $chart  = null; ///< Chart component or null
+	private $image  = null; ///< Chart component or null
 
 	//! Initialization of a new box
 	public function __construct($type, $label, $y, $x, $border, $buffer, $cfg)
@@ -284,6 +289,29 @@ class hamBox
 				$out .= "</pre>";
 				break;
 
+			case hamBoxType::IMAGE:
+
+				unset($this->image);
+
+				$this->image = new hamImage(
+					$content,
+					$label,
+					$cfg
+				);
+
+				$out .= "<pre class=\"$typename\">";
+	
+				if ($children === 0) {
+
+//					$out .= ham_parse_htmlentities($content, $cfg);
+//					$out .= $content;
+					$out .= $this->image->render($cfg);
+				} else {
+					$out .= $content;
+				}
+				$out .= "</pre>";
+				break;
+
 			default:
 				throw new Exception("Unknown box type $type!");
 			}
@@ -436,6 +464,16 @@ class hamBox
 	//! Set associated chart component
 	public function setChart($chart) {
 		$this->chart = $chart;
+	}
+
+	//! Return associated image component
+	public function getImage() {
+		return $this->image;
+	}
+
+	//! Set associated image component
+	public function setImage($image) {
+		$this->image = $image;
 	}
 
 	//! Get y-coordinates 0/1/2/3
@@ -616,6 +654,18 @@ $this->bracketLeft    = $cfg->get('boxChartEdgeBracketLeft');
 $this->bracketRight   = $cfg->get('boxChartEdgeBracketRight');
 $this->bracketTop     = $cfg->get('boxChartEdgeBracketTop');
 $this->bracketBottom  = $cfg->get('boxChartEdgeBracketBottom');
+			break;
+
+		case hamBoxType::IMAGE:
+
+$this->topCorner      = $cfg->get('boxImageCornerTop');
+$this->bottomCorner   = $cfg->get('boxImageCornerBottom');
+$this->yEdge          = $cfg->get('boxImageEdgeVertical');
+$this->xEdge          = $cfg->get('boxImageEdgeHorizontal');
+$this->bracketLeft    = $cfg->get('boxImageEdgeBracketLeft');
+$this->bracketRight   = $cfg->get('boxImageEdgeBracketRight');
+$this->bracketTop     = $cfg->get('boxImageEdgeBracketTop');
+$this->bracketBottom  = $cfg->get('boxImageEdgeBracketBottom');
 			break;
 	
 		default:
