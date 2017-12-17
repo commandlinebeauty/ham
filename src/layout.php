@@ -14,6 +14,7 @@ abstract class hamLayout
 
 	//! Should be called at the beginning of all inherited layout classes' contructors
 	//! @param $buffer Buffer storing the ASCII content to be layouted (see #hamBuffer)
+	//! @param $label  Label of parent element
 	//! @param $cfg    Configuration object of type #hamConfig
 	public function __construct($buffer, $label, $cfg)
 	{

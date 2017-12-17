@@ -1,4 +1,6 @@
 <?php
+//! @file config.php
+//! @brief Configuration
 
 //! Stores all configuration options
 class hamConfig
@@ -16,7 +18,7 @@ class hamConfig
 		//! Debugging
 		'debug'                       => false    ,
 		//! Layout
-		'layout'                      => 'plain'  ,
+		'layout'                      => 'table'  ,
 		//! Lines starting with this string with be ignored
 		'comment'                     => '#'      ,
 		//! Empty space

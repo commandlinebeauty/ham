@@ -1,0 +1,9 @@
+
+div.image img[src="../../images/btc.png"]{ 
+	height: 2em; 
+	vertical-align: middle;
+}
+
+td * { 
+	display: inline-block;
+}

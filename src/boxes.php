@@ -273,6 +273,7 @@ class hamBox
 
 				$this->chart = new hamChart(
 					$content,
+					$hideBorder,
 					$cfg
 				);
 

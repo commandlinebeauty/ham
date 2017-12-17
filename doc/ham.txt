@@ -129,13 +129,14 @@
   |                                             | |                          |
   '---------------------------------------------' '--------------------------'
 
-  .-----[Chart Boxes]---------------------------. ^---------[Chart]----------.
+  .-----[Chart Boxes]---------------------------. ^[]-------[Chart]----------.
   |                                             | | 1 1.0 6.0                |
-  | Chart boxes are visualizing data series in  | | 2 2.0 6.0                |
-  | form of a diagram.                          | | 3 3.0 3.0                |
-  |                                             | | 4 4.0 2.0                |
-  |                                             | | 5 5.0 1.0                |
-  |                                             | | 6 6.0 1.0                |
+  | Chart boxes are visualizing data series in  | | 2 2.0 5.0                |
+  | form of a diagram. An external program is   | | 3 3.0 4.0                |
+  | used for plotting. The command can be set   | | 4 4.0 3.0                |
+  | via the #hamBoxChartCmd config option. The  | | 5 5.0 2.0                |
+  | current default is Gnuplot.                 | | 6 6.0 1.0                |
+  |                                             | | 7 7.0 1.0                |
   '---------------------------------------------' +-------------------------->
 
   ^-----[Another Chart]------------------------------------------------------.
@@ -150,25 +151,25 @@
   |                                                                          |
   +-------------------------------------------------------------------------->
 
-  .-----[Image Boxes]-------. .~[../examples/image.jpg]~~~~~~~~~~~~~~~~~~~~~~.
-  |                         | |                                              |
-  | Image boxes are         | |                                              |
-  | visualizing image       | |                                              |
-  | files as ASCII chars.   | |                                              |
-  | Currently, an external  | |                                              |
-  | program is needed. Set  | |                                              |
-  | #boxImgCmd accordingly. | |    The ASCII Art                             |
-  | accordingly.            | |    representation                            |
-  |                         | |    of the given image                        |
-  |                         | |    will be shown here.                       |
-  |                         | |                                              |
-  |                         | |                                              |
-  |                         | |                                              |
-  |                         | |                                              |
-  |                         | |                                              |
-  |                         | |                                              |
-  |                         | |                                              |
-  '-------------------------' '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+  .-----[Image Boxes]----. .~[../examples/image.jpg]~~~~~~~~~~~~~~~~~~~~~~~~~.
+  |                      | |                                                 |
+  | Image boxes are      | |                                                 |
+  | visualizing image    | |                                                 |
+  | files as ASCII       | |                                                 |
+  | chars. Currently,    | |                                                 |
+  | an external program  | |                                                 |
+  | is needed, which can | |    The ASCII Art                                |
+  | be set via the       | |    representation                               |
+  | #boxImgCmd config    | |    of the given image                           |
+  | option. The default  | |    will be shown here.                          |
+  | is jp2a, which can   | |                                                 |
+  | handle JPEGs only.   | |                                                 |
+  |                      | |                                                 |
+  |                      | |                                                 |
+  |                      | |                                                 |
+  |                      | |                                                 |
+  |                      | |                                                 |
+  '----------------------' '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
                                                              
   .-----[Box Sources]---------------------------. .----[Source Selection]----.
   |                                             | |                          |

@@ -1,17 +1,17 @@
 <?php
 
+//! Images currently rely on an external application for converting images files into ASCII art (jp2a is the default)
 class hamImage {
 
-	private $lines = null;
-	private $file = null;
-	private $width = 0;
-	private $height = 0;
+	private $lines = null; ///< Content split into lines
+	private $file = null;  ///< Image file
+	private $width = 0;    ///< Image width in number of characters
+	private $height = 0;   ///< Image height in number of characters
 
 	//! Instantiation of a new chart
 	public function __construct($content, $file, $cfg)
 	{
 		$this->lines = explode(PHP_EOL, $content);
-echo $this->lines[1];
 
 		$this->width = min(array_map('strlen', $this->lines));
 		$this->height = count($this->lines) - 2;
