@@ -21,12 +21,12 @@
   +----------------[Documentation]----------------+ +--------[Go to]---------+
   |                                               | |                        |
   | This end user documentation shows all the     | | [#Usage]               |
-  | library features and describes its basic      | |                        |
-  | usage.                                        | |                        |
-  |                                               | |                        |
-  | The developer documentation within the [html] | |                        |
-  | directory contains a description of the code  | |                        |
-  | and details about the implementation as well  | |                        |
+  | library features and describes its basic      | | [#Box Types]           |
+  | usage.                                        | | [#Box Sources]         |
+  |                                               | | [#Class Structure]     |
+  | The developer documentation within the [html] | | [#Comments]            |
+  | directory contains a description of the code  | | [#License]             |
+  | and details about the implementation as well  | | [#Usage]               |
   | as more detailed instructions about its       | |                        |
   | installation.                                 | |                        |
   |                                               | |                        |
@@ -34,15 +34,25 @@
 
   .---------------------------------[Usage]----------------------------------.
   |                                                                          |
+  | 1.) Clone the GIT repository:                                            |
   |                                                                          |
-  | 1.) Clone the GIT repository: git clone https://github                   |
+  |     git clone http://www.commandlinebeauty.com/git/ham.git               |
   |                                                                          |
+  | 2.) Include the main library file and create a new HAM instance in your  |
+  |     index.php, e.g.;                                                     |
   |                                                                          |
+  |     <?php                                                                |
   |                                                                          |
+  |             include '~/ham/src/ham.php';                                 |
   |                                                                          |
+  |             $ham = new ham(file_get_contents('myInterface.txt'),         |
+  |                     array(                                               |
+  |                             //! Set page title                           |
+  |                             'title' => 'My Webinterface',                |
+  |                     )                                                    |
+  |             );                                                           |
   |                                                                          |
-  |                                                                          |
-  |                                                                          |
+  |             echo $ham->render();                                         |
   |                                                                          |
   '--------------------------------------------------------------------------'
 
@@ -252,7 +262,7 @@
  # removed from a file, i.e., they do not appear as empty lines or so.
 
 
-  +[]------------------------------------------------------------------------+
+  +[][License]---------------------------------------------------------------+
   |                         Copyright & License                              |
   |                                                                          |
   |     Copyright 2017 Fritz-Walter Schwarm <root@commandlinebeauty.com>     |
